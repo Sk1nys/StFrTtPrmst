@@ -20,4 +20,9 @@ justify-content: space-between;
     background-color: #90B1F8;
     border: none;
     border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+text-decoration: none;
+color: black;
 }
