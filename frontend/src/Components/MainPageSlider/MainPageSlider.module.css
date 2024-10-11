@@ -1,0 +1,9 @@
+.slider_container{
+    width: 90%;
+    height: 400px;
+    margin: 0 10%;
+}
+.slider_slide>img{
+height: 400px;
+width: 100%;
+}
