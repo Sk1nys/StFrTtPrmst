@@ -8,7 +8,10 @@ import Path2 from '../../assets/Zslider2.jpg';
 import Path3 from '../../assets/Slider3.jpg';
 import Path4 from '../../assets/Slider4.jpg';
 import Path5 from '../../assets/Slider5.jpg';
-const mainPageSlider = () => {
+interface mainPageSliderProps{
+  ClassName?:string;
+}
+const mainPageSlider: React.FC<mainPageSliderProps> = ({ClassName}) => {
     const images = [
         {id: 1,src: Path1,alt: 'Image 1',},
         { id: 2, src: Path2, alt: 'Image 2',},
@@ -18,7 +21,7 @@ const mainPageSlider = () => {
     ];
   return (
     <>
-    <div className={styles.slider_container}>
+    <div className={`${styles.slider_container} ${ClassName}`}>
     <Swiper
       spaceBetween={50}
       slidesPerView={1}
