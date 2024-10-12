@@ -1,9 +1,54 @@
-version: '2'
+version: '3.8'
 services:
   php:
     image: yiisoftware/yii2-php:8.3-apache
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
+    depends_on:
+      - postgresql  
     ports:
       - '8000:80'
+    networks:
+      - app-network  
+
+  
+  postgresql:
+    restart: always
+    container_name: postgresql
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: test
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    volumes:
+      - ./data:/var/lib/postgresql/data2
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+    ports:
+      - 5432:5432 
+    networks:
+      - app-network
+
+
+  pgadmin:
+    container_name: pgadmin
+    restart: always
+    image: elestio/pgadmin:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - 5050:80
+    # entrypoint:
+    #   - PG_HOST=172.99.0.2
+    networks:
+      - app-network 
+
+
+
+
+
+networks:
+  app-network:
+    driver: bridge
