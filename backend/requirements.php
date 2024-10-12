@@ -95,7 +95,7 @@ $requirements = array(
     ),
     array(
         'name' => 'PDO PostgreSQL extension',
-        'mandatory' => false,
+        'mandatory' => true,
         'condition' => extension_loaded('pdo_pgsql'),
         'by' => 'All DB-related classes',
         'memo' => 'Required for PostgreSQL database.',
