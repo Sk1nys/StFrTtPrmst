@@ -15,18 +15,44 @@
     grid-template-columns: repeat(6, 1fr);
 grid-template-rows: repeat(6, 1fr);
 grid-column-gap: 0px;
-grid-row-gap: 0px;
+grid-row-gap: 5px;
 }
 .slider{
     
-    border: 4px solid black;
+    border: 3px solid black;
     border-radius: 5px;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     grid-area: 1 / 3 / 5 / 7;
 }
 .description{
-    border: 4px solid black;
+    border: 3px solid black;
     border-radius: 5px;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     grid-area: 1 / 1 / 3 / 3; 
+}
+.bottom_block {
+    grid-area: 3 / 1 / 7 / 7; 
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.top_part {
+     grid-area: 1 / 1 / 5 / 3;
+    border-top: 3px solid #000000;
+    border-right: 3px solid #000000;
+    border-left: 3px solid #000000;
+}
+.bottom_part {
+     grid-area: 5 / 1 / 6 / 3;
+     border-bottom: 3px solid #000000;
+     border-left: 3px solid #000000;
+    }
+.right_part {
+     grid-area: 5 / 3 / 6 / 7;
+    border-top: 3px solid #000000;
+    border-right: 3px solid #000000;
+    border-bottom: 3px solid #000000;
 }

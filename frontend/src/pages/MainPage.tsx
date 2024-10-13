@@ -22,6 +22,11 @@ const MainPage = () => {
   <div className={styles.grid_container}>
   <MainPageSlider ClassName={styles.slider} />
   <div className={styles.description}>Описание</div>
+  <div className={styles.bottom_block}>
+<div className={styles.top_part}></div>
+<div className={styles.bottom_part}></div>
+<div className={styles.right_part}></div>
+  </div>
   </div>
 </div>
 
