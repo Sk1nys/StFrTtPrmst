@@ -3,9 +3,6 @@
 namespace app\controllers;
 
 use yii\rest\ActiveController;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 class PostController extends ActiveController
 {
     public $modelClass = 'app\models\Post'; // Ensure you have a Post model
@@ -18,7 +15,7 @@ class PostController extends ActiveController
         ];
         return $behaviors;
     }
-    
+
 }
 
 
