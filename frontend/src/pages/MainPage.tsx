@@ -21,7 +21,12 @@ const MainPage = () => {
 <div className={styles.main_container}>
   <div className={styles.grid_container}>
   <MainPageSlider ClassName={styles.slider} />
-  <div className={styles.description}>Описание</div>
+  <div className={styles.description}> 
+    <h1 className={styles.descriptionHead}>Кто мы?</h1>
+   <p className={styles.descriptionPar}>
+   Мы небольшая группа программистов, которая хочет облегчить и усовершенствовать представление о тестах.
+   Мы хотим чтобы проходить тесты было не скучно и их создание не занимало много времени.
+    </p> </div>
   <div className={styles.bottom_block}>
 <div className={styles.top_part}></div>
 <div className={styles.bottom_part}></div>
