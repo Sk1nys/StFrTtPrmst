@@ -49,7 +49,6 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-              
                 'POST app/post' => 'post/create',
                 'GET app/post' => 'post/index',
             ],
