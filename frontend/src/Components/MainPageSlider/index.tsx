@@ -11,7 +11,7 @@ import Path5 from '../../assets/Slider5.jpg';
 interface mainPageSliderProps{
   ClassName?:string;
 }
-const mainPageSlider: React.FC<mainPageSliderProps> = ({ClassName}) => {
+const MainPageSlider: React.FC<mainPageSliderProps> = ({ClassName}) => {
     const images = [
         {id: 1,src: Path1,alt: 'Image 1',},
         { id: 2, src: Path2, alt: 'Image 2',},
@@ -51,4 +51,4 @@ const mainPageSlider: React.FC<mainPageSliderProps> = ({ClassName}) => {
   )
 }
 
-export default mainPageSlider
+export default MainPageSlider
