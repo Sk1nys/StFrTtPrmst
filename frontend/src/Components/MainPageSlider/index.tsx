@@ -2,7 +2,7 @@
 import styles from './MainPageSlider.module.css'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
-import 'swiper/css';
+import  './swiper.css';
 import Path1 from '../../assets/Zslider.jpg';
 import Path2 from '../../assets/Zslider2.jpg';
 import Path3 from '../../assets/Slider3.jpg';

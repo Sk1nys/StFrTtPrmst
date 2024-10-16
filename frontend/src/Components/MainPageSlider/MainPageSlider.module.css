@@ -1,9 +1,19 @@
-.slider_container{
-    width: 90%;
-    height: 400px;
-    margin: 0 10%;
+.slider_container {
+    width: 94%;
+    height: auto; /* Allow height to adjust based on content */
+    margin: 0 auto; /* Center the slider */
 }
-.slider_slide>img{
-height: 400px;
-width: 100%;
+
+.slider_slide {
+    width: 100%; /* Make the slide take up full width of the container */
+    height: 100%;
+    user-select: none;
+    position: relative;
+}
+
+.slider_slide > img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }

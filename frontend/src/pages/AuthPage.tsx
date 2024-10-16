@@ -1,4 +1,4 @@
-import CurvedArrow from '../Components/CurvedArrow'
+import CurvedArrow from '../Components/Buttons/CurvedArrow'
 // import styles from './styles/AuthPage.module.css'
 
 const AuthPage = () => {
