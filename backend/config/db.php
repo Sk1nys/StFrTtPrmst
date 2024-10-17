@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'pgsql:host=postgresql;port=5432;dbname=test',
+    'dsn' => 'pgsql:host=postgresql;port=5432;dbname=testix',
     'username' => 'postgres',
     'password' => '12345',
     'charset' => 'utf8',
