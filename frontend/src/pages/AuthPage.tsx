@@ -1,9 +1,11 @@
 import InputAuth from '../Components/InputAuth'
 import styles from './styles/AuthPage.module.css'
-
 const AuthPage = () => {
   return (
-    <form className={styles.formAuth}>
+    
+    <div className={styles.formContainer}>
+      <h1>РЕГИСТРАЦИЯ</h1>
+    <form className={styles.formAuth} method='post'>
         {/* Имя */}
         <InputAuth></InputAuth>
         {/* Фамилия */}
@@ -16,8 +18,9 @@ const AuthPage = () => {
         <InputAuth></InputAuth>
         {/* Повтор пароля */}
         <InputAuth></InputAuth>
-        <input type="submit"/>
+        <input type="submit" className={styles.subb}/>
     </form>
+    </div>
   )
 }
 

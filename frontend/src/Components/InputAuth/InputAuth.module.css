@@ -1,4 +1,12 @@
 .InputAuth{
     width: 70%;
     height: 30px;
+    background-color: rgba(0, 0, 0, 0.37);
+    border:none;
+    border-radius: 10px;
+}
+.InputAuth:focus{
+    outline: none;
+    border-bottom: 3px solid rgb(231, 159, 51);
+    border-right: 3px solid rgb(231, 159, 51);
 }
