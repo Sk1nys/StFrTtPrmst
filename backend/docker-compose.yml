@@ -20,11 +20,12 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
-      POSTGRES_DB: test
+      POSTGRES_DB: testix
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
     volumes:
       - ./data:/var/lib/postgresql/data2
-      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+      # - ./sql/databaseTestix.sql:/docker-entrypoint-initdb.d/001.sql
+      - ./sql/tablesTestix.sql:/docker-entrypoint-initdb.d/002.sql
     ports:
       - 5432:5432 
     networks:
