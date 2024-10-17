@@ -1,4 +1,4 @@
-html{
+/* html{
     height: 100%;
 }
 body{
@@ -10,7 +10,7 @@ body{
 	background-size: 400% 400%;
 	animation: gradient 20s ease infinite;
 	transform: translate3d(0, 0, 0);
-}
+} */
 @keyframes gradient {
 	0% {
 		background-position: 0% 50%;
