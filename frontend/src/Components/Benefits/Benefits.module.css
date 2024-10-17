@@ -1,7 +1,15 @@
+.text{
+  text-align: center;
+  padding: 3% 0;
+  width: 100%;
+font-size: 30px;
+background-color: #9977FF;
+}
   .grid_container {
     padding-left: 15%;
     padding-right: 15%;
     margin-bottom: 10%;
+    padding-bottom: 3%;
     width: 70%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -9,44 +17,23 @@
     background-color: #9977FF;
   }
   
-  .grid_item {
+  .grid_item_left,.grid_item_right{
     margin: 0 auto;
     width: 90%;
     max-width: 420px;
     font-size: 18px;
     display: flex;
     align-items: center;
-    border-radius: 5px;
-  }
-  
-  .grid_item_left {
-    max-width: 420px;
-    font-size: 18px;
-    display: flex;
-    justify-self: start;
-    align-items: center;
+    justify-content: center;
     border-radius: 5px;
     font-weight: 300;
+
   }
-  
-  .grid_item_right {
-    max-width: 420px;
-    font-size: 18px;
-    font-weight: 300;
-  
-    display: flex;
-    justify-self: end !important;
-    align-items: center;
-    border-radius: 5px;
-  }
-  
   .img_four_end {
     width: 100%;
     height: 100%;
-    transform: translateY(20px);
     opacity: 0;
-  
-    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
   }
   
   .big_text_four_page,
@@ -55,14 +42,13 @@
     padding-bottom: 2%;
     font-size: 96px;
     opacity: 0;
-    transform: translateY(20px);
     transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    transform: translateY(20px);
   }
   
   .txt_four_page {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
   }
   
   .fadeIn {
@@ -70,7 +56,12 @@
     transform: translateX(0);
     border-radius: 5px;
   }
-  
+  .fadeIn.kartinka1{
+    transition:  outline-offset 1s cubic-bezier(0.8, 0, 1, 1), outline-color 1s cubic-bezier(0.8, 0, 1, 1), border-width 1s cubic-bezier(0.8, 0, 1, 1);
+    border: 3px solid black;
+    border-radius: 5px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  }
   .big_text_four_page2 {
     font-size: 96px;
     opacity: 0;
@@ -91,17 +82,17 @@
     justify-self: end;
   }
   .kartinka1 {
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 420px;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Скрыть части изображения, выходящие за пределы контейнера */
+    overflow: hidden;
     border-radius: 5px;
   }
   
   .img_four_end:hover {
-    transform: scale(1.05); /* Увеличение в 2 раза */
+    transform: scale(1.05);
   }
   @media screen and (max-width: 900px) {
     .grid_container{

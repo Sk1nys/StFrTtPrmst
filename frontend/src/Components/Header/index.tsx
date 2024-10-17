@@ -6,16 +6,16 @@ const Header = () => {
   return (
     <header className={styles.container_header}>
         <div className={styles.header}>
-        <Link to="/" className={styles.link}>
+        <Link to="/create" className={styles.link}>
         <ButtonSquish className={styles.header_button}>СОЗДАТЬ ТЕСТ</ButtonSquish>
         
         </Link>
-            <Link to="/" className={styles.link}>
+            <Link to="/list" className={styles.link}>
             <ButtonSquish className={styles.header_button}>СПИСОК ТЕСТОВ</ButtonSquish>
 
             </Link>
             <div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div>
-            <Link to="/" className={styles.link}>
+            <Link to="/proftest" className={styles.link}>
             <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish> 
             </Link>
            <Link to="/auth" className={styles.link}>

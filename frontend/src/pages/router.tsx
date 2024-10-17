@@ -4,6 +4,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import MainPage from "./MainPage";
 import AuthPage from './AuthPage'
+import CreatePage from "./CreatePage.tsx";
+import ListPage from "./ListPage.tsx";
+import ProfTestPage from "./ProfTestPage.tsx";
 
 const Router: FC = () => {
 
@@ -17,6 +20,21 @@ const Router: FC = () => {
       title: "AuthPage",
       path: "/auth",
       element: <AuthPage /> ,
+    },
+    {
+      title: "/CreatePage",
+      path: "/create",
+      element: <CreatePage /> ,
+    },
+    {
+      title: "/ListPage",
+      path: "/list",
+      element: <ListPage /> ,
+    },
+    {
+      title: "/ProfTestPage",
+      path: "/proftest",
+      element: <ProfTestPage /> ,
     },
   ];
 
