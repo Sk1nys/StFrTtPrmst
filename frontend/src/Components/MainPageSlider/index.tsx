@@ -23,7 +23,7 @@ const MainPageSlider: React.FC<mainPageSliderProps> = ({ClassName}) => {
     <>
     <div className={`${styles.slider_container} ${ClassName}`}>
     <Swiper
-      spaceBetween={50}
+      spaceBetween={0}
       slidesPerView={1}
       loop={true}
       grabCursor={true}
