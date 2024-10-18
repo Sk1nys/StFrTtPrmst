@@ -3,10 +3,12 @@ import Benefits from '../Components/Benefits';
 import Header from '../Components/Header'
 import MainPageSlider from '../Components/MainPageSlider'
 import styles from './styles/MainPage.module.scss'
-import React, { useRef } from 'react';
+import  { useRef, useState } from 'react';
 const MainPage = () => {
   const descriptionRef = useRef<HTMLDivElement | null>(null);
   const bottomBlockRef = useRef<HTMLDivElement | null>(null);
+  const [isDescriptionHovered, setIsDescriptionHovered] = useState(false);
+  const [isBottomBlockHovered, setIsBottomBlockHovered] = useState(false);
   const updateHeight = () => {
     const ScreenHeight = window.innerHeight;
     document.documentElement.style.setProperty(
@@ -23,6 +25,7 @@ const MainPage = () => {
       bottomBlockRef.current.style.transform = 'scale(0.9)';
       bottomBlockRef.current.style.opacity = '0.5';
     }
+    setIsDescriptionHovered(true);
   };
 
   const handleMouseLeaveDescription = () => {
@@ -31,6 +34,7 @@ const MainPage = () => {
       bottomBlockRef.current.style.transform = '';
       bottomBlockRef.current.style.opacity = '';
     }
+    setIsDescriptionHovered(false);
   };
 
   const handleMouseEnterBottomBlock = () => {
@@ -40,6 +44,7 @@ const MainPage = () => {
       descriptionRef.current.style.transform = 'scale(0.9)';
       descriptionRef.current.style.opacity = '0.5';
     }
+    setIsBottomBlockHovered(true);
   };
 
   const handleMouseLeaveBottomBlock = () => {
@@ -48,7 +53,9 @@ const MainPage = () => {
       descriptionRef.current.style.transform = '';
       descriptionRef.current.style.opacity = '';
     }
+    setIsBottomBlockHovered(false);
   };
+
   return (
     <>
 <Header/>
@@ -56,7 +63,7 @@ const MainPage = () => {
   <div className={styles.grid_container}>
   <MainPageSlider ClassName={styles.slider} />
   <div 
-  className={styles.description}
+  className={`${styles.description} ${isDescriptionHovered ? styles.expanded : ''}`}
    ref={descriptionRef}
    onMouseEnter={handleMouseEnterDescription}
    onMouseLeave={handleMouseLeaveDescription}> 
@@ -65,7 +72,7 @@ const MainPage = () => {
    Мы небольшая группа программистов, которая хочет облегчить и усовершенствовать представление о тестах.
    Мы хотим чтобы проходить тесты было не скучно и их создание не занимало много времени.
     </p> </div>
-  <div className={styles.bottom_block}
+  <div className={`${styles.bottom_block} ${isBottomBlockHovered ? styles.expanded : ''}`}
   ref={bottomBlockRef}
   onMouseEnter={handleMouseEnterBottomBlock}
   onMouseLeave={handleMouseLeaveBottomBlock}>
