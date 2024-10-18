@@ -8,7 +8,7 @@ background-color: #9977FF;
   .grid_container {
     padding-left: 15%;
     padding-right: 15%;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     padding-bottom: 3%;
     width: 70%;
     display: grid;
@@ -33,7 +33,7 @@ background-color: #9977FF;
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
   }
   
   .big_text_four_page,

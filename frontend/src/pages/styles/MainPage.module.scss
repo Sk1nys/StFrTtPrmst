@@ -35,7 +35,10 @@ margin-bottom: 5%;
     height: 95%;
     font-family: 'Montserrat', sans-serif;
     font-size:  calc(8px + 9 * (100vw / 1980));
+    transition: 0.5s;
+    overflow: hidden;
 }
+
 .descriptionHead,
 .BotBlockHead{
     width: 80%;
@@ -60,4 +63,7 @@ font-weight: 300;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     font-family: 'Montserrat', sans-serif;
     font-size:  calc(10px + 10 * (100vw / 1880));
+    transition: 0.5s;
+    overflow: hidden;
+
 }
