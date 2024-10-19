@@ -1,34 +1,39 @@
 <?php
 
 namespace app\controllers;
-
+use Yii;
 use app\models\Users;
+use yii\bootstrap5\ActiveForm;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\Cors;
+use yii\rest\ActiveController;
+use yii\web\Response;
+
 
 /**
  * UsersController implements the CRUD actions for Users model.
  */
-class UsersController extends Controller
+class UsersController extends ActiveController
 {
+    public $modelClass = 'app\models\Users';
     /**
      * @inheritDoc
      */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+    public function behaviors() {
+
+        return [
+            Cors::class,
+            'contentNegotiator' => [
+                'class' => \yii\filters\ContentNegotiator::class,
+                'formatParam' => '_format',
+                'formats' => [
+                    'application/json' => \yii\web\Response::FORMAT_JSON,
+                    'xml' => \yii\web\Response::FORMAT_XML
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
     /**
@@ -78,6 +83,11 @@ class UsersController extends Controller
     public function actionCreate()
     {
         $model = new Users();
+
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {

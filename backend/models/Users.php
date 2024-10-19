@@ -4,24 +4,14 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "users".
- *
- * @property int $id
- * @property string $name
- * @property string $surname
- * @property string $username
- * @property string $email
- * @property string $password
- * @property int $role_id
- *
- * @property Answers[] $answers
- * @property Results[] $results
- * @property Roles $role
- * @property Tests[] $tests
- */
+
+
+ 
+
+
 class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+
     /**
      * {@inheritdoc}
      */
@@ -76,17 +66,38 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['id', 'name', 'surname', 'username', 'email', 'password', 'role_id'], 'required'],
-            [['id', 'role_id'], 'default', 'value' => null],
+            [['name', 'surname', 'username', 'email', 'password',], 'required'],
+            [['name', 'surname'], 'match', 'pattern' => '/^[а-яёА-ЯЁ -]*$/u','message'=>'Разрешены только кириллица, пробел и тире'],
+
             [['id', 'role_id'], 'integer'],
             [['name', 'surname', 'username', 'email', 'password'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['username'], 'unique'],
+
+            ['username', 'match', 'pattern' => '/^[a-zA-Z0-9-]*$/i','message'=>'Разрешены только латиница, цифры и тире'],
+            [['email'], 'email','message'=>'Введите правильный email'],
+            ['password', 'string', 'min'=>6],
+
             [['id'], 'unique'],
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::class, 'targetAttribute' => ['role_id' => 'id']],
         ];
     }
+    public function register()
+    {
+         if (!$this->validate()) {
+             return null;
+         }
 
+        $user = new Users();
+        $user->name = $this->name;
+        $user->surname = $this->surname;
+        $user->username = $this->username;
+        $user->surnemailame = $this->email;
+        $user->password = md5($this->password);
+        $user->role_id = 1;
+
+        return $user->save() ? $user : null;
+    }
     /**
      * {@inheritdoc}
      */
