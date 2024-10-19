@@ -1,10 +1,10 @@
-<<<<<<< Updated upstream
+
 import React from 'react'
 
 const AuthPage = () => {
   return (
     <div>AuthPage</div>
-=======
+
 import React, { useEffect, useState } from 'react';
 import InputAuth from '../Components/InputAuth'
 import styles from './styles/AuthPage.module.css'
@@ -109,7 +109,12 @@ const AuthPage:React.FC = () => {
 
 
     
->>>>>>> Stashed changes
+
+import styles from './styles/AuthPage.module.css'
+const AuthPage = () => {
+  return (
+   null
+
   )
 }
 
