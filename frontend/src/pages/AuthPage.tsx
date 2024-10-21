@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './styles/AuthPage.module.css';
 
 interface FormData {
-  id: number;
+
   name: string;
   surname: string;
   username: string;
@@ -14,7 +14,7 @@ interface FormData {
 
 const AuthPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    id: 0,
+
     name: '',
     surname: '',
     username: '',
@@ -45,13 +45,7 @@ const AuthPage: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <input
-        type="number"
-        name="id"
-        value={formData.id}
-        onChange={handleChange}
-        placeholder="ID"
-      />
+
       <input
         type="text"
         name="name"
@@ -87,10 +81,21 @@ const AuthPage: React.FC = () => {
         onChange={handleChange}
         placeholder="Пароль"
       />
+      <label htmlFor="role_id">Ученик</label>
       <input
-        type="number"
+        id='role_id'
+        type="radio"
         name="role_id"
-        value={formData.role_id}
+        value={2}
+        onChange={handleChange}
+        placeholder="role_id"
+      />
+      <label htmlFor="role_id2">Преподаватель</label>
+      <input
+        type="radio"
+        id='role_id2'
+        name="role_id"
+        value={3}
         onChange={handleChange}
         placeholder="role_id"
       />
