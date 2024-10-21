@@ -6,7 +6,7 @@ CREATE TABLE public.roles (
 );
 
 CREATE TABLE public.users (
-	id int NOT NULL,
+	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
 	"name" varchar(255) NOT NULL,
 	surname varchar(255) NOT NULL,
 	username varchar(255) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE public.images (
 );
 
 CREATE TABLE public.tests (
-	id int NOT NULL,
+	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
 	"title" varchar(255) NOT NULL,
 	description varchar(255) NOT NULL,
 	subject varchar(255) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE public.tests (
 );
 
 CREATE TABLE public.questions (
-	id int NOT NULL,
+	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
 	test_id int NOT NULL,
 	"text" varchar(255) NOT NULL,
 	type varchar(255),
@@ -58,7 +58,7 @@ CREATE TABLE public.questions (
 );
 
 CREATE TABLE public.answers (
-	id int NOT NULL,
+	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
 	question_id int NOT NULL,
 	user_id int NOT NULL,
 	"answer" varchar(255) NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE public.answers (
 );
 
 CREATE TABLE public.results (
-	id int NOT NULL,
+	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
 	test_id int NOT NULL,
 	user_id int NOT NULL,
 	"count" int NOT NULL,

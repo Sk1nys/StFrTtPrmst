@@ -1,16 +1,9 @@
-
-import React from 'react'
-
-const AuthPage = () => {
-  return (
-    <div>AuthPage</div>
-
-import React, { useEffect, useState } from 'react';
-import InputAuth from '../Components/InputAuth'
-import styles from './styles/AuthPage.module.css'
+import React, { useState } from 'react';
 import axios from 'axios';
+import styles from './styles/AuthPage.module.css';
+
 interface FormData {
-  id: number;
+
   name: string;
   surname: string;
   username: string;
@@ -18,9 +11,10 @@ interface FormData {
   password: string;
   role_id: number;
 }
-const AuthPage:React.FC = () => {
+
+const AuthPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    id: 0,
+
     name: '',
     surname: '',
     username: '',
@@ -28,38 +22,30 @@ const AuthPage:React.FC = () => {
     password: '',
     role_id: 1,
   });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/users/create', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data', // Changed to application/json
         },
       });
       
       console.log('Success:', response.data);
     } catch (error) {
-      //console.error('Error:', error);
+      console.error('Error:', error);
     }
-    
-  };
-  console.log(JSON.stringify(formData));
+  };console.log(formData)
 
   return (
-    
-<form onSubmit={handleSubmit}>
-<input
-        type="text"
-        name="id"
-        value={formData.id}
-        onChange={handleChange}
-        placeholder="id"
-      />
+    <form onSubmit={handleSubmit} className={styles.form}>
+
       <input
         type="text"
         name="name"
@@ -95,27 +81,27 @@ const AuthPage:React.FC = () => {
         onChange={handleChange}
         placeholder="Пароль"
       />
+      <label htmlFor="role_id">Ученик</label>
       <input
-        type="text"
+        id='role_id'
+        type="radio"
         name="role_id"
-        value={formData.role_id}
+        value={2}
         onChange={handleChange}
         placeholder="role_id"
       />
-
-
-      <button type="submit">Зарегестрироваться</button>
+      <label htmlFor="role_id2">Преподаватель</label>
+      <input
+        type="radio"
+        id='role_id2'
+        name="role_id"
+        value={3}
+        onChange={handleChange}
+        placeholder="role_id"
+      />
+      <button type="submit">Зарегистрироваться</button>
     </form>
+  );
+};
 
-
-    
-
-import styles from './styles/AuthPage.module.css'
-const AuthPage = () => {
-  return (
-   null
-
-  )
-}
-
-export default AuthPage
+export default AuthPage;
