@@ -24,8 +24,9 @@ services:
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
     volumes:
       - ./data:/var/lib/postgresql/data2
-      # - ./sql/databaseTestix.sql:/docker-entrypoint-initdb.d/001.sql
-      - ./sql/tablesTestix.sql:/docker-entrypoint-initdb.d/002.sql
+      #- ./sql/drop.sql:/docker-entrypoint-initdb.d/001.sql
+      #- ./sql/databaseTestix.sql:/docker-entrypoint-initdb.d/002.sql
+      - ./sql/tablesTestix.sql:/docker-entrypoint-initdb.d/003.sql
     ports:
       - 5432:5432 
     networks:
