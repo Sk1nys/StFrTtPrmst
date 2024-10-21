@@ -14,11 +14,11 @@
     height: calc( var(--screen-height) - 125px);
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-grid-template-rows: repeat(6, 1fr);
-grid-column-gap: 0px;
-grid-row-gap: 5px;
-margin-bottom: 5%;
-transition: all 0.5s;
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 5px;
+    margin-bottom: 5%;
+    transition: all 0.5s ease;
 
 }
 .slider{
@@ -41,9 +41,9 @@ transition: all 0.5s;
     overflow: hidden;
 }
 .description.expanded {
-    grid-area: 1 / 1 / 7 / 3 !important; 
-    transition: all 0.5s ease-in-out;
-    height: 100%;
+    
+    transition: all 2s ease-in-out;
+    height: 302%;
   }
 .descriptionHead,
 .BotBlockHead{
@@ -69,12 +69,14 @@ font-weight: 300;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     font-family: 'Montserrat', sans-serif;
     font-size:  calc(10px + 10 * (100vw / 1880));
-    transition: 0.5s;
+    transition: all 0.5s ease;
     overflow: hidden;
 
 }
+    
 .bottom_block.expanded{
-    grid-area: 1 / 1 / 7 / 3 !important; 
+    
+    margin-top: -28.6vh;
     transition: grid-area 0.5s ease-in-out;
-
+    
 }
