@@ -44,6 +44,7 @@
     
     transition: all 2s ease-in-out;
     height: 302%;
+    z-index: 9;
   }
 .descriptionHead,
 .BotBlockHead{
@@ -76,7 +77,7 @@ font-weight: 300;
     
 .bottom_block.expanded{
     
-    margin-top: -28.6vh;
+    margin-top: -28vh;
     transition: grid-area 0.5s ease-in-out;
-    
+ z-index: 9;   
 }
