@@ -19,13 +19,13 @@ const MainPage = () => {
 
   updateHeight();
   const handleMouseEnterDescription = () => {
-    if (bottomBlockRef.current) {
+    if (!isBottomBlockHovered && bottomBlockRef.current) {
       bottomBlockRef.current.style.filter = 'blur(20px)';
       bottomBlockRef.current.style.transition = '0.5s ease-in-out';
       bottomBlockRef.current.style.transform = 'scale(0.9)';
       bottomBlockRef.current.style.opacity = '0.5';
-    }
     setIsDescriptionHovered(true);
+    }
   };
 
   const handleMouseLeaveDescription = () => {
@@ -38,13 +38,13 @@ const MainPage = () => {
   };
 
   const handleMouseEnterBottomBlock = () => {
-    if (descriptionRef.current) {
+    if (!isDescriptionHovered && descriptionRef.current) {
       descriptionRef.current.style.filter = 'blur(20px)';
       descriptionRef.current.style.transition = '0.5s ease-in-out';
       descriptionRef.current.style.transform = 'scale(0.9)';
       descriptionRef.current.style.opacity = '0.5';
-    }
     setIsBottomBlockHovered(true);
+    }
   };
 
   const handleMouseLeaveBottomBlock = () => {
