@@ -7,6 +7,7 @@ import AuthPage from './AuthPage'
 import CreatePage from "./CreatePage.tsx";
 import ListPage from "./ListPage.tsx";
 import ProfTestPage from "./ProfTestPage.tsx";
+import RegPage from "./RegPage.tsx";
 
 const Router: FC = () => {
 
@@ -35,6 +36,11 @@ const Router: FC = () => {
       title: "/ProfTestPage",
       path: "/proftest",
       element: <ProfTestPage /> ,
+    },
+    {
+      title: "/regPage",
+      path: "/reg",
+      element: <RegPage /> ,
     },
   ];
 
