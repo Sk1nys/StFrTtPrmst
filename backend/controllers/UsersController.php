@@ -5,6 +5,9 @@ use Yii;
 use app\models\Users;
 use yii\bootstrap5\ActiveForm;
 use yii\data\ActiveDataProvider;
+use yii\debug\models\search\User;
+use yii\filters\AccessControl;
+use yii\filters\auth\HttpBasicAuth;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\Cors;
@@ -21,19 +24,52 @@ class UsersController extends ActiveController
     /**
      * @inheritDoc
      */
-    public function behaviors() {
 
-        return [
-            Cors::class,
-            'contentNegotiator' => [
-                'class' => \yii\filters\ContentNegotiator::class,
-                'formatParam' => '_format',
-                'formats' => [
-                    'application/json' => \yii\web\Response::FORMAT_JSON,
-                    'xml' => \yii\web\Response::FORMAT_XML
+    public function init()
+    {
+        parent::init();
+        \Yii::$app->user->enableSession=false;
+    }
+
+    public function behaviors() 
+    {
+        $behaviors = parent::behaviors();
+        
+        $auth = $behaviors['authenticator'];
+        unset($behaviors['authenticator']);
+
+        $behaviors['cors'] = Cors::class;
+        $behaviors['contentNegotiator'] = [
+            'class' => \yii\filters\ContentNegotiator::class,
+            'formatParam' => '_format',
+            'formats' => [
+                'application/json' => \yii\web\Response::FORMAT_JSON,
+                'xml' => \yii\web\Response::FORMAT_XML,
+            ],
+        ];
+
+
+            //https://www.yiiframework.com/doc/guide/2.0/en/rest-controllers#cors
+            $behaviors['authenticator']=[
+            'class'=>HttpBasicAuth::class,
+            'auth'=>function($username,$password){
+                if($user=Users::find()->where(['username'=>$username])->one() and !empty($password) and $user->validatePassword($password)){
+                    return $user;
+                }
+                return null;
+            },
+        ];
+        $behaviors['access']=[
+            'class'=>AccessControl::class,
+            'rules'=>[
+                [
+                    'allow'=>true,
+                    'roles'=>['@'],
                 ],
             ],
         ];
+$behaviors['authenticator']['except'] = ['options'];
+        return $behaviors;
     }
 
     /**
