@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import styles from './styles/AuthPage.module.css';
-
+import styles from './styles/AuthPage.module.scss';
+import { Link } from "react-router-dom";
 interface FormData {
 
   name: string;
@@ -44,7 +44,11 @@ const AuthPage: React.FC = () => {
   };console.log(formData)
 
   return (
+    
     <div className={styles.formContainer}>
+      <Link to ="/home" className={styles.backBtnlink}>
+      <div className={styles.butnSub}>
+      <button className={styles.sub}>НАЗАД</button></div></Link>
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.formBox}>
       <input
@@ -110,7 +114,7 @@ const AuthPage: React.FC = () => {
       <div className={styles.FormShadows}></div>
       </div>
       <div className={styles.rad}>
-      <label htmlFor="role_id">Ученик</label>
+      
       <input
       className={styles.rad1}
         id='role_id'
@@ -120,7 +124,8 @@ const AuthPage: React.FC = () => {
         onChange={handleChange}
         placeholder="role_id"
       />
-      <label htmlFor="role_id2">Преподаватель</label>
+      <label htmlFor="role_id" className={styles.radlab}>Ученик</label>
+      
       <input
       className={styles.rad1}
         type="radio"
@@ -130,6 +135,7 @@ const AuthPage: React.FC = () => {
         onChange={handleChange}
         placeholder="role_id"
       />
+      <label htmlFor="role_id2" className={styles.radlab}>Преподаватель</label>
       </div>
       <div className={styles.butnSub}>
       <button type="submit" className={styles.sub}>Зарегистрироваться</button></div>
