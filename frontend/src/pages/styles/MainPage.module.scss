@@ -8,17 +8,18 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    overflow-y: hidden;
 }
 .grid_container{
     width: 100%;
     height: calc( var(--screen-height) - 125px);
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-grid-template-rows: repeat(6, 1fr);
-grid-column-gap: 0px;
-grid-row-gap: 5px;
-margin-bottom: 5%;
-transition: all 0.5s;
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 5px;
+    margin-bottom: 5%;
+    transition: all 0.5s ease;
 
 }
 .slider{
@@ -41,9 +42,10 @@ transition: all 0.5s;
     overflow: hidden;
 }
 .description.expanded {
-    grid-area: 1 / 1 / 7 / 3 !important; 
-    transition: all 0.5s ease-in-out;
-    height: 100%;
+    
+    transition: all 2s ease-in-out;
+    height: 302%;
+    z-index: 9;
   }
 .descriptionHead,
 .BotBlockHead{
@@ -69,12 +71,50 @@ font-weight: 300;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     font-family: 'Montserrat', sans-serif;
     font-size:  calc(10px + 10 * (100vw / 1880));
-    transition: 0.5s;
+    transition: all 0.5s ease;
     overflow: hidden;
 
 }
+    
 .bottom_block.expanded{
-    grid-area: 1 / 1 / 7 / 3 !important; 
+    
+    margin-top: -28vh;
     transition: grid-area 0.5s ease-in-out;
+ z-index: 9;   
+}
+
+.scroll_container {
+    position: relative;
+width: 100%;
+margin-bottom: 5%;
 
 }
+.dashed_line, .dashed_line_end {
+    width: 100%;
+    height: 2px;
+    border-top: 2px dashed black;
+    position: absolute;
+  }
+  .dashed_line{
+    top: 0;
+  }
+  .dashed_line_end{
+    bottom: 0;
+  }
+  .scissors, .scissorsEnd {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    transform: translateX(0);
+    transition: transform 0.2s ease-out;
+  }
+  .scissors{
+    top: -25px;
+    left: 0;
+
+  }
+  .scissorsEnd{
+    bottom: -25px;
+    right: 0;
+    transform: scaleX(-1);
+  }
