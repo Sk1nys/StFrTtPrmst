@@ -5,14 +5,25 @@
    
     --normal-font-size: .938rem;
     --tiny-font-size: .563rem;
+  
   }
+  $text-color: #FFFFFF;
+$radio-btn-border: #FFFFFF;
+$radio-btn-circle: #FFFFFF;
+  $radio-btn-width:25px;
+  $radio-btn-height:25px;
   
-  
+  // mixin for radio button
+  @mixin radio-wh($w:$radio-btn-width, $h:$radio-btn-height){
+    width:$w;
+    height:$h;
+  }
   @media screen and (min-width: 968px) {
     :root {
       --normal-font-size: 1rem;
     }
   }
+  
 .formContainer{
     display: flex;
     flex-direction: column;
@@ -45,7 +56,7 @@
     display: grid;
     place-items: center;
   row-gap: 1.5rem;
-  width: 60%;
+  width:  60wh;
 }
 .inputFild, 
 .labelForm{
@@ -136,15 +147,68 @@
     transition: .3s;
   }
   .rad{
-    width: 20%;
+    width: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: "Moderustic", sans-serif
   }
   .rad1{
-    margin:10px 
+    margin-left:20px;
   }
+  .rad1[type="radio"]:checked + label::before{
+    animation: flipRadioCir .3s linear forwards;
+}
+input[type='radio']{
+  opacity:0;
+}
+.radlab{
+  color: #fff;
+  margin-right: 20px;
+  position: relative;
+  left:25px;
+  &:before{
+    content:'';
+    position: absolute;
+    top: 0px;
+    left: -40px;
+    @include radio-wh();
+    border-radius:50%;
+    border:2px solid $radio-btn-border;
+  }
+  &:after{
+    content:'';
+    position:absolute;
+    top: 5px;
+    left: -35px;
+    @include radio-wh(15px, 15px);
+    border-radius:50%;
+    background:$radio-btn-circle;
+    transition: all;
+    opacity:0;
+  }
+}
+.backBtnlink{
+  position: absolute;
+  top:0;
+  left: 0;
+  margin: 30px;
+}
+.backBtnlink>.butnSub>.sub{
+  background-color: #FFFFFF;
+  color: #000;
+}
+@keyframes flipRadioCir{
+  from{
+    transform: rotateY(0deg);
+  } 
+  to{
+    background:white;
+    transform: rotateY(180deg);
+  }
+}
+
+
   @keyframes input-animation {
     0% {
       transform: translate(0);
