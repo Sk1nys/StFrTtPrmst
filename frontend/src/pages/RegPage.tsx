@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './styles/AuthPage.module.scss';
 
+
 interface FormData {
 
 
@@ -25,11 +26,12 @@ const AuthPage: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(formData)
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/users', formData, {
+      const response = await axios.post('http://localhost:8000/auth/login', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Changed to application/json
+          'Content-Type': 'multipart/form-data', 
         },
       });
       
@@ -38,7 +40,7 @@ const AuthPage: React.FC = () => {
       console.error('Error:', error);
     }
   };
-  //console.log(formData)
+  
 
   return (
     <div className={styles.formContainer}>
