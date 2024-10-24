@@ -6,6 +6,7 @@ import styles from './styles/MainPage.module.scss'
 import  { useRef, useEffect, useState } from 'react';
 import scissors from '../assets/scissors.svg';
 const MainPage = () => {
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const descriptionRef = useRef<HTMLDivElement | null>(null);
   const bottomBlockRef = useRef<HTMLDivElement | null>(null);
   const [isDescriptionHovered, setIsDescriptionHovered] = useState(false);
@@ -99,9 +100,23 @@ const MainPage = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [lineWidth]);
+
+  const toggleBurger = () => {
+    setIsBurgerOpen((prevIsBurgerOpen) => !prevIsBurgerOpen);
+  };
   return (
     <>
-<Header/>
+     <div
+              className={`${styles.burger} ${
+                isBurgerOpen ? styles.burgerClosed : ""
+              }`}
+              onClick={toggleBurger}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+<Header isBurgerOpen={isBurgerOpen}/>
 <main className={styles.main_container}>
   <div className={styles.grid_container}>
   <MainPageSlider ClassName={styles.slider} />
