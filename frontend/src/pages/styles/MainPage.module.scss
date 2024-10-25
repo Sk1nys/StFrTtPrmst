@@ -166,3 +166,8 @@ margin-bottom: 5%;
       display: none;
     }
   }
+  @media screen and (max-width:1150px) {
+    .grid_container{
+      margin-top: 5%;
+    }
+  }
