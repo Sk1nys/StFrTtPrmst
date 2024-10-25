@@ -1,6 +1,8 @@
 <?php
 
 namespace app\controllers;
+
+use app\models\LoginForm;
 use Yii;
 use app\models\Users;
 use yii\bootstrap5\ActiveForm;
@@ -36,49 +38,25 @@ class AuthController extends ActiveController
     {
         $behaviors = parent::behaviors();
         
-        $auth = $behaviors['authenticator'];
-        unset($behaviors['authenticator']);
 
         $behaviors['cors'] = Cors::class;
         $behaviors['contentNegotiator'] = [
             'class' => \yii\filters\ContentNegotiator::class,
             'formatParam' => '_format',
-            'formats' => [
-                'application/json' => \yii\web\Response::FORMAT_JSON,
-                'xml' => \yii\web\Response::FORMAT_XML,
-            ],
+             'formats' => [
+                 //'application/json' => \yii\web\Response::FORMAT_JSON,
+                 //'xml' => \yii\web\Response::FORMAT_XML,
+             ],
         ];
 
 
-        $behaviors['authenticator'] = $auth;
-            $behaviors['authenticator']=[
-            'class'=>HttpBasicAuth::class,
-            'auth'=>function($username,$password){
-                if($user=Users::find()->where(['username'=>$username])->one() and !empty($password) and $user->validatePassword($password)){
-                    return $user;
-                }
-                return null;
-            },
-        ];
-        $behaviors['access']=[
-            'class'=>AccessControl::class,
-            'rules'=>[
-                [
-                    'allow'=>true,
-                    'roles'=>['@'],
-                ],
-            ],
-        ];
-
-        $behaviors['authenticator']['except'] = ['options'];
+       
         return $behaviors;
     }
 
-    /**
-     * Lists all Users models.
-     *
-     * @return string
-     */
+    
+
+
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -99,61 +77,28 @@ class AuthController extends ActiveController
             'dataProvider' => $dataProvider,
         ]);
     }
+
     public function actionLogin()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = new LoginForm();
 
-        $request = Yii::$app->request->post();
-        $request = Yii::$app->request->post(); // для обычной формы
-
-        $username = $request['username'] ?? null;
-        $password = $request['password'] ?? null;
-
-        if ($username && $password) {
-            $user = Users::findOne(['username' => $username]);
-
-            if ($user && Yii::$app->security->validatePassword($password, $user->password_hash)) {
-                // Успешная авторизация
-                return [
-                    'status' => 'success',
-                    'message' => 'Login successful',
-                    'user' => [
-                        'id' => $user->id,
-                        'username' => $user->username,
-                    ],
-                ];
-            } else {
-                // Неверные учетные данные
-                return [
-                    'status' => 'error',
-                    'message' => 'Invalid username or password',
-                ];
-            }
-        } else {
-            return [
-                'status' => 'error',
-                'message' => 'Username and password are required',
-            ];
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            //return $this->redirect(['site/index']); // перенаправление после успешного входа
         }
+
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
+
+
     public function actionLogout()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        if (Yii::$app->user->isGuest) {
-            return [
-                'success' => false,
-                'message' => 'You are not logged in.',
-            ];
-        }
-
         Yii::$app->user->logout();
-
-        return [
-            'success' => true,
-            'message' => 'Logout successful',
-        ];
+        return $this->redirect(['site/index']);
     }
+
+    
     public function attributeLabels()
     {
         return [

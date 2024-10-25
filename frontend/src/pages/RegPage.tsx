@@ -32,11 +32,19 @@ const AuthPage: React.FC = () => {
       const response = await axios.post('http://localhost:8000/auth/login', formData, {
         headers: {
           'Content-Type': 'multipart/form-data', 
+
+          credentials: 'include',
         },
+
+ 
       });
-      
+      if (response.status === 200) {
+        console.log('успех')
+        //window.location.href = 'home'; // Перенаправление
+    }
       console.log('Success:', response.data);
     } catch (error) {
+      alert('Ошибка входа');
       console.error('Error:', error);
     }
   };

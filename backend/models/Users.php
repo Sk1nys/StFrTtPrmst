@@ -25,12 +25,6 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return static::findOne($id);
     }
 
-    /**
-     * Finds an identity by the given token.
-     *
-     * @param string $token the token to be looked for
-     * @return IdentityInterface|null the identity object that matches the given token.
-     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return null;
@@ -52,10 +46,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return null;
     }
 
-    /**
-     * @param string $authKey
-     * @return bool|null if auth key is valid for current user
-     */
+
     public function validateAuthKey($authKey)
     {
         return false;
@@ -82,22 +73,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Roles::class, 'targetAttribute' => ['role_id' => 'id']],
         ];
     }
-    public function register()
-    {
-         if (!$this->validate()) {
-             return null;
-         }
 
-        $user = new Users();
-        $user->name = $this->name;
-        $user->surname = $this->surname;
-        $user->username = $this->username;
-        $user->surnemailame = $this->email;
-        $user->password = md5($this->password);
-        $user->role_id = 1;
-
-        return $user->save() ? $user : null;
-    }
     /**
      * {@inheritdoc}
      */
@@ -155,8 +131,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
     public static function findByUsername($username)
     {
-
-        return Users::findOne(['username' => $username]);;
+        return Users::findOne(['username' => $username]);
     }
     public function validatePassword($password)
     {
@@ -166,5 +141,9 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         $this->password = md5($this->password);
         return parent::beforeSave($insert);
+    }
+    public function hashPassword($password)
+    {
+        return Yii::$app->security->generatePasswordHash($password);
     }
 }
