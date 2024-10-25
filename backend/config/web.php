@@ -19,13 +19,21 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'qwe',
             'baseUrl'=>'',
+            'parsers'=>[
+                'application/json'=>'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Users',
             'enableAutoLogin' => true,
+            'enableSession' => false
+        ],
+        'session' => [
+        'class' => 'yii\web\Session',
+        'timeout' => 1440, // Session timeout in minutes
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -55,6 +63,7 @@ $config = [
             'rules' => [
                 'class'=>'yii\rest\UrlRule',
                 'controller'=>'users',
+                'controller'=>'auth',
                 
 
             ],
@@ -65,7 +74,7 @@ $config = [
             'Origin' => ['*'], // Allow your frontend origin
             'Access-Control-Allow-Credentials' => true,
             'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-            'Access-Control-Request-Headers' => ['X-Requested-With', 'Content-Type'],
+            'Access-Control-Request-Headers' => ['X-Requested-With', 'Content-Type', 'Authorization'],
         ],
         
     ],

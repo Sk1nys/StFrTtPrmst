@@ -35,8 +35,6 @@ class UsersController extends ActiveController
     {
         $behaviors = parent::behaviors();
         
-        $auth = $behaviors['authenticator'];
-        unset($behaviors['authenticator']);
 
         $behaviors['cors'] = Cors::class;
         $behaviors['contentNegotiator'] = [
@@ -49,26 +47,7 @@ class UsersController extends ActiveController
         ];
 
 
-            //https://www.yiiframework.com/doc/guide/2.0/en/rest-controllers#cors
-            $behaviors['authenticator']=[
-            'class'=>HttpBasicAuth::class,
-            'auth'=>function($username,$password){
-                if($user=Users::find()->where(['username'=>$username])->one() and !empty($password) and $user->validatePassword($password)){
-                    return $user;
-                }
-                return null;
-            },
-        ];
-        $behaviors['access']=[
-            'class'=>AccessControl::class,
-            'rules'=>[
-                [
-                    'allow'=>true,
-                    'roles'=>['@'],
-                ],
-            ],
-        ];
-$behaviors['authenticator']['except'] = ['options'];
+       
         return $behaviors;
     }
 
@@ -129,7 +108,8 @@ $behaviors['authenticator']['except'] = ['options'];
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-        } else {
+        } 
+        else {
             $model->loadDefaultValues();
         }
 
