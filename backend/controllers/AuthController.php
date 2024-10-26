@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\LoginForm;
 use Yii;
 use app\models\Users;
+use Symfony\Component\BrowserKit\Cookie;
 use yii\bootstrap5\ActiveForm;
 use yii\data\ActiveDataProvider;
 use yii\debug\models\search\User;
@@ -15,6 +16,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\Cors;
 use yii\rest\ActiveController;
+use yii\web\BadRequestHttpException;
+use yii\web\Cookie as WebCookie;
 use yii\web\Response;
 
 
@@ -80,22 +83,38 @@ class AuthController extends ActiveController
 
     public function actionLogin()
     {
-        $model = new LoginForm();
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $username = $request->post('username');
+            $password = $request->post('password');
+            $user = Users::findOne(['username' => $username]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            //return $this->redirect(['site/index']); // перенаправление после успешного входа
+            if ($user && Yii::$app->security->validatePassword($password, $user->hashPassword($password))) {
+                Yii::$app->user->login($user);
+                $cookie = new \yii\web\Cookie([
+                    'name' => 'username',
+                    'value' => $username,
+                    'expire' => time() + 86400 * 30,
+                ]);
+                $response=Yii::$app->response;
+                $response->cookies->add($cookie);
+                return $this->asJson(['status' => 'success']);
+
+            }
+
+            return $this->asJson(['status' => 'error', 'message' => 'Invalid credentials']);
         }
 
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        throw new BadRequestHttpException('Invalid request');
     }
 
 
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        return $this->redirect(['site/index']);
+        // Clear the username cookie
+        Yii::$app->response->cookies->remove('username');
+        return $this->asJson(['status' => 'success']);
     }
 
     
