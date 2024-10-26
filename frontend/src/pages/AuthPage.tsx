@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './styles/AuthPage.module.scss';
-
+import { Link } from "react-router-dom";
 
 interface FormData {
 
@@ -53,9 +53,11 @@ const AuthPage: React.FC = () => {
 
   return (
     <div className={styles.formContainer}>
+      <Link to ="/home" className={styles.backBtnlink}>
+      <div className={styles.butnSub}>
+      <button className={styles.sub}>НА ГЛАВНУЮ</button></div></Link>
     <form onSubmit={handleSubmit} className={styles.form}>
-
-
+    <h1>АВТОРИЗАЦИЯ</h1>
       <div className={styles.formBox}>
       <input  
        className={styles.inputFild}
@@ -86,6 +88,7 @@ const AuthPage: React.FC = () => {
       
       <div className={styles.butnSub}>
       <button type="submit" className={styles.sub}>Войти</button></div>
+      <Link to="/reg" className={styles.RegAuth}>ЗАРЕГИСТРИРОВАТЬСЯ</Link>
     </form>
     </div>
   );
