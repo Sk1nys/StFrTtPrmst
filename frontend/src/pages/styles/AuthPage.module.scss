@@ -57,6 +57,11 @@ $radio-btn-circle: #FFFFFF;
     place-items: center;
   row-gap: 1.5rem;
   width:  60wh;
+  padding: 30px;
+  padding-right: 45px;
+  background-color: #00000041;
+  border: 1px solid black;
+  border-radius: 20px;
 }
 .inputFild, 
 .labelForm{
@@ -81,7 +86,12 @@ $radio-btn-circle: #FFFFFF;
     background-color: black;
     border-radius: 10px;
   }
-  
+  .form>h1{
+    font-family: "Varela Round", sans-serif;
+    color: #00000000;
+    padding-left: 15px;
+    -webkit-text-stroke: 1px #ffffff;
+  }
   .inputFild {
     position: absolute;
     border: 2.5px solid var(--black-color);
@@ -91,7 +101,12 @@ $radio-btn-circle: #FFFFFF;
     z-index: 10;
     transition: transform .3s;
   }
-  
+  .ARG{
+    font-family: "Varela Round", sans-serif;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.7vh;
+  }
   .inputFild::placeholder {
     transition: opacity .5s;
   }

@@ -56,6 +56,34 @@ const AuthPage: React.FC = () => {
     <form onSubmit={handleSubmit} className={styles.form}>
 
 
+
+
+      <h1>РЕГИСТРАЦИЯ</h1>
+      <div className={styles.formBox}>
+      <input
+        className={styles.inputFild}
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="Имя"
+      />
+      <label htmlFor="name" className={styles.labelForm}>ИМЯ</label>
+      <div className={styles.FormShadows}></div>
+      </div>
+      <div className={styles.formBox}>
+      <input  
+       className={styles.inputFild}
+        type="text"
+        name="surname"
+        value={formData.surname}
+        onChange={handleChange}
+        placeholder="Фамилия"
+      />
+      <label htmlFor="name" className={styles.labelForm}>ФАМИЛИЯ</label>
+      <div className={styles.FormShadows}></div>
+      </div>
+
       <div className={styles.formBox}>
       <input  
        className={styles.inputFild}
@@ -85,7 +113,12 @@ const AuthPage: React.FC = () => {
       </div>
       
       <div className={styles.butnSub}>
+
       <button type="submit" className={styles.sub}>Войти</button></div>
+
+      <button type="submit" className={styles.sub}>Зарегистрироваться</button></div>
+      <Link to="/regPage" className={styles.ARG}>Войти</Link>
+ main
     </form>
     </div>
   );

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './styles/AuthPage.module.scss';
+
 import { Link } from "react-router-dom";
+
 interface FormData {
 
   name: string;
