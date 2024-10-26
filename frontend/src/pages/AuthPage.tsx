@@ -1,55 +1,63 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './styles/AuthPage.module.scss';
-import { Link } from "react-router-dom";
+
+
 interface FormData {
 
-  name: string;
-  surname: string;
+
   username: string;
-  email: string;
   password: string;
-  role_id: number;
+
 }
 
 const AuthPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
 
-    name: '',
-    surname: '',
+
     username: '',
-    email: '',
     password: '',
-    role_id: 1,
+
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(formData)
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/users/create', formData, {
+      const response = await axios.post('http://localhost:8000/auth/login', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Changed to application/json
+          'Content-Type': 'multipart/form-data', 
+
+          credentials: 'include',
         },
+
+ 
       });
-      
+      if (response.status === 200) {
+        console.log('успех')
+        //window.location.href = 'home'; // Перенаправление
+    }
       console.log('Success:', response.data);
     } catch (error) {
+      alert('Ошибка входа');
       console.error('Error:', error);
     }
-  };console.log(formData)
+  };
+  
 
   return (
-    
     <div className={styles.formContainer}>
-      <Link to ="/home" className={styles.backBtnlink}>
-      <div className={styles.butnSub}>
-      <button className={styles.sub}>НАЗАД</button></div></Link>
     <form onSubmit={handleSubmit} className={styles.form}>
+
+
+
+
       <h1>РЕГИСТРАЦИЯ</h1>
       <div className={styles.formBox}>
       <input
@@ -75,6 +83,7 @@ const AuthPage: React.FC = () => {
       <label htmlFor="name" className={styles.labelForm}>ФАМИЛИЯ</label>
       <div className={styles.FormShadows}></div>
       </div>
+
       <div className={styles.formBox}>
       <input  
        className={styles.inputFild}
@@ -88,19 +97,7 @@ const AuthPage: React.FC = () => {
       <label htmlFor="name" className={styles.labelForm}>ИМЯ ПОЛЬЗОВАТЕЛЯ</label>
       <div className={styles.FormShadows}></div>
       </div>
-      <div className={styles.formBox}>
-      <input  
-       className={styles.inputFild}
-        
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="Email"
-      />
-      <label htmlFor="name" className={styles.labelForm}>EMAIL</label>
-      <div className={styles.FormShadows}></div>
-      </div>
+
       <div className={styles.formBox}>
       <input  
        className={styles.inputFild}
@@ -114,33 +111,14 @@ const AuthPage: React.FC = () => {
       <label htmlFor="name" className={styles.labelForm}>ПАРОЛЬ</label>
       <div className={styles.FormShadows}></div>
       </div>
-      <div className={styles.rad}>
       
-      <input
-      className={styles.rad1}
-        id='role_id'
-        type="radio"
-        name="role_id"
-        value={2}
-        onChange={handleChange}
-        placeholder="role_id"
-      />
-      <label htmlFor="role_id" className={styles.radlab}>Ученик</label>
-      
-      <input
-      className={styles.rad1}
-        type="radio"
-        id='role_id2'
-        name="role_id"
-        value={3}
-        onChange={handleChange}
-        placeholder="role_id"
-      />
-      <label htmlFor="role_id2" className={styles.radlab}>Преподаватель</label>
-      </div>
       <div className={styles.butnSub}>
+
+      <button type="submit" className={styles.sub}>Войти</button></div>
+
       <button type="submit" className={styles.sub}>Зарегистрироваться</button></div>
       <Link to="/regPage" className={styles.ARG}>Войти</Link>
+ main
     </form>
     </div>
   );
