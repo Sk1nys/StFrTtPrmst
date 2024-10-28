@@ -16,7 +16,6 @@ const Header:  React.FC<HeaderProps> = ({ isBurgerOpen }) => {
     }
     }
   },[])
-    
   return (
     <header className={`${styles.container_header} ${
       isBurgerOpen ? styles.headerOpen : styles.headerClosed
@@ -30,7 +29,9 @@ const Header:  React.FC<HeaderProps> = ({ isBurgerOpen }) => {
             {isBurger? <ButtonAroundBorder children='Список тестов'/> :    <ButtonSquish className={styles.header_button}>СПИСОК ТЕСТОВ</ButtonSquish>}
 
             </Link>
-            <div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div>
+            {isBurger? <div className={styles.logocon}></div>: null}
+             <div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div> 
+            
             <Link to="/proftest" className={styles.link}>
             {isBurger? <ButtonAroundBorder children='Наш тест'/> :     <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish> }
             </Link>
