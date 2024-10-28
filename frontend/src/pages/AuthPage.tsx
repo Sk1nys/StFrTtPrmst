@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './styles/AuthPage.module.scss';
-
+import { Link } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 interface FormData {
 
@@ -13,13 +14,14 @@ interface FormData {
 
 const AuthPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
+    
 
 
     username: '',
     password: '',
 
   });
-
+  const [cookies, setCookie] = useCookies(['username']);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -40,8 +42,9 @@ const AuthPage: React.FC = () => {
  
       });
       if (response.status === 200) {
+        setCookie('username', response.data.token, { path: '/' });
         console.log('успех')
-        //window.location.href = 'home'; // Перенаправление
+        window.location.href = 'home'; // Перенаправление
     }
       console.log('Success:', response.data);
     } catch (error) {
@@ -53,37 +56,11 @@ const AuthPage: React.FC = () => {
 
   return (
     <div className={styles.formContainer}>
+      <Link to ="/home" className={styles.backBtnlink}>
+      <div className={styles.butnSub}>
+      <button className={styles.sub}>НА ГЛАВНУЮ</button></div></Link>
     <form onSubmit={handleSubmit} className={styles.form}>
-
-
-
-
-      <h1>РЕГИСТРАЦИЯ</h1>
-      <div className={styles.formBox}>
-      <input
-        className={styles.inputFild}
-        type="text"
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        placeholder="Имя"
-      />
-      <label htmlFor="name" className={styles.labelForm}>ИМЯ</label>
-      <div className={styles.FormShadows}></div>
-      </div>
-      <div className={styles.formBox}>
-      <input  
-       className={styles.inputFild}
-        type="text"
-        name="surname"
-        value={formData.surname}
-        onChange={handleChange}
-        placeholder="Фамилия"
-      />
-      <label htmlFor="name" className={styles.labelForm}>ФАМИЛИЯ</label>
-      <div className={styles.FormShadows}></div>
-      </div>
-
+    <h1>АВТОРИЗАЦИЯ</h1>
       <div className={styles.formBox}>
       <input  
        className={styles.inputFild}
@@ -113,12 +90,8 @@ const AuthPage: React.FC = () => {
       </div>
       
       <div className={styles.butnSub}>
-
       <button type="submit" className={styles.sub}>Войти</button></div>
-
-      <button type="submit" className={styles.sub}>Зарегистрироваться</button></div>
-      <Link to="/regPage" className={styles.ARG}>Войти</Link>
- main
+      <Link to="/reg" className={styles.RegAuth}>ЗАРЕГИСТРИРОВАТЬСЯ</Link>
     </form>
     </div>
   );
