@@ -51,8 +51,9 @@ const Router: FC = () => {
           path="/"
           element={<Navigate to={"/home"} />}
         />
-
-        {routeConfig.map((route) => (
+           
+        {
+        routeConfig.map((route) => (
           <Route key={route.path} path={route.path} element={route.element} />
         ))}
       </Routes>
