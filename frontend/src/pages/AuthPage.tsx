@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './styles/AuthPage.module.scss';
 import { Link } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 interface FormData {
 
@@ -13,13 +14,14 @@ interface FormData {
 
 const AuthPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
+    
 
 
     username: '',
     password: '',
 
   });
-
+  const [cookies, setCookie] = useCookies(['username']);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -40,8 +42,9 @@ const AuthPage: React.FC = () => {
  
       });
       if (response.status === 200) {
+        setCookie('username', response.data.token, { path: '/' });
         console.log('успех')
-        //window.location.href = 'home'; // Перенаправление
+        window.location.href = 'home'; // Перенаправление
     }
       console.log('Success:', response.data);
     } catch (error) {
