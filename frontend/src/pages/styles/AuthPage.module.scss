@@ -55,13 +55,18 @@ $radio-btn-circle: #FFFFFF;
 .form{
     display: grid;
     place-items: center;
+    width: 40vh;
   row-gap: 1.5rem;
-  width:  60wh;
   padding: 30px;
   padding-right: 45px;
   background-color: #00000041;
   border: 1px solid black;
   border-radius: 20px;
+}
+.form>h1{
+  color: none;
+  font-family: 'Montserrat', sans-serif;
+  -webkit-text-stroke: 1px solid white ;
 }
 .inputFild, 
 .labelForm{
@@ -213,6 +218,19 @@ input[type='radio']{
   background-color: #FFFFFF;
   color: #000;
 }
+.RegAuth{
+  text-decoration: none;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  padding-left:10px;
+  transition: all 0.5s ease-in-out;
+  
+}
+.RegAuth:hover{
+  color: #3b5523;
+  scale: 1.1;
+  font-weight: 1000;
+}
 @keyframes flipRadioCir{
   from{
     transform: rotateY(0deg);
@@ -235,5 +253,8 @@ input[type='radio']{
       transform: translate(-7px, -7px);
     }
   }
-
+//Адаптив
+// @media (max-width:500px) {
+      
+// }
 

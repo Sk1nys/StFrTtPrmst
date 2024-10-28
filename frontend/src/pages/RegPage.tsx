@@ -50,8 +50,9 @@ const AuthPage: React.FC = () => {
     <div className={styles.formContainer}>
       <Link to ="/home" className={styles.backBtnlink}>
       <div className={styles.butnSub}>
-      <button className={styles.sub}>НАЗАД</button></div></Link>
+      <button className={styles.sub}>НА ГЛАВНУЮ</button></div></Link>
     <form onSubmit={handleSubmit} className={styles.form}>
+      <h1>РЕГИСТРАЦИЯ</h1>
       <div className={styles.formBox}>
       <input
         className={styles.inputFild}
@@ -141,6 +142,7 @@ const AuthPage: React.FC = () => {
       </div>
       <div className={styles.butnSub}>
       <button type="submit" className={styles.sub}>Зарегистрироваться</button></div>
+      <Link to="/auth" className={styles.RegAuth}>ВОЙТИ</Link>
     </form>
     </div>
   );
