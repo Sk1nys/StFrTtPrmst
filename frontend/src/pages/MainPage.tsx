@@ -5,6 +5,7 @@ import MainPageSlider from '../Components/MainPageSlider'
 import styles from './styles/MainPage.module.scss'
 import  { useRef, useEffect, useState } from 'react';
 import scissors from '../assets/scissors.svg';
+import NeedStay from '../Components/NeedStay';
 const MainPage = () => {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const descriptionRef = useRef<HTMLDivElement | null>(null);
@@ -155,6 +156,7 @@ const MainPage = () => {
   ref={scissorsRefEnd}
   /> */}
   </div>
+  <NeedStay/>
 </main>
 {/* <Footer/> */}
     </>
