@@ -98,7 +98,7 @@ class AuthController extends ActiveController
                 ]);
                 $response=Yii::$app->response;
                 $response->cookies->add($cookie);
-                return $this->asJson(['status' => 'success']);
+                 return $this->asJson(['status' => 'success']);
 
             }
 
