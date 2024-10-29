@@ -253,8 +253,15 @@ input[type='radio']{
       transform: translate(-7px, -7px);
     }
   }
-//Адаптив
-// @media (max-width:500px) {
-      
-// }
+@media (max-width:500px) {
+      .form{
+        padding-right: 30px;
+      }
+      .form> h1{
+        padding-left: unset;
+      }
+      .RegAuth{
+        padding-left: unset;
+      }
+}
 
