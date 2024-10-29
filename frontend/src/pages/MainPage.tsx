@@ -87,7 +87,8 @@ const MainPage = () => {
       const scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight);
       const newPosition = lineWidth * scrollPercentage;
       if (scissorsRef.current && newPosition*2 < document.body.offsetWidth) {
-        scissorsRef.current.style.transform = `translateX(${newPosition*1.9}px)`;
+        
+        scissorsRef.current.style.transform = `translateX(${newPosition*4}px)`;
       }
       // const newPositionEnd = lineWidth * (1 - scrollPercentage);
       // if(scissorsRefEnd.current && newPositionEnd*2 < document.body.offsetWidth){
