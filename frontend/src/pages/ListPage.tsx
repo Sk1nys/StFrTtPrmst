@@ -1,8 +1,9 @@
 //import React from 'react'
 import styles from './styles/ListPage.module.scss'
 const ListPage = () => {
-null
-
+    return (
+       null
+      )
 }
 
 export default ListPage
