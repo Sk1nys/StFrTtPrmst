@@ -40,7 +40,7 @@
   }
   .grid_containerNS {
     position: relative;
-    left: 50%;
+    left: 0;
     transform: translateX(-50%);
     display: grid;
     grid-template-columns: repeat(3, auto);
@@ -48,7 +48,7 @@
     column-gap: 2vw;
     row-gap: 2vh;
     opacity: 1;
-    transition: opacity 0.5s ease-in-out;
+    transition: transform 0.5s ease;
   }
   .grid_item {
     position: relative;
@@ -58,6 +58,7 @@
     align-items: center;
     justify-content: center;
     clip-path: inset(0px round 5px);
+    transition: transform 0.5s ease;
     transition: none;
     text-align: -webkit-center;
   }
@@ -70,4 +71,7 @@
       position: absolute;
       top: 0;
       left: 0;
+  }
+  .center_item{
+    z-index: 999;
   }
