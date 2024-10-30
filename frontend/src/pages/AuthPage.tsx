@@ -42,9 +42,9 @@ const AuthPage: React.FC = () => {
  
       });
       if (response.status === 200) {
-        setCookie('username', response.data.token, { path: '/' });
+        setCookie('username', formData.username, { path: '/',});
         console.log('успех')
-        window.location.href = 'home'; // Перенаправление
+        //window.location.href = 'home'; // Перенаправление
     }
       console.log('Success:', response.data);
     } catch (error) {
