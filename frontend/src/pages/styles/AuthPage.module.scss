@@ -4,7 +4,7 @@
     --black-color: #000;
    
     --normal-font-size: .938rem;
-    --tiny-font-size: .563rem;
+    --tiny-font-size: .593rem;
   
   }
   $text-color: #FFFFFF;
@@ -162,7 +162,7 @@ $radio-btn-circle: #FFFFFF;
   .inputFild:not(:placeholder-shown).inputFild:not(:focus) +
     .labelForm {
     opacity: 1;
-    top: 2px;
+    top: 0px;
     left: 2px;
     transition: .3s;
   }
@@ -253,9 +253,15 @@ input[type='radio']{
       transform: translate(-7px, -7px);
     }
   }
-@media (max-width:500px) {
+@media (max-width:900px) {
       .form{
+        width: 80%;
         padding-right: 30px;
+      }
+      .formBox{
+        width: 70%;
+        height: 50px;
+        margin-right: 15px;
       }
       .form> h1{
         padding-left: unset;
@@ -263,5 +269,21 @@ input[type='radio']{
       .RegAuth{
         padding-left: unset;
       }
+      .formContainer{
+        height: auto;
+     }
+     .backBtnlink{
+      left: 5%;
+    }
+}
+@media (max-width:600px) {
+  .formContainer{
+    height: 120vh;
+ }
+ .backBtnlink{
+  position: relative;
+  top:-15px;
+  left:0;
+}
 }
 
