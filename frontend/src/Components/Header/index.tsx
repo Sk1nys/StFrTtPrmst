@@ -29,8 +29,8 @@ const Header:  React.FC<HeaderProps> = ({ isBurgerOpen }) => {
             {isBurger? <ButtonAroundBorder children='Список тестов'/> :    <ButtonSquish className={styles.header_button}>СПИСОК ТЕСТОВ</ButtonSquish>}
 
             </Link>
-            {isBurger? <div className={styles.logocon}></div>: null}
-             <div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div> 
+            {isBurger? <div className={styles.logocon}><div className={styles.logoMb}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div></div>:<div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div> }
+             
             
             <Link to="/proftest" className={styles.link}>
             {isBurger? <ButtonAroundBorder children='Наш тест'/> :     <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish> }
