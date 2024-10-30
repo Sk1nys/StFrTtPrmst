@@ -1,51 +1,98 @@
-// import React, { useState, useEffect } from 'react';
-import styles from './NeedStay.module.css'
-import Path1 from '../../assets/NS1.jpg'
-import Path2 from '../../assets/NS2.jpg'
-import Path3 from '../../assets/NS3.jpg'
-import Path4 from '../../assets/NS4.jpg'
-import Path5 from '../../assets/NS5.jpg'
-import Path6 from '../../assets/NS6.jpg'
-import Path7 from '../../assets/NS7.jpg'
-import Path8 from '../../assets/NS8.jpg'
-import Path9 from '../../assets/NS9.jpg'
+import React, { useRef, useEffect, useState } from 'react';
+import styles from './NeedStay.module.css';
+import Path1 from '../../assets/NS1.jpg';
+import Path2 from '../../assets/NS2.jpg';
+import Path3 from '../../assets/NS3.jpg';
+import Path4 from '../../assets/NS4.jpg';
+import Path5 from '../../assets/NS5.jpg';
+import Path6 from '../../assets/NS6.jpg';
+import Path7 from '../../assets/NS7.jpg';
+import Path8 from '../../assets/NS8.jpg';
+import Path9 from '../../assets/NS9.jpg';
 
 const NeedStay: React.FC = () => {
-    const images = [
-        {id: 1,src: Path1,alt: 'Image 1',},
-        { id: 2, src: Path2, alt: 'Image 2',},
-        {id: 3, src: Path3, alt: 'Image 3',},
-        {id: 4, src: Path4, alt: 'Image 4',},
-        {id: 5, src: Path5, alt: 'Image 5',},
-        {id: 6, src: Path6, alt: 'Image 6',},
-        {id: 7, src: Path7, alt: 'Image 7',},
-        {id: 8, src: Path8, alt: 'Image 8',},
-        {id: 9, src: Path9, alt: 'Image 9',},
-    ];
-    return (
-        <section>
-            <div className={styles.container}>
+  const centralBlockRef = useRef<HTMLDivElement | null>(null);
+  const [isSticky, setIsSticky] = useState(false);
+  const [containerHeight, setContainerHeight] = useState(0);
+  const scrollLimit = window.innerHeight * 3.66;
 
-<div className={styles.content}>
-<h3 className={styles.heading}>Большой потенциал</h3>
-<div className={styles.description}>Вы должны нам денег</div>
-</div>
-</div>
-<div className={styles.animation_container}>
-    <div className={styles.sticky_content}>
-      <div className={styles.grid_containerNS}>
-      {images.map((image) => (
-        <div
-         className={styles.grid_item}>
-  <img src={image.src} alt={image.alt} />
-         </div>
-         
-    ))}
+  useEffect(() => {
+    if (centralBlockRef.current) {
+      setContainerHeight(centralBlockRef.current.offsetHeight);
+    }
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY - scrollLimit;
+      const viewportHeight = window.innerHeight;
+      const scaleStart = 0;
+      const scaleEnd = viewportHeight * 0.8;
+      let scaleProgress = (scrollY - scaleStart) / (scaleEnd - scaleStart);
+      scaleProgress = Math.max(0, Math.min(1, scaleProgress));
+      const scaleValue = 1 + scaleProgress * 2.2;
+
+      if (centralBlockRef.current) {
+        centralBlockRef.current.style.transform = `scale(${scaleValue})`;
+      }
+
+      if (window.scrollY >= scrollLimit) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrollLimit]);
+
+  const images = [
+    { id: 1, src: Path1, alt: 'Image 1' },
+    { id: 2, src: Path2, alt: 'Image 2' },
+    { id: 3, src: Path3, alt: 'Image 3' },
+    { id: 4, src: Path4, alt: 'Image 4' },
+    { id: 5, src: Path5, alt: 'Image 5' },
+    { id: 6, src: Path6, alt: 'Image 6' },
+    { id: 7, src: Path7, alt: 'Image 7' },
+    { id: 8, src: Path8, alt: 'Image 8' },
+    { id: 9, src: Path9, alt: 'Image 9' },
+  ];
+
+  return (
+    <section style={{ width: '100%', position: 'sticky', height: '250vh' }}>
+      <div className={styles.container}>
+        <div className={styles.content}>
+          <h3 className={styles.heading}>Большой потенциал</h3>
+          <div className={styles.description}>Вы должны нам денег</div>
+        </div>
       </div>
-    </div>
-  </div>
-        </section>
-  )
-}
+      <div style={{ height: isSticky ? `${containerHeight}px` : 'auto' }} />
+      <div
+        className={styles.animation_container}
+        style={{
+          position: isSticky ? 'fixed' : 'relative',
+          top: isSticky ? '0' : 'auto',
+          left: '0',
+          width: '100%',
+          transition: 'position 0.3s ease-in-out',
+        }}
+      >
+        <div className={styles.sticky_content}>
+          <div ref={centralBlockRef} className={styles.grid_containerNS}>
+            {images.map((image, index) => (
+              <div
+                key={index}
+                className={`${styles.grid_item} ${index === 4 ? styles.center_item : ''}`}
+              >
+                <img src={image.src} alt={image.alt} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
-export default NeedStay
+export default NeedStay;
