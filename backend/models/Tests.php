@@ -34,12 +34,11 @@ class Tests extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'title', 'description', 'subject', 'data', 'user_id'], 'required'],
-            [['id', 'user_id'], 'default', 'value' => null],
-            [['id', 'user_id'], 'integer'],
+            [['title', 'description', 'subject', 'data', 'user_id'], 'required'],
             [['data'], 'safe'],
+            [['user_id'], 'default', 'value' => null],
+            [['user_id'], 'integer'],
             [['title', 'description', 'subject'], 'string', 'max' => 255],
-            [['id'], 'unique'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }

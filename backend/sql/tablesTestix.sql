@@ -24,7 +24,7 @@ CREATE TABLE public.users (
 );
 CREATE TABLE public.images (
 	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
-	"route" varchar(255) NOT NULL,
+	"image" bytea NOT NULL,
 	CONSTRAINT image_pk PRIMARY KEY (id)
 );
 
@@ -48,7 +48,6 @@ CREATE TABLE public.questions (
 	test_id int NOT NULL,
 	"text" varchar(255) NOT NULL,
 	type varchar(255),
-	correct varchar(255) NOT NULL,
 	CONSTRAINT questions_pk PRIMARY KEY (id),
 	CONSTRAINT test_fk FOREIGN KEY (test_id)
 		REFERENCES public.tests (id) MATCH SIMPLE
@@ -60,12 +59,26 @@ CREATE TABLE public.questions (
 CREATE TABLE public.answers (
 	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
 	question_id int NOT NULL,
-	user_id int NOT NULL,
-	"answer" varchar(255) NOT NULL,
+	"answer_text" varchar(255) NOT NULL,
 	isCorrect BOOLEAN NOT NULL,
 	CONSTRAINT answer_pk PRIMARY KEY (id),
 	CONSTRAINT question_fk FOREIGN KEY (question_id)
 		REFERENCES public.questions (id) MATCH SIMPLE
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+		NOT VALID
+);
+
+CREATE TABLE public.results (
+	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
+	test_id int NOT NULL,
+	user_id int NOT NULL,
+	"score" int NOT NULL,
+	"total_score" int NOT NULL,
+	data DATE NOT NULL,
+	CONSTRAINT result_pk PRIMARY KEY (id),
+	CONSTRAINT test_fk FOREIGN KEY (test_id)
+		REFERENCES public.tests (id) MATCH SIMPLE
 		ON UPDATE NO ACTION
 		ON DELETE NO ACTION
 		NOT VALID,
@@ -76,20 +89,24 @@ CREATE TABLE public.answers (
 		NOT VALID
 );
 
-CREATE TABLE public.results (
+CREATE TABLE public.users_answers (
 	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
-	test_id int NOT NULL,
-	user_id int NOT NULL,
-	"count" int NOT NULL,
-	data DATE NOT NULL,
-	CONSTRAINT result_pk PRIMARY KEY (id),
-	CONSTRAINT test_fk FOREIGN KEY (test_id)
-		REFERENCES public.tests (id) MATCH SIMPLE
+	result_id int NOT NULL,
+	question_id int NOT NULL,
+	answer_id int NOT NULL,
+	CONSTRAINT users_answer_pk PRIMARY KEY (id),
+	CONSTRAINT result_fk FOREIGN KEY (result_id)
+		REFERENCES public.results (id) MATCH SIMPLE
 		ON UPDATE NO ACTION
 		ON DELETE NO ACTION
 		NOT VALID,
-	CONSTRAINT user_fk FOREIGN KEY (user_id)
-		REFERENCES public.users (id) MATCH SIMPLE
+	CONSTRAINT question_fk FOREIGN KEY (question_id)
+		REFERENCES public.questions (id) MATCH SIMPLE
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+		NOT VALID,
+	CONSTRAINT answer_fk FOREIGN KEY (answer_id)
+		REFERENCES public.answers (id) MATCH SIMPLE
 		ON UPDATE NO ACTION
 		ON DELETE NO ACTION
 		NOT VALID
