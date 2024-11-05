@@ -9,12 +9,11 @@ use Yii;
  *
  * @property int $id
  * @property int $question_id
- * @property int $user_id
- * @property string $answer
+ * @property string $answer_text
  * @property bool $iscorrect
  *
  * @property Questions $question
- * @property Users $user
+ * @property UsersAnswers[] $usersAnswers
  */
 class Answers extends \yii\db\ActiveRecord
 {
@@ -32,14 +31,12 @@ class Answers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'question_id', 'user_id', 'answer', 'iscorrect'], 'required'],
-            [['id', 'question_id', 'user_id'], 'default', 'value' => null],
-            [['id', 'question_id', 'user_id'], 'integer'],
+            [['question_id', 'answer_text', 'iscorrect'], 'required'],
+            [['question_id'], 'default', 'value' => null],
+            [['question_id'], 'integer'],
             [['iscorrect'], 'boolean'],
-            [['answer'], 'string', 'max' => 255],
-            [['id'], 'unique'],
+            [['answer_text'], 'string', 'max' => 255],
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Questions::class, 'targetAttribute' => ['question_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -51,8 +48,7 @@ class Answers extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'question_id' => 'Question ID',
-            'user_id' => 'User ID',
-            'answer' => 'Answer',
+            'answer_text' => 'Answer Text',
             'iscorrect' => 'Iscorrect',
         ];
     }
@@ -68,12 +64,12 @@ class Answers extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[UsersAnswers]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUsersAnswers()
     {
-        return $this->hasOne(Users::class, ['id' => 'user_id']);
+        return $this->hasMany(UsersAnswers::class, ['answer_id' => 'id']);
     }
 }

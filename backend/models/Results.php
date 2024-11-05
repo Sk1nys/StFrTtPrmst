@@ -10,11 +10,13 @@ use Yii;
  * @property int $id
  * @property int $test_id
  * @property int $user_id
- * @property int $count
+ * @property int $score
+ * @property int $total_score
  * @property string $data
  *
  * @property Tests $test
  * @property Users $user
+ * @property UsersAnswers[] $usersAnswers
  */
 class Results extends \yii\db\ActiveRecord
 {
@@ -32,11 +34,10 @@ class Results extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'test_id', 'user_id', 'count', 'data'], 'required'],
-            [['id', 'test_id', 'user_id', 'count'], 'default', 'value' => null],
-            [['id', 'test_id', 'user_id', 'count'], 'integer'],
+            [['test_id', 'user_id', 'score', 'total_score', 'data'], 'required'],
+            [['test_id', 'user_id', 'score', 'total_score'], 'default', 'value' => null],
+            [['test_id', 'user_id', 'score', 'total_score'], 'integer'],
             [['data'], 'safe'],
-            [['id'], 'unique'],
             [['test_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tests::class, 'targetAttribute' => ['test_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -51,7 +52,8 @@ class Results extends \yii\db\ActiveRecord
             'id' => 'ID',
             'test_id' => 'Test ID',
             'user_id' => 'User ID',
-            'count' => 'Count',
+            'score' => 'Score',
+            'total_score' => 'Total Score',
             'data' => 'Data',
         ];
     }
@@ -74,5 +76,15 @@ class Results extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(Users::class, ['id' => 'user_id']);
+    }
+
+    /**
+     * Gets query for [[UsersAnswers]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsersAnswers()
+    {
+        return $this->hasMany(UsersAnswers::class, ['result_id' => 'id']);
     }
 }
