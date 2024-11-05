@@ -6,6 +6,7 @@ font-size: 30px;
 background-color: #9977FF;
 font-family: 'Montserrat', sans-serif;
 font-size: 20px;
+margin-bottom: -1px;
 }
   .grid_container {
     padding-left: 15%;
@@ -97,28 +98,19 @@ font-size: 20px;
   .img_four_end:hover {
     transform: scale(1.05);
   }
-  @media screen and (max-width: 900px) {
-    .grid_container{
-      margin-bottom: 10%;
-  
-    }
+  @media screen and (max-width: 800px) {
+.text{
+  padding: 5% 0;
+}
   }
   @media screen and (max-width: 600px) {
    
     .grid_container {
       grid-template-columns: 1fr;
       grid-template-rows: repeat(6, 0.3fr);
-      margin-left: 3%;
-      margin-right: 3%;
     }
     .kartinka1{
       height: 100%;
-    }
-    
-  
-    .grid_item_left,
-    .grid_item_right {
-      height: 140px;
     }
     .grid_item_right1,
     .grid_item_right3 {

@@ -9,10 +9,11 @@
     justify-content: center;
     flex-direction: column;
     overflow-y: hidden;
+    overflow-x: hidden;
 }
 .grid_container{
     width: 100%;
-    height: calc( var(--screen-height) - 125px);
+    height: 95vh;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(6, 1fr);
@@ -110,7 +111,7 @@ margin-bottom: 5%;
   }
   .scissors{
     top: -25px;
-    left: 0;
+    left: -10%;
 
   }
   .scissorsEnd{

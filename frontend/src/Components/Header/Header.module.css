@@ -60,19 +60,38 @@ font-family: "Moderustic", sans-serif;
     left: 0;
     width: 50%;
     z-index: 12;
-  background-color: #ffffffcb;
+  background-color: #ffffff;
     animation: headerAppear 0.4s ease-in-out forwards;
     height: 101vh;
   }
+  .logocon{
+    background: #9977FF;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0 ;
+    height: 20% ;
+    border-bottom: 2px black dashed;
+  }
+  .logoMb{
+    width: 100px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.logoMb>h3{
+    text-align: center;
+    font-family: "Rubik Glitch", system-ui; 
+}
 .header{
     flex-direction: column;
     height: 50%;
     justify-content: space-around;
 }
-.logo{
-    position: absolute;
-    top: 30px;
-}
+
   .headerClosed {
     display: -webkit-box;
     display: -ms-flexbox;

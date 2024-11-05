@@ -5,9 +5,9 @@ interface ButtonAroundBorderProps{
 }
 const ButtonAroundBorder: React.FC<ButtonAroundBorderProps> = ({children}) => {
   return (
-    <button className={styles.btnAround}><span>
+    <button className={styles.btnAround}>
       {children}
-      </span></button>
+      </button>
   )
 }
 
