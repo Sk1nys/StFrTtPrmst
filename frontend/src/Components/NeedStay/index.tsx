@@ -12,32 +12,50 @@ import Path9 from '../../assets/NS9.jpg';
 
 const NeedStay: React.FC = () => {
   const centralBlockRef = useRef<HTMLDivElement | null>(null);
-  const [isSticky, setIsSticky] = useState(false);
+  const placeholderRef = useRef<HTMLDivElement | null>(null);
+  const [isFixed, setIsFixed] = useState(false);
+  const [isAbsolute, setIsAbsolute] = useState(false);
   const [containerHeight, setContainerHeight] = useState(0);
+  const [showTextBlock, setShowTextBlock] = useState(false);
   const scrollLimit = window.innerHeight * 3.66;
+  const scrollLimitUnset = scrollLimit + 600;
 
   useEffect(() => {
-    if (centralBlockRef.current) {
-      setContainerHeight(centralBlockRef.current.offsetHeight);
-    }
-
     const handleScroll = () => {
-      const scrollY = window.scrollY - scrollLimit;
+      const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
-      const scaleStart = 0;
-      const scaleEnd = viewportHeight * 0.8;
+      const scaleStart = scrollLimit;
+      const scaleEnd = scrollLimit + viewportHeight * 0.8;
       let scaleProgress = (scrollY - scaleStart) / (scaleEnd - scaleStart);
       scaleProgress = Math.max(0, Math.min(1, scaleProgress));
-      const scaleValue = 1 + scaleProgress * 2.2;
+      const scaleValue = 1 + scaleProgress * 2.4;
+      const gridChange = 5 - scaleProgress * 2.8;
 
       if (centralBlockRef.current) {
         centralBlockRef.current.style.transform = `scale(${scaleValue})`;
+        centralBlockRef.current.style.columnGap = `${gridChange - 2}vw`;
+        centralBlockRef.current.style.rowGap = `${gridChange - 2}vh`;
       }
 
-      if (window.scrollY >= scrollLimit) {
-        setIsSticky(true);
+      if (scrollY >= scrollLimit && scrollY <= scrollLimitUnset) {
+        setIsFixed(true);
+        setIsAbsolute(false);
+        if (centralBlockRef.current && placeholderRef.current) {
+          setContainerHeight(centralBlockRef.current.offsetHeight);
+          placeholderRef.current.style.height = `${centralBlockRef.current.offsetHeight}px`;
+        }
+      } else if (scrollY > scrollLimitUnset) {
+        setIsFixed(false);
+        setIsAbsolute(true);
       } else {
-        setIsSticky(false);
+        setIsFixed(false);
+        setIsAbsolute(false);
+      }
+
+      if (scrollY > scrollLimitUnset) {
+        setShowTextBlock(true);
+      } else {
+        setShowTextBlock(false);
       }
     };
 
@@ -45,7 +63,7 @@ const NeedStay: React.FC = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [scrollLimit]);
+  }, [scrollLimit, scrollLimitUnset, containerHeight]);
 
   const images = [
     { id: 1, src: Path1, alt: 'Image 1' },
@@ -60,22 +78,22 @@ const NeedStay: React.FC = () => {
   ];
 
   return (
-    <section style={{ width: '100%', position: 'sticky', height: '250vh' }}>
+    <section style={{ width: '100%', height: '345vh' }}>
       <div className={styles.container}>
         <div className={styles.content}>
           <h3 className={styles.heading}>Большой потенциал</h3>
           <div className={styles.description}>Вы должны нам денег</div>
         </div>
       </div>
-      <div style={{ height: isSticky ? `${containerHeight}px` : 'auto' }} />
+      <div ref={placeholderRef} style={{ height: isFixed || isAbsolute ? `${containerHeight}px` : 'auto' }} />
       <div
         className={styles.animation_container}
         style={{
-          position: isSticky ? 'fixed' : 'relative',
-          top: isSticky ? '0' : 'auto',
+          position: isFixed ? 'fixed' : isAbsolute ? 'absolute' : 'relative',
+          top: isFixed ? '0' : isAbsolute ? `${scrollLimitUnset - containerHeight}px` : 'auto',
           left: '0',
           width: '100%',
-          transition: 'position 0.3s ease-in-out',
+          transition: 'position 0.1s ease-in-out, transform 0.1s ease-in-out',
         }}
       >
         <div className={styles.sticky_content}>
@@ -84,8 +102,19 @@ const NeedStay: React.FC = () => {
               <div
                 key={index}
                 className={`${styles.grid_item} ${index === 4 ? styles.center_item : ''}`}
+                style={{
+                  opacity: index === 7 && showTextBlock ? 1 : 1,
+                  transition: 'opacity 0.5s ease-in-out',
+                }}
               >
-                <img src={image.src} alt={image.alt} />
+                {index === 7 && showTextBlock ? (
+                  <div className={styles.text_block}>
+                    <h2>Текстовый блок</h2>
+                    <p>Это пример текстового блока, который заменяет изображение.</p>
+                  </div>
+                ) : (
+                  <img src={image.src} alt={image.alt} />
+                )}
               </div>
             ))}
           </div>
