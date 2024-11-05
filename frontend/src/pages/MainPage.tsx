@@ -158,7 +158,7 @@ const MainPage = () => {
   ref={scissorsRefEnd}
   /> */}
   </div>
-  {/* <NeedStay/> */}
+  <NeedStay/>
 </main>
 <Footer/>
     </>
