@@ -6,6 +6,7 @@ import styles from './styles/MainPage.module.scss'
 import  { useRef, useEffect, useState } from 'react';
 import scissors from '../assets/scissors.svg';
 import NeedStay from '../Components/NeedStay';
+import Footer from '../Components/Footer';
 const MainPage = () => {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const descriptionRef = useRef<HTMLDivElement | null>(null);
@@ -148,7 +149,7 @@ const MainPage = () => {
   className={styles.scissors}
   ref={scissorsRef}
   />
-  <Benefits/>
+  //<Benefits/>
  <div ref={lineRef} className={styles.dashed_line_end}></div>
   {/*  <img 
   src={scissors}
@@ -157,9 +158,9 @@ const MainPage = () => {
   ref={scissorsRefEnd}
   /> */}
   </div>
-  <NeedStay/>
+  {/* <NeedStay/> */}
 </main>
-{/* <Footer/> */}
+<Footer/>
     </>
   )
 }
