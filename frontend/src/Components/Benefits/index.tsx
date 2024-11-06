@@ -142,7 +142,7 @@ const Benefits = () => {
     <div className={styles.text}>
       Почему вам стоит остаться
     </div>
-      <div className={styles.grid_container}>
+      <div className={styles.grid_containerBenef}>
         <div className={`${styles.grid_item_left} ${styles.grid_item1}`}>
           <div
             className={`${styles.txt_four_page} ${
