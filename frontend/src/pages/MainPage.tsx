@@ -149,7 +149,7 @@ const MainPage = () => {
   className={styles.scissors}
   ref={scissorsRef}
   />
-  //<Benefits/>
+<Benefits/>
  <div ref={lineRef} className={styles.dashed_line_end}></div>
   {/*  <img 
   src={scissors}
