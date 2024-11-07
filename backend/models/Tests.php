@@ -87,4 +87,6 @@ class Tests extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Users::class, ['id' => 'user_id']);
     }
+
+    
 }
