@@ -171,15 +171,17 @@
       margin-bottom: 3%;
   }
 .description{
+  
   margin-left: unset;
   grid-area: 1 / 1 / 2 / 2;
-  height: auto;
+  height: 100%;
 width: 90%;
 margin: 0 auto;
 
 }
 .description.expanded{
   height: 200%;
+  
 width: 90%;
 
 }
@@ -194,7 +196,7 @@ margin: 0 auto;
 
 }
 .bottom_block.expanded{
-  margin-top: unset;
+  margin-top: -50vh;
 width: 90%;
 
 }
