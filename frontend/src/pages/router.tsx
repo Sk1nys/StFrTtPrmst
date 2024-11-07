@@ -8,7 +8,7 @@ import CreatePage from "./CreatePage.tsx";
 import ListPage from "./ListPage.tsx";
 import ProfTestPage from "./ProfTestPage.tsx";
 import RegPage from "./RegPage.tsx";
-
+import TestPage from "./TestPage.tsx";
 const Router: FC = () => {
 
   const routeConfig: RouteType[] = [
@@ -42,20 +42,32 @@ const Router: FC = () => {
       path: "/reg",
       element: <RegPage /> ,
     },
+    {
+      title: "/testPage",
+      path: "/test:id?",
+      element: <TestPage />,
+    },
+    
   ];
 
   return (
     <Suspense>
       <Routes>
+      <Route path="/test/:id" Component={TestPage} />
+
         <Route
           path="/"
           element={<Navigate to={"/home"} />}
         />
            
         {
+          
         routeConfig.map((route) => (
           <Route key={route.path} path={route.path} element={route.element} />
+          
         ))}
+
+        
       </Routes>
     </Suspense>
   );

@@ -64,7 +64,7 @@ $config = [
                 'class'=>'yii\rest\UrlRule',
                 'controller'=>'users',
                 'controller'=>'auth',
-                
+                'controller'=>'test',
 
             ],
         ],

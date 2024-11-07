@@ -3,17 +3,19 @@
 namespace app\controllers;
 
 use app\models\Tests;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\Cors;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
+use yii\web\BadRequestHttpException;
 
 /**
  * TestController implements the CRUD actions for Tests model.
  */
-class TestController extends ActiveController
+class TestController extends Controller
 {
 
     public $modelClass = 'app\models\Tests';
@@ -32,8 +34,8 @@ class TestController extends ActiveController
             'class' => \yii\filters\ContentNegotiator::class,
             'formatParam' => '_format',
             'formats' => [
-                'application/json' => \yii\web\Response::FORMAT_JSON,
-                'xml' => \yii\web\Response::FORMAT_XML,
+                //'application/json' => \yii\web\Response::FORMAT_JSON,
+                //'xml' => \yii\web\Response::FORMAT_XML,
             ],
         ];
 
@@ -49,25 +51,14 @@ class TestController extends ActiveController
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Tests::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        // Получаем все записи из таблицы
+        $data = Tests::find()->all();
+        
+        return $data;
     }
-
+    
     /**
      * Displays a single Tests model.
      * @param int $id ID
@@ -76,9 +67,12 @@ class TestController extends ActiveController
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = Tests::findOne($id);
+        if ($model === null) {
+            throw new \yii\web\NotFoundHttpException('Запись не найдена'); 
+        }
+        return $model;
     }
 
     /**
