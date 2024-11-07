@@ -1,20 +1,16 @@
 import Benefits from '../Components/Benefits';
-// import Footer from '../Components/Footer';
 import Header from '../Components/Header'
-import MainPageSlider from '../Components/MainPageSlider'
 import styles from './styles/MainPage.module.scss'
 import  { useRef, useEffect, useState } from 'react';
 import scissors from '../assets/scissors.svg';
 import NeedStay from '../Components/NeedStay';
 import Footer from '../Components/Footer';
+import { HeightProvider } from '../Components/HeightContext';
+import FirstScreen from '../Components/FirstScreen';
 const MainPage = () => {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
-  const descriptionRef = useRef<HTMLDivElement | null>(null);
-  const bottomBlockRef = useRef<HTMLDivElement | null>(null);
-  const [isDescriptionHovered, setIsDescriptionHovered] = useState(false);
-  const [isBottomBlockHovered, setIsBottomBlockHovered] = useState(false);
   const scissorsRef = useRef<HTMLImageElement | null>(null);
-// const scissorsRefEnd = useRef<HTMLImageElement | null>(null);
+
 
   const lineRef = useRef<HTMLDivElement | null>(null);
   const [lineWidth, setLineWidth] = useState<number>(0);
@@ -25,46 +21,7 @@ const MainPage = () => {
       `${ScreenHeight}px`
     );
   };
-
   updateHeight();
-  const handleMouseEnterDescription = () => {
-    if (!isBottomBlockHovered && bottomBlockRef.current) {
-      bottomBlockRef.current.style.filter = 'blur(20px)';
-      bottomBlockRef.current.style.transition = '0.5s ease-in-out';
-      bottomBlockRef.current.style.transform = 'scale(0.9)';
-      bottomBlockRef.current.style.opacity = '0.5';
-    setIsDescriptionHovered(true);
-    }
-  };
-
-  const handleMouseLeaveDescription = () => {
-    if (bottomBlockRef.current) {
-      bottomBlockRef.current.style.filter = '';
-      bottomBlockRef.current.style.transform = '';
-      bottomBlockRef.current.style.opacity = '';
-    }
-    setIsDescriptionHovered(false);
-  };
-
-  const handleMouseEnterBottomBlock = () => {
-    if (!isDescriptionHovered && descriptionRef.current) {
-      descriptionRef.current.style.filter = 'blur(20px)';
-      descriptionRef.current.style.transition = '0.5s ease-in-out';
-      descriptionRef.current.style.transform = 'scale(0.9)';
-      descriptionRef.current.style.opacity = '0.5';
-    setIsBottomBlockHovered(true);
-    }
-  };
-
-  const handleMouseLeaveBottomBlock = () => {
-    if (descriptionRef.current) {
-      descriptionRef.current.style.filter = '';
-      descriptionRef.current.style.transform = '';
-      descriptionRef.current.style.opacity = '';
-    }
-    setIsBottomBlockHovered(false);
-  };
-
 
   useEffect(() => {
     if (lineRef.current) {
@@ -120,27 +77,10 @@ const MainPage = () => {
               <span></span>
             </div>
 <Header isBurgerOpen={isBurgerOpen}/>
+
 <main className={styles.main_container}>
-  <div className={styles.grid_container}>
-  <MainPageSlider ClassName={styles.slider} />
-  <div 
-  className={`${styles.description} ${isDescriptionHovered ? styles.expanded : ''}`}
-   ref={descriptionRef}
-   onMouseEnter={handleMouseEnterDescription}
-   onMouseLeave={handleMouseLeaveDescription}> 
-    <h1 className={styles.descriptionHead}>Кто мы?</h1>
-   <p className={styles.descriptionPar}>
-   Мы небольшая группа программистов, которая хочет облегчить и усовершенствовать представление о тестах.
-   Мы хотим чтобы проходить тесты было не скучно и их создание не занимало много времени.
-    </p> </div>
-  <div className={`${styles.bottom_block} ${isBottomBlockHovered ? styles.expanded : ''}`}
-  ref={bottomBlockRef}
-  onMouseEnter={handleMouseEnterBottomBlock}
-  onMouseLeave={handleMouseLeaveBottomBlock}>
-    <h1 className={styles.BotBlockHead}>О проекте</h1>
-    <p className={styles.BotBlockPar}> Наш проект даёт возможность учителям, преподавателям, компаниям и т.п. облегчить работа с тестами. На сайте есть возможность не только создавать тесты в редакторе ну и загружать их из Word’а что облегчит работу по переносу старых тестов на наш более удобный и практичный проект. Но это ещё не все чтобы увидеть на что способен наш сайт вы можете пройти тест который создали мы и убедиться что мы не врём.</p>
-  </div>
-  </div>
+<HeightProvider>
+ <FirstScreen id={'block2'}/>
   <div className={styles.scroll_container}>
   <div ref={lineRef} className={styles.dashed_line}></div>
   <img 
@@ -151,13 +91,8 @@ const MainPage = () => {
   />
 <Benefits/>
  <div ref={lineRef} className={styles.dashed_line_end}></div>
-  {/*  <img 
-  src={scissors}
-   alt="" 
-  className={styles.scissorsEnd}
-  ref={scissorsRefEnd}
-  /> */}
   </div>
+  </HeightProvider>
   <NeedStay/>
 </main>
 <Footer/>
