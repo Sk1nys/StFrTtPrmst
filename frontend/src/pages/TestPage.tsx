@@ -51,7 +51,9 @@ const TestPage: FC = () => {
             ) : (
                 <div>No data available</div>
             )}
+            <button>ТАК НАЗЫВАЕМАЯ КНОПКА НАЧАТЬ ТЕСТ</button>
         </div>
+        
     );
 };
 
