@@ -9,8 +9,18 @@ import Path6 from '../../assets/NS6.jpg';
 import Path7 from '../../assets/NS7.jpg';
 import Path8 from '../../assets/NS8.jpg';
 import Path9 from '../../assets/NS9.jpg';
+// import { useHeight } from '../HeightContext';
 
 const NeedStay: React.FC = () => {
+  // const { setHeight } = useHeight();
+  //  const blockRef = useRef<HTMLDivElement | null>(null); 
+  // useEffect(() => { 
+  //   if (blockRef.current) { 
+  //     setHeight('needStay', blockRef.current.offsetHeight); 
+  //   }
+  //  }, [setHeight]);
+
+
   const centralBlockRef = useRef<HTMLDivElement | null>(null);
   const placeholderRef = useRef<HTMLDivElement | null>(null);
   const [isFixed, setIsFixed] = useState(false);

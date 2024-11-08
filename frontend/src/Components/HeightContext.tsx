@@ -17,7 +17,7 @@ export const HeightProvider: React.FC<HeightProviderProps> = ({ children }) => {
   const setHeight = useCallback((id: string, height: number) => {
     setHeights((prevHeights) => ({ ...prevHeights, [id]: height }));
   }, []);
-
+console.log(heights)
   return (
     <HeightContext.Provider value={{ heights, setHeight }}>
       {children}
