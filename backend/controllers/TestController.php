@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Answers;
+use app\models\Questions;
 use app\models\Tests;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -68,11 +70,11 @@ class TestController extends Controller
     public function actionView($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $model = Tests::findOne($id);
-        if ($model === null) {
+        $test = Tests::findOne($id);
+        if ($test === null) {
             throw new \yii\web\NotFoundHttpException('Запись не найдена'); 
         }
-        return $model;
+        return $test;
     }
 
     /**
