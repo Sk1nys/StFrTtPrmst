@@ -8,8 +8,8 @@
   
   }
   $text-color: #FFFFFF;
-$radio-btn-border: #FFFFFF;
-$radio-btn-circle: #FFFFFF;
+  $radio-btn-border: #FFFFFF;
+  $radio-btn-circle: #FFFFFF;
   $radio-btn-width:25px;
   $radio-btn-height:25px;
   
@@ -30,7 +30,7 @@ $radio-btn-circle: #FFFFFF;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: linear-gradient(45deg, #d337e7, #cc620c, #651a6e, #cc620c);
+    background: linear-gradient(45deg,#96A3E8,#5a628d,#6e799e,#4b4a4a);
 	background-size: 400% 400%;
 	animation: gradient 20s ease infinite;
 	transform: translate3d(0, 0, 0);
@@ -227,7 +227,7 @@ input[type='radio']{
   
 }
 .RegAuth:hover{
-  color: #3b5523;
+  color: #eb9534;
   scale: 1.1;
   font-weight: 1000;
 }
