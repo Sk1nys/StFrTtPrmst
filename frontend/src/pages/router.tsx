@@ -9,6 +9,7 @@ import ListPage from "./ListPage.tsx";
 import ProfTestPage from "./ProfTestPage.tsx";
 import RegPage from "./RegPage.tsx";
 import TestPage from "./TestPage.tsx";
+import QuestionPage from "./QuestionPage.tsx";
 const Router: FC = () => {
 
   const routeConfig: RouteType[] = [
@@ -47,6 +48,11 @@ const Router: FC = () => {
       path: "/test:id?",
       element: <TestPage />,
     },
+    {
+      title: "/QuestionPage",
+      path: "/question:id?",
+      element: <QuestionPage />,
+    },
     
   ];
 
@@ -54,6 +60,7 @@ const Router: FC = () => {
     <Suspense>
       <Routes>
       <Route path="/test/:id" Component={TestPage} />
+      <Route path="/question/:id" Component={QuestionPage} />
 
         <Route
           path="/"

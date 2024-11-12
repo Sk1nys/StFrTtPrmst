@@ -179,7 +179,7 @@
   .rad1[type="radio"]:checked + label::before{
     animation: flipRadioCir .3s linear forwards;
 }
-input[type='radio']{
+.rad1[type='radio']{
   opacity:0;
 }
 .radlab{
