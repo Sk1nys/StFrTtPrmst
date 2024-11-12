@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import styles from './styles/ListPage.module.scss';
+import { Link } from "react-router-dom";
+import ButtonSquish from '../Components/Buttons/ButtonSquish'
 import axios from 'axios';
 
 // Типы для данных
@@ -37,11 +40,12 @@ const DataFetchingComponent: React.FC = () => {
 
   // Генерация HTML из данных
   return (
-    <div>
-      <div className="data-list">
+    <div className={styles.listMain}>
+      <div className={styles.hedlist}> <Link to="/home" className={styles.linkii}><ButtonSquish className={styles.header_button}>НАЗАД</ButtonSquish></Link><h1>СПИСОК ТЕСТОВ</h1></div>
+      <div className={styles.dataList}>
         {data.length > 0 ? (
           data.map((item) => (
-            <div key={item.id} className="data-item">
+            <div key={item.id} className={styles.dataItem}>
               <a href={`/test/${item.id}`}>{item.title}</a> {/* название */}
               <p>{item.description}</p> {/* описание */}
               <p>{item.subject}</p> {/* предмет */}
@@ -50,7 +54,9 @@ const DataFetchingComponent: React.FC = () => {
           ))
         ) : (
           <p>No data available</p>
+          
         )}
+        
       </div>
     </div>
   );
