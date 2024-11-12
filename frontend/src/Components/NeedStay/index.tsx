@@ -9,17 +9,11 @@ import Path6 from '../../assets/NS6.jpg';
 import Path7 from '../../assets/NS7.jpg';
 import Path8 from '../../assets/NS8.jpg';
 import Path9 from '../../assets/NS9.jpg';
-// import { useHeight } from '../HeightContext';
+import { useHeight } from '../HeightContext';
 
 const NeedStay: React.FC = () => {
-  // const { setHeight } = useHeight();
-  //  const blockRef = useRef<HTMLDivElement | null>(null); 
-  // useEffect(() => { 
-  //   if (blockRef.current) { 
-  //     setHeight('needStay', blockRef.current.offsetHeight); 
-  //   }
-  //  }, [setHeight]);
-
+const {getTotalHeight} = useHeight();
+const totalHeight = getTotalHeight();
 
   const centralBlockRef = useRef<HTMLDivElement | null>(null);
   const placeholderRef = useRef<HTMLDivElement | null>(null);
@@ -27,7 +21,7 @@ const NeedStay: React.FC = () => {
   const [isAbsolute, setIsAbsolute] = useState(false);
   const [containerHeight, setContainerHeight] = useState(0);
   const [showTextBlock, setShowTextBlock] = useState(false);
-  const scrollLimit = window.innerHeight * 3.66;
+  const scrollLimit = totalHeight+450;
   const scrollLimitUnset = scrollLimit + 600;
 
   useEffect(() => {
@@ -104,17 +98,19 @@ const NeedStay: React.FC = () => {
           left: '0',
           width: '100%',
           transition: 'position 0.1s ease-in-out, transform 0.1s ease-in-out',
+          height: showTextBlock? '339vh' : '110vh'
         }}
       >
-        <div className={styles.sticky_content}>
+        <div className={styles.sticky_content} style={{height: showTextBlock? '338vh' : '110vh'}}>
           <div ref={centralBlockRef} className={styles.grid_containerNS}>
             {images.map((image, index) => (
               <div
                 key={index}
                 className={`${styles.grid_item} ${index === 4 ? styles.center_item : ''}`}
                 style={{
-                  opacity: index === 7 && showTextBlock ? 1 : 1,
+                  opacity: index === 7? 1:1,
                   transition: 'opacity 0.5s ease-in-out',
+                  zIndex: 999
                 }}
               >
                 {index === 7 && showTextBlock ? (

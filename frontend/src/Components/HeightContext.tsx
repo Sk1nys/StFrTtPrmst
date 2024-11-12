@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useCallback, ReactNode } fr
 interface HeightContextProps {
   heights: Record<string, number>;
   setHeight: (id: string, height: number) => void;
+  getTotalHeight: () => number;
 }
 
 const HeightContext = createContext<HeightContextProps | undefined>(undefined);
@@ -17,9 +18,13 @@ export const HeightProvider: React.FC<HeightProviderProps> = ({ children }) => {
   const setHeight = useCallback((id: string, height: number) => {
     setHeights((prevHeights) => ({ ...prevHeights, [id]: height }));
   }, []);
-console.log(heights)
+
+  const getTotalHeight = useCallback(() => {
+    return Object.values(heights).reduce((total, height) => total + height, 0);
+  }, [heights]);
+
   return (
-    <HeightContext.Provider value={{ heights, setHeight }}>
+    <HeightContext.Provider value={{ heights, setHeight, getTotalHeight }}>
       {children}
     </HeightContext.Provider>
   );
