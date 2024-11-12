@@ -3,8 +3,18 @@ import styles from "./Benefits.module.css";
 import image1 from "../../assets/Benefit1.jpg";
 import image2 from "../../assets/Benefit2.jpg";
 import image3 from "../../assets/benefit3.jpg";
-
+import { useHeight } from '../HeightContext';
 const Benefits = () => {
+
+
+
+  const { setHeight } = useHeight();
+   const blockRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => { 
+      if (blockRef.current) {
+         setHeight('benefits', blockRef.current.offsetHeight); 
+        }
+ }, [setHeight]);
   const [isVisible1, setIsVisible1] = useState(false);
   const [isVisible2, setIsVisible2] = useState(false);
   const [isVisible3, setIsVisible3] = useState(false);
@@ -138,7 +148,7 @@ const Benefits = () => {
   }, []);
 
   return (
-    <>
+    <div ref={blockRef}>
     <div className={styles.text}>
       Почему вам стоит остаться
     </div>
@@ -255,7 +265,7 @@ const Benefits = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

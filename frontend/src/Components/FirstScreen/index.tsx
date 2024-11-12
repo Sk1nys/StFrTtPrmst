@@ -7,22 +7,13 @@ interface FirstScreenProps {
     id: string;
   }
 const FirstScreen: React.FC<FirstScreenProps> = ({id}) => {
-    const { setHeight } = useHeight();
-    const { heights } = useHeight();
-    const block1Ref = useRef<HTMLDivElement | null>(null);
-    useEffect(() => {
-        if (block1Ref.current) {
-          console.log('Height of Block 1:', block1Ref.current.offsetHeight);
-        }
-        console.log('Height of Block 2 from context:', heights['block2']);
-      }, [heights]);
-    const blockRef = useRef<HTMLDivElement | null>(null);
-    
-    useEffect(() => {
-        if (blockRef.current) {
-          setHeight(id, blockRef.current.offsetHeight);
-        }
-      }, [id, setHeight]);
+  const { setHeight } = useHeight(); 
+const blockRef = useRef<HTMLDivElement | null>(null); 
+  useEffect(() => { 
+    if (blockRef.current) { 
+      setHeight(id, blockRef.current.offsetHeight); 
+    }
+   }, [id, setHeight]);
       const descriptionRef = useRef<HTMLDivElement | null>(null);
     const bottomBlockRef = useRef<HTMLDivElement | null>(null);
     const [isDescriptionHovered, setIsDescriptionHovered] = useState(false);
