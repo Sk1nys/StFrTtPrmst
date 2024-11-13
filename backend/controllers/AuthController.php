@@ -91,14 +91,27 @@ class AuthController extends ActiveController
 
             if ($user && Yii::$app->security->validatePassword($password, $user->hashPassword($password))) {
                 Yii::$app->user->login($user);
-                $cookie = new \yii\web\Cookie([
+
+                $cookieUsername = new \yii\web\Cookie([
                     'name' => 'username',
                     'value' => $username,
                     'expire' => time() + 86400 * 30,
+                    'path' => '/',
+                ]);
+                $cookieId = new \yii\web\Cookie([
+                    'name' => 'id',
+                    'value' => $user->id,
+                    'expire' => time() + 86400 * 30,
+                    'path' => '/',
                 ]);
                 $response=Yii::$app->response;
-                $response->cookies->add($cookie);
-                 return $this->asJson(['status' => 'success']);
+                $response->cookies->add($cookieUsername);
+                $response->cookies->add($cookieId);
+                 return $this->asJson([
+                    'status' => 'success',
+                    'username' => $cookieUsername->value,
+                    'id' => $cookieId->value,
+                ]);
 
             }
 

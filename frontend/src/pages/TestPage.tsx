@@ -51,7 +51,7 @@ const TestPage: FC = () => {
             ) : (
                 <div>No data available</div>
             )}
-            <button>ТАК НАЗЫВАЕМАЯ КНОПКА НАЧАТЬ ТЕСТ</button>
+            <button> <a href={`/question/${id}`}>ТАК НАЗЫВАЕМАЯ КНОПКА НАЧАТЬ ТЕСТ</a></button>
         </div>
         
     );
