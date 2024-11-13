@@ -14,14 +14,10 @@ interface FormData {
 
 const AuthPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    
-
-
     username: '',
     password: '',
-
   });
-  const [cookies, setCookie] = useCookies(['username']);
+  const [cookies, setCookie, removeCookie] = useCookies(['username', 'id']);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -37,16 +33,17 @@ const AuthPage: React.FC = () => {
           'Content-Type': 'multipart/form-data', 
 
           credentials: 'include',
+          withCredentials: true,
         },
 
  
       });
       if (response.status === 200) {
-        setCookie('username', formData.username, { path: '/',});
-        console.log('успех')
         //window.location.href = 'home'; // Перенаправление
+        setCookie('username', response.data.username, { path: '/' });
+        setCookie('id', response.data.id, { path: '/' });
     }
-      console.log('Success:', response.data);
+    console.log('Response:', response.data);
     } catch (error) {
       alert('Ошибка входа');
       console.error('Error:', error);

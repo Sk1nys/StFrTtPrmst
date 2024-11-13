@@ -11,7 +11,7 @@ interface FormData {
   username: string;
   email: string;
   password: string;
-  role_id: number;
+  role_id: string;
 }
 
 const AuthPage: React.FC = () => {
@@ -22,7 +22,7 @@ const AuthPage: React.FC = () => {
     username: '',
     email: '',
     password: '',
-    role_id: 1,
+    role_id: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
