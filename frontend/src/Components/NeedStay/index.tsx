@@ -21,8 +21,8 @@ const totalHeight = getTotalHeight();
   const [isAbsolute, setIsAbsolute] = useState(false);
   const [containerHeight, setContainerHeight] = useState(0);
   const [showTextBlock, setShowTextBlock] = useState(false);
-  const scrollLimit = totalHeight+450;
-  const scrollLimitUnset = scrollLimit + 600;
+  const scrollLimit = totalHeight+125+136+200;
+  const scrollLimitUnset = scrollLimit + 650;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,7 +94,7 @@ const totalHeight = getTotalHeight();
         className={styles.animation_container}
         style={{
           position: isFixed ? 'fixed' : isAbsolute ? 'absolute' : 'relative',
-          top: isFixed ? '0' : isAbsolute ? `${scrollLimitUnset - containerHeight}px` : 'auto',
+          top: isFixed ? '0' : isAbsolute ? `${scrollLimitUnset - containerHeight-200}px` : 'auto',
           left: '0',
           width: '100%',
           transition: 'position 0.1s ease-in-out, transform 0.1s ease-in-out',
