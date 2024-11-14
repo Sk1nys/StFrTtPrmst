@@ -79,6 +79,7 @@ class AnswerController extends Controller
             $result[] = [
                 'id' => $answer->id,
                 'text' => $answer->answer_text,
+                'iscorrect' => $answer->iscorrect,
                 'question' => [
                     'text' => $answer->question->text, // Здесь 'text' - поле вопроса
                     'test_id' => $answer->question->test_id,
