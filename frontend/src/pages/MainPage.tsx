@@ -62,7 +62,7 @@ const MainPage = () => {
   };
 
   return (
-    <>
+    <div className={styles.mainContWHAF}>
       <div
         className={`${styles.burger} ${
           isBurgerOpen ? styles.burgerClosed : ""
@@ -93,7 +93,7 @@ const MainPage = () => {
         </HeightProvider>
       </main>
       <Footer />
-    </>
+    </div>
   );
 };
 
