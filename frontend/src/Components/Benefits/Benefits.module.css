@@ -8,6 +8,42 @@ font-family: 'Montserrat', sans-serif;
 font-size: 20px;
 margin-bottom: -1px;
 }
+
+.scroll_container{
+  position: relative;
+  width: 100%;
+  margin-bottom: 5%;
+}
+.dashed_line,
+.dashed_line_end{
+  width: 100%;
+  height: 2px;
+  border-top: 2px dashed black;
+  position: absolute;
+}
+.dashed_line{
+  top: 0;
+}
+.dashed_line_end{
+  bottom: 0;
+}
+.scissors,
+.scissorsEnd{
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  transform: translateX(0);
+  transition: transform 0.2s ease-out;
+}
+.scissors{
+  top: -25px;
+  left: -10%;
+}
+.scissorsEnd{
+  bottom: -25px;
+  right: 0;
+  transform: scaleX(-1);
+}
   .grid_containerBenef {
     padding-left: 15%;
     padding-right: 15%;
@@ -101,6 +137,7 @@ margin-bottom: -1px;
   .img_four_end:hover {
     transform: scale(1.05);
   }
+
   @media screen and (max-width: 800px) {
 .text{
   padding: 5% 0;

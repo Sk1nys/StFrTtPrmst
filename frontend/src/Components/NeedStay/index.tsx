@@ -21,7 +21,7 @@ const totalHeight = getTotalHeight();
   const [isAbsolute, setIsAbsolute] = useState(false);
   const [containerHeight, setContainerHeight] = useState(0);
   const [showTextBlock, setShowTextBlock] = useState(false);
-  const scrollLimit = totalHeight+125+136+200;
+  const scrollLimit = totalHeight+175+135;
   const scrollLimitUnset = scrollLimit + 650;
 
   useEffect(() => {
@@ -98,10 +98,10 @@ const totalHeight = getTotalHeight();
           left: '0',
           width: '100%',
           transition: 'position 0.1s ease-in-out, transform 0.1s ease-in-out',
-          height: showTextBlock? '339vh' : '110vh'
+          height: showTextBlock? '339vh' : '100vh'
         }}
       >
-        <div className={styles.sticky_content} style={{height: showTextBlock? '338vh' : '110vh'}}>
+        <div className={styles.sticky_content} style={{height: showTextBlock? '338vh' : '100vh'}}>
           <div ref={centralBlockRef} className={styles.grid_containerNS}>
             {images.map((image, index) => (
               <div

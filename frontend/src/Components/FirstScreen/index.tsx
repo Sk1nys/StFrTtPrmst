@@ -10,8 +10,11 @@ const FirstScreen: React.FC<FirstScreenProps> = ({id}) => {
   const { setHeight } = useHeight(); 
 const blockRef = useRef<HTMLDivElement | null>(null); 
   useEffect(() => { 
-    if (blockRef.current) { 
-      setHeight(id, blockRef.current.offsetHeight); 
+    if (blockRef.current) {
+      const computedStyle = getComputedStyle(blockRef.current);
+
+      setHeight(id, blockRef.current.offsetHeight +  parseFloat(computedStyle.marginTop) + 
+      parseFloat(computedStyle.marginBottom)); 
     }
    }, [id, setHeight]);
       const descriptionRef = useRef<HTMLDivElement | null>(null);
