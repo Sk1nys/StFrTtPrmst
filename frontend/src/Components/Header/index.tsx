@@ -3,11 +3,13 @@ import styles from '../Header/Header.module.css'
 import { Link } from "react-router-dom";
 import ButtonSquish from '../Buttons/ButtonSquish'
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import ButtonAroundBorder from '../Buttons/ButtonAroundBorder';
 interface HeaderProps {
   isBurgerOpen: boolean;
 }
 const Header:  React.FC<HeaderProps> = ({ isBurgerOpen }) => {
+  const [cookies] = useCookies(['username']);
   const [isBurger, setIsBurger] = useState(false);
   useEffect(() => {
     return () => {
@@ -35,9 +37,23 @@ const Header:  React.FC<HeaderProps> = ({ isBurgerOpen }) => {
             <Link to="/proftest" className={styles.link}>
             {isBurger? <ButtonAroundBorder children='Наш тест'/> :     <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish> }
             </Link>
-           <Link to="/auth" className={styles.link}>
-           {isBurger? <ButtonAroundBorder children='Войти'/> :    <ButtonSquish className={styles.header_button}>ВОЙТИ</ButtonSquish> }
-           </Link>
+
+
+            <Link to={cookies.username ? "/profile" : "/auth"} className={styles.link}>
+      {cookies.username ? (
+        isBurger ? (
+          <ButtonAroundBorder>{cookies.username}</ButtonAroundBorder>
+        ) : (
+          <ButtonSquish className={styles.header_button}>{cookies.username}</ButtonSquish>
+        )
+      ) : (
+        isBurger ? (
+          <ButtonAroundBorder>Войти</ButtonAroundBorder>
+        ) : (
+          <ButtonSquish className={styles.header_button}>ВОЙТИ</ButtonSquish>
+        )
+      )}
+    </Link>
         </div>
     </header>
   )

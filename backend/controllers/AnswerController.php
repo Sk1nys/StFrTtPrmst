@@ -58,24 +58,31 @@ class AnswerController extends Controller
     }
     
 
-    public function actionView($id)
+    public function actionView($test_id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    
+        // Получаем ответы и присоединяем связанные вопросы, добавляя проверку на test_id
         $answers = Answers::find()
-        ->where(['question_id' => $id])
+            ->joinWith('question') // Присоединяем связанную модель Questions
 
-        ->with('question') // Здесь 'question' - это имя связи в модели Answers
-        ->all();
-        if ($answers === null) {
-            throw new \yii\web\NotFoundHttpException('Запись не найдена'); 
+            ->andWhere(['questions.test_id' => $test_id]) // Условия для test_id
+            ->all();
+    
+        // Проверка на наличие ответов
+        if (empty($answers)) {
+            throw new \yii\web\NotFoundHttpException('Запись не найдена');
         }
+    
         $result = [];
         foreach ($answers as $answer) {
             $result[] = [
                 'id' => $answer->id,
-                'text' => $answer->answer_text, 
-                'question_id' => [
-                    'text' => $answer->question->text, // Здесь 'title' - поле вопроса, вы можете изменить на нужное вам
+                'text' => $answer->answer_text,
+                'question' => [
+                    'text' => $answer->question->text, // Здесь 'text' - поле вопроса
+                    'test_id' => $answer->question->test_id,
+                    'id' => $answer->question->id,
                 ],
             ];
         }
