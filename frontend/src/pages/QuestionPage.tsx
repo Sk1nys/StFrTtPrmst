@@ -68,7 +68,6 @@ const TestPage: FC = () => {
         updatedAnswers[questionId] = updatedAnswers[questionId].filter(id => id !== answerId);
       }
 
-      console.log('Updated Answers:', updatedAnswers);
 
       const correctAnswers = groupedData[questionId]?.filter(item => item.iscorrect).map(item => item.id) || [];
       const incorrectAnswers = groupedData[questionId]?.filter(item => !item.iscorrect).map(item => item.id) || [];
@@ -121,7 +120,7 @@ const TestPage: FC = () => {
     try {
       const response = await axios.post('http://localhost:8000/result/create', payload, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
       console.log('Results submitted successfully:', response.data);

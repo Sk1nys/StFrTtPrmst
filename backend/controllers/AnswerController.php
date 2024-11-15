@@ -65,7 +65,6 @@ class AnswerController extends Controller
         // Получаем ответы и присоединяем связанные вопросы, добавляя проверку на test_id
         $answers = Answers::find()
             ->joinWith('question') // Присоединяем связанную модель Questions
-
             ->andWhere(['questions.test_id' => $test_id]) // Условия для test_id
             ->all();
     
