@@ -12,19 +12,21 @@ import Path9 from '../../assets/NS9.jpg';
 import { useHeight } from '../HeightContext';
 
 const NeedStay: React.FC = () => {
-const {getTotalHeight} = useHeight();
-const totalHeight = getTotalHeight();
-
+  const { getTotalHeight } = useHeight();
+  const totalHeight = getTotalHeight();
+const [WidthScreen, SetWidthScreen]= useState(0);
   const centralBlockRef = useRef<HTMLDivElement | null>(null);
-  const placeholderRef = useRef<HTMLDivElement | null>(null);
   const [isFixed, setIsFixed] = useState(false);
   const [isAbsolute, setIsAbsolute] = useState(false);
   const [containerHeight, setContainerHeight] = useState(0);
+  const [scaleValue, setScaleValue] = useState(0);
   const [showTextBlock, setShowTextBlock] = useState(false);
-  const scrollLimit = totalHeight+175+135;
-  const scrollLimitUnset = scrollLimit + 650;
-
+  const height = window.innerHeight;
+  const scrollLimit = totalHeight + 175 + 135;
+  const scrollLimitUnset = scrollLimit + height;
   useEffect(() => {
+SetWidthScreen(window.screen.width);
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
@@ -32,11 +34,13 @@ const totalHeight = getTotalHeight();
       const scaleEnd = scrollLimit + viewportHeight * 0.8;
       let scaleProgress = (scrollY - scaleStart) / (scaleEnd - scaleStart);
       scaleProgress = Math.max(0, Math.min(1, scaleProgress));
-      const scaleValue = 1 + scaleProgress * 2.4;
+       setScaleValue( 1 + scaleProgress * 2.4);
       const gridChange = 5 - scaleProgress * 2.8;
 
       if (centralBlockRef.current) {
-        centralBlockRef.current.style.transform = `scale(${scaleValue})`;
+        if (!isAbsolute) {
+          centralBlockRef.current.style.transform = `scale(${scaleValue})`;
+        }
         centralBlockRef.current.style.columnGap = `${gridChange - 2}vw`;
         centralBlockRef.current.style.rowGap = `${gridChange - 2}vh`;
       }
@@ -44,9 +48,8 @@ const totalHeight = getTotalHeight();
       if (scrollY >= scrollLimit && scrollY <= scrollLimitUnset) {
         setIsFixed(true);
         setIsAbsolute(false);
-        if (centralBlockRef.current && placeholderRef.current) {
+        if (centralBlockRef.current) {
           setContainerHeight(centralBlockRef.current.offsetHeight);
-          placeholderRef.current.style.height = `${centralBlockRef.current.offsetHeight}px`;
         }
       } else if (scrollY > scrollLimitUnset) {
         setIsFixed(false);
@@ -67,7 +70,7 @@ const totalHeight = getTotalHeight();
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [scrollLimit, scrollLimitUnset, containerHeight]);
+  }, [scrollLimit, scrollLimitUnset, containerHeight, isAbsolute, scaleValue]);
 
   const images = [
     { id: 1, src: Path1, alt: 'Image 1' },
@@ -82,35 +85,34 @@ const totalHeight = getTotalHeight();
   ];
 
   return (
-    <section style={{ width: '100%', height: '345vh' }}>
+    <section style={{ width: '100%', height: '385vh' }}>
       <div className={styles.container}>
         <div className={styles.content}>
           <h3 className={styles.heading}>Большой потенциал</h3>
           <div className={styles.description}>Вы должны нам денег</div>
         </div>
       </div>
-      <div ref={placeholderRef} style={{ height: isFixed || isAbsolute ? `${containerHeight}px` : 'auto' }} />
       <div
         className={styles.animation_container}
         style={{
           position: isFixed ? 'fixed' : isAbsolute ? 'absolute' : 'relative',
-          top: isFixed ? '0' : isAbsolute ? `${scrollLimitUnset - containerHeight-200}px` : 'auto',
+          top: isFixed ? '0' : isAbsolute ? `${scrollLimitUnset - containerHeight * 1.05}px` : 'auto',
           left: '0',
           width: '100%',
           transition: 'position 0.1s ease-in-out, transform 0.1s ease-in-out',
-          height: showTextBlock? '339vh' : '100vh'
+          height: showTextBlock ? '300vh' : '100vh',
         }}
       >
-        <div className={styles.sticky_content} style={{height: showTextBlock? '338vh' : '100vh'}}>
+        <div className={styles.sticky_content} style={{ height: showTextBlock ? '299vh' : '100vh' }}>
           <div ref={centralBlockRef} className={styles.grid_containerNS}>
             {images.map((image, index) => (
               <div
                 key={index}
                 className={`${styles.grid_item} ${index === 4 ? styles.center_item : ''}`}
                 style={{
-                  opacity: index === 7? 1:1,
+                  opacity: index === 7 ? 1 : 1,
                   transition: 'opacity 0.5s ease-in-out',
-                  zIndex: 999
+                  zIndex: 999,
                 }}
               >
                 {index === 7 && showTextBlock ? (
@@ -119,7 +121,13 @@ const totalHeight = getTotalHeight();
                     <p>Это пример текстового блока, который заменяет изображение.</p>
                   </div>
                 ) : (
-                  <img src={image.src} alt={image.alt} />
+                  <img 
+                  
+                  style={{
+                    
+                    maxWidth: index ===4? (showTextBlock? `${WidthScreen}px`:'100%') : '100%',
+                    transform: index === 4 ?(showTextBlock?`scaleX(${2.5 / scaleValue})`: 'none')  : 'none',
+                  }} src={image.src} alt={image.alt} />
                 )}
               </div>
             ))}
