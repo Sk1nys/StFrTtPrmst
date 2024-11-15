@@ -1,8 +1,14 @@
-// import React from 'react'
+ import React, { useRef } from 'react'
+import styles from './styles/ProfTestPage.module.scss'
 
-const ProfTestPage = () => {
+const ProfTestPage: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+
   return (
-    <div>ProfTestPage</div>
+    <canvas className={styles.profCanvas} ref={canvasRef}>
+
+    </canvas>
   )
 }
 
