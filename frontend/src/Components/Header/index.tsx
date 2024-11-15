@@ -9,7 +9,9 @@ interface HeaderProps {
   isBurgerOpen: boolean;
 }
 const Header:  React.FC<HeaderProps> = ({ isBurgerOpen }) => {
-  const [cookies] = useCookies(['username']);
+  const [cookies] = useCookies(['username','id']);
+  const userId = cookies.id;
+
   const [isBurger, setIsBurger] = useState(false);
   useEffect(() => {
     return () => {
@@ -39,7 +41,7 @@ const Header:  React.FC<HeaderProps> = ({ isBurgerOpen }) => {
             </Link>
 
 
-            <Link to={cookies.username ? "/profile" : "/auth"} className={styles.link}>
+            <Link to={cookies.username ? `/profile/${userId}` : "/auth"} className={styles.link}>
       {cookies.username ? (
         isBurger ? (
           <ButtonAroundBorder>{cookies.username}</ButtonAroundBorder>

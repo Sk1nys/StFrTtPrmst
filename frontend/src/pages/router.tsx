@@ -10,6 +10,7 @@ import ProfTestPage from "./ProfTestPage.tsx";
 import RegPage from "./RegPage.tsx";
 import TestPage from "./TestPage.tsx";
 import QuestionPage from "./QuestionPage.tsx";
+import ProfilePage from "./ProfilePage.tsx";
 const Router: FC = () => {
 
   const routeConfig: RouteType[] = [
@@ -53,12 +54,17 @@ const Router: FC = () => {
       path: "/question:id?",
       element: <QuestionPage />,
     },
-    
+    {
+      title: "/ProfilePage",
+      path: "/profile:id?",
+      element: <QuestionPage />,
+    },
   ];
 
   return (
     <Suspense>
       <Routes>
+      <Route path="/profile/:id" Component={ProfilePage} />
       <Route path="/test/:id" Component={TestPage} />
       <Route path="/question/:id" Component={QuestionPage} />
 
