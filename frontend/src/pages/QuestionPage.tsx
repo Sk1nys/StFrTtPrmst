@@ -13,6 +13,7 @@ interface DataItem {
 interface Question {
   id: number;
   text: string;
+  type: string;
 }
 
 const TestPage: FC = () => {
@@ -22,9 +23,9 @@ const TestPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [groupedData, setGroupedData] = useState<Record<number, DataItem[]>>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [answers, setAnswers] = useState<Record<number, number[]>>({});
+  const [answers, setAnswers] = useState<Record<number, number[]>>(JSON.parse(localStorage.getItem('answers') || '{}'));
   const [cookies, setCookie] = useCookies(['id']);
-  const [score, setScore] = useState<number>(0);
+  const [score, setScore] = useState<number>(JSON.parse(localStorage.getItem('score') || '0'));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +55,14 @@ const TestPage: FC = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    localStorage.setItem('answers', JSON.stringify(answers));
+  }, [answers]);
+
+  useEffect(() => {
+    localStorage.setItem('score', JSON.stringify(score));
+  }, [score]);
+
   const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>, questionId: number, answerId: number) => {
     setAnswers((prevAnswers) => {
       const updatedAnswers = { ...prevAnswers };
@@ -68,9 +77,8 @@ const TestPage: FC = () => {
         updatedAnswers[questionId] = updatedAnswers[questionId].filter(id => id !== answerId);
       }
 
-
-      const correctAnswers = groupedData[questionId]?.filter(item => item.iscorrect).map(item => item.id) || [];
-      const incorrectAnswers = groupedData[questionId]?.filter(item => !item.iscorrect).map(item => item.id) || [];
+      const correctAnswers = Object.values(groupedData).flat().filter(item => item.iscorrect).map(item => item.id);
+      const incorrectAnswers = Object.values(groupedData).flat().filter(item => !item.iscorrect).map(item => item.id);
       let newScore = 0;
 
       Object.keys(updatedAnswers).forEach(questionIdStr => {
@@ -81,7 +89,7 @@ const TestPage: FC = () => {
         // Если среди выбранных ответов есть неправильный, не добавляем очки
         const hasIncorrectAnswer = selectedAnswers.some(answerId => incorrectAnswers.includes(answerId));
         if (!hasIncorrectAnswer) {
-          newScore += selectedAnswers.filter(answerId => correctAnswersForQuestion.includes(answerId)).length;
+          newScore += selectedAnswers.filter(answerId => correctAnswers.includes(answerId)).length;
         }
       });
 
@@ -91,7 +99,7 @@ const TestPage: FC = () => {
   };
 
   const handleNextQuestion = () => {
-    setCurrentQuestionIndex((prevIndex) => (prevIndex < questionKeys.length - 1 ? prevIndex + 1 : prevIndex));
+    setCurrentQuestionIndex((prevIndex) => (prevIndex < Object.keys(groupedData).length - 1 ? prevIndex + 1 : prevIndex));
   };
 
   const handlePreviosQuestion = () => {
@@ -117,6 +125,8 @@ const TestPage: FC = () => {
       user_id: user_id,
     };
 
+    console.log('Payload:', payload); // Debugging log
+
     try {
       const response = await axios.post('http://localhost:8000/result/create', payload, {
         headers: {
@@ -124,6 +134,12 @@ const TestPage: FC = () => {
         },
       });
       console.log('Results submitted successfully:', response.data);
+
+      // Очистка локального хранилища после успешной отправки
+      localStorage.removeItem('answers');
+      localStorage.removeItem('score');
+      setAnswers({});
+      setScore(0);
     } catch (error: any) {
       console.error('Error submitting results:', error);
     }

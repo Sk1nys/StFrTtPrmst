@@ -25,23 +25,58 @@ const Header:  React.FC<HeaderProps> = ({ isBurgerOpen }) => {
       isBurgerOpen ? styles.headerOpen : styles.headerClosed
     }`}>
         <div className={styles.header}>
-        <Link to="/create" className={styles.link}>
-        {isBurger? <ButtonAroundBorder children='Создать тест'/> :  <ButtonSquish className={styles.header_button}>СОЗДАТЬ ТЕСТ</ButtonSquish>}
-        
-        </Link>
-        <Link to="/list" className={styles.link}>
-            {isBurger? <ButtonAroundBorder children='Список тестов'/> :    <ButtonSquish className={styles.header_button}>СПИСОК ТЕСТОВ</ButtonSquish>}
 
-            </Link>
+        <Link to={cookies.username ?  "/create":`/auth`} className={styles.link}>
+      {cookies.username ? (
+        isBurger ? (
+          <ButtonAroundBorder>СОЗДАТЬ ТЕСТ</ButtonAroundBorder>
+        ) : (
+          <ButtonSquish className={styles.header_button}>СОЗДАТЬ ТЕСТ</ButtonSquish>
+        )
+      ) : (
+        isBurger ? (
+          <ButtonAroundBorder>СОЗДАТЬ ТЕСТ</ButtonAroundBorder>
+        ) : (
+          <ButtonSquish className={styles.header_button}>СОЗДАТЬ ТЕСТ</ButtonSquish>
+        )
+      )}
+    </Link> 
+            <Link to={cookies.username ?  "/list":`/auth`} className={styles.link}>
+      {cookies.username ? (
+        isBurger ? (
+          <ButtonAroundBorder>СПИСОК ТЕСТОВ</ButtonAroundBorder>
+        ) : (
+          <ButtonSquish className={styles.header_button}>СПИСОК ТЕСТОВ</ButtonSquish>
+        )
+      ) : (
+        isBurger ? (
+          <ButtonAroundBorder>СПИСОК ТЕСТОВ</ButtonAroundBorder>
+        ) : (
+          <ButtonSquish className={styles.header_button}>СПИСОК ТЕСТОВ</ButtonSquish>
+        )
+      )}
+    </Link>
+            
             {isBurger? <div className={styles.logocon}><div className={styles.logoMb}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div></div>:<div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div> }
              
-            
-            <Link to="/proftest" className={styles.link}>
-            {isBurger? <ButtonAroundBorder children='Наш тест'/> :     <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish> }
-            </Link>
 
+      <Link to={cookies.username ?  "/proftest":`/auth`} className={styles.link}>
+      {cookies.username ? (
+        isBurger ? (
+          <ButtonAroundBorder>НАШ ТЕСТ</ButtonAroundBorder>
+        ) : (
+          <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish>
+        )
+      ) : (
+        isBurger ? (
+          <ButtonAroundBorder>НАШ ТЕСТ</ButtonAroundBorder>
+        ) : (
+          <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish>
+        )
+      )}
+    </Link>
 
-            <Link to={cookies.username ? `/profile/${userId}` : "/auth"} className={styles.link}>
+      <Link to={cookies.username ? `/profile/${userId}` : "/auth"} className={styles.link}>
       {cookies.username ? (
         isBurger ? (
           <ButtonAroundBorder>{cookies.username}</ButtonAroundBorder>
