@@ -63,7 +63,8 @@
 }
 .dataItem>p:nth-child(2){
    border: 2px solid black;
-   max-width: 50%;
+   
+   width: 50%;
    border-radius: 8px;
    margin-top: 10px;
    margin-bottom: 10px;
@@ -78,9 +79,12 @@
     bottom: 5%;
 }
 @media (max-width:1000px) {
+    .dataList{
+        width: 90%;
+    }
     .dataItem{
 margin: 0;
-padding: 10px;
+padding: 20px;
 margin-top: 10px;
     }
     .dataItem>a{
@@ -89,7 +93,7 @@ margin-top: 10px;
     }
     .dataItem>p:nth-child(2){
         margin-left: 2px;
-        max-width: 90%;
+        width: 90%;
     }
     
     .dataItem>p:nth-child(3){

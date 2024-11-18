@@ -36,13 +36,19 @@ const DataFetchingComponent: React.FC = () => {
 
   // Отображение состояния
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  //if (error) return <div>Error: {error}</div>;
 
   // Генерация HTML из данных
   return (
     <div className={styles.listMain}>
       <div className={styles.hedlist}> <Link to="/home" className={styles.linkii}><ButtonSquish className={styles.header_button}>НАЗАД</ButtonSquish></Link><h1>СПИСОК ТЕСТОВ</h1></div>
       <div className={styles.dataList}>
+      <div  className={styles.dataItem}>
+              <a href="pox">Обзорный тест</a> {/* название */}
+              <p>НАШ ТЕСТ</p> {/* описание */}
+              <p>Программирование</p> {/* предмет */}
+              <p>Неизвестно</p> {/* дата */}
+            </div>
         {data.length > 0 ? (
           data.map((item) => (
             <div key={item.id} className={styles.dataItem}>
