@@ -1,7 +1,7 @@
 .ButtonSquish {
 	position: relative;
 	background-color: #E7DFFE;
-	border: 1px solid #E7DFFE;
+	border: 2px solid #E7DFFE;
 	color: #242424;
 	border-radius: 0.5em;
 	font-size:  calc(11px + 9 * (100vw / 1980));
@@ -25,7 +25,7 @@
 	}
 
 	&:hover{
-		font-weight: 700;
+		
 		border: 2px solid #313131;
 	}
 	&:after {

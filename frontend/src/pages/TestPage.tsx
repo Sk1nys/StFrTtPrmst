@@ -1,6 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
+import { Link } from "react-router-dom";
+import ButtonSquish from '../Components/Buttons/ButtonSquish'
+import styles from "./styles/TestPage.module.scss"
 
 // Интерфейс для данных, которые мы получаем с сервера
 interface Data {
@@ -36,22 +39,28 @@ const TestPage: FC = () => {
 
     // Условный рендеринг в зависимости от состояния загрузки и ошибок
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    //if (error) return <div>Error: {error.message}</div>;
 
     return (
-        <div>
-            <h1>Test Page for ID: {id}</h1>
+        <div className={styles.DescContainer}>
+            <div className={styles.hedlist}> <Link to="/list" className={styles.linkii}><ButtonSquish className={styles.header_button}>НАЗАД</ButtonSquish></Link><h1>ОПИСАНИЕ</h1></div>
             {data ? (
-                <div>
+                <div className={styles.blockDescriptoins}>
                     <h3>{data.title}</h3> {/* Название */}
                     <p>{data.description}</p> {/* Описание */}
                     <p>{data.subject}</p> {/* Предмет */}
                     <p>{data.data}</p> {/* Дата */}
                 </div>
             ) : (
-                <div>No data available</div>
+                <div className={styles.blockDescriptoins}>
+                <h3>Название</h3> {/* Название */}
+                <p>Описание</p> {/* Описание */}
+                <p>Предмет</p> {/* Предмет */}
+                <p>Дата</p> {/* Дата */}
+            </div>
+                //<div>No data available</div>
             )}
-            <button> <a href={`/question/${id}`}>ТАК НАЗЫВАЕМАЯ КНОПКА НАЧАТЬ ТЕСТ</a></button>
+           <ButtonSquish className={styles.header_button}> <a href={`/question/${id}`}>НАЧАТЬ ТЕСТ</a></ButtonSquish>
         </div>
         
     );
