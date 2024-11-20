@@ -140,15 +140,17 @@ margin-bottom: -1px;
 
   @media screen and (max-width: 800px) {
 .text{
-  padding: 5% 0;
+  padding: 7% 0;
 }
   }
   @media screen and (max-width: 600px) {
    
     .grid_containerBenef {
       grid-template-columns: 1fr;
+      padding-bottom: 10%;
       grid-template-rows: repeat(6, 0.3fr);
     }
+    
     .kartinka1{
       height: 100%;
     }
