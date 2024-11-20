@@ -13,7 +13,7 @@ interface DataItem {
 interface Question {
   id: number;
   text: string;
-  type: string;
+  type: number;
 }
 
 const TestPage: FC = () => {
@@ -23,7 +23,9 @@ const TestPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [groupedData, setGroupedData] = useState<Record<number, DataItem[]>>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [answers, setAnswers] = useState<Record<number, number[]>>(JSON.parse(localStorage.getItem('answers') || '{}'));
+  const [answers, setAnswers] = useState<Record<number, number[] | string | number>>(
+    JSON.parse(localStorage.getItem('answers') || '{}')
+  );
   const [cookies, setCookie] = useCookies(['id']);
   const [score, setScore] = useState<number>(JSON.parse(localStorage.getItem('score') || '0'));
 
@@ -63,43 +65,75 @@ const TestPage: FC = () => {
     localStorage.setItem('score', JSON.stringify(score));
   }, [score]);
 
-  const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>, questionId: number, answerId: number) => {
+  const handleAnswerChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    questionId: number,
+    answerId?: number
+  ) => {
     setAnswers((prevAnswers) => {
       const updatedAnswers = { ...prevAnswers };
-      if (!updatedAnswers[questionId]) {
-        updatedAnswers[questionId] = [];
-      }
-      if (e.target.checked) {
-        if (!updatedAnswers[questionId].includes(answerId)) {
-          updatedAnswers[questionId].push(answerId);
+      if (answerId !== undefined) {
+        if (!Array.isArray(updatedAnswers[questionId])) {
+          updatedAnswers[questionId] = [];
+        }
+        if (e.target.type === 'checkbox') {
+          if (e.target.checked) {
+            if (!updatedAnswers[questionId].includes(answerId)) {
+              updatedAnswers[questionId].push(answerId);
+            }
+          } else {
+            updatedAnswers[questionId] = (updatedAnswers[questionId] as number[]).filter(
+              (id) => id !== answerId
+            );
+          }
+        } else if (e.target.type === 'radio') {
+          updatedAnswers[questionId] = answerId;
         }
       } else {
-        updatedAnswers[questionId] = updatedAnswers[questionId].filter(id => id !== answerId);
+        updatedAnswers[questionId] = e.target.value;
       }
 
-      const correctAnswers = Object.values(groupedData).flat().filter(item => item.iscorrect).map(item => item.id);
-      const incorrectAnswers = Object.values(groupedData).flat().filter(item => !item.iscorrect).map(item => item.id);
       let newScore = 0;
 
-      Object.keys(updatedAnswers).forEach(questionIdStr => {
+      Object.keys(updatedAnswers).forEach((questionIdStr) => {
         const qId = Number(questionIdStr);
         const selectedAnswers = updatedAnswers[qId];
-        const correctAnswersForQuestion = groupedData[qId]?.filter(item => item.iscorrect).map(item => item.id) || [];
+        const questionData = groupedData[qId] || [];
 
-        // Если среди выбранных ответов есть неправильный, не добавляем очки
-        const hasIncorrectAnswer = selectedAnswers.some(answerId => incorrectAnswers.includes(answerId));
-        if (!hasIncorrectAnswer) {
-          newScore += selectedAnswers.filter(answerId => correctAnswers.includes(answerId)).length;
+        if (Array.isArray(selectedAnswers)) {
+          const correctAnswersForQuestion =
+            questionData.filter((item) => item.iscorrect).map((item) => item.id) || [];
+          const hasIncorrectAnswer = (selectedAnswers as number[]).some(
+            (answerId) => questionData.find((item) => item.id === answerId && !item.iscorrect)
+          );
+          if (!hasIncorrectAnswer) {
+            newScore += (selectedAnswers as number[]).filter((answerId) =>
+              correctAnswersForQuestion.includes(answerId)
+            ).length;
+          }
+        } else if (typeof selectedAnswers === 'number') {
+          const correctAnswerId = questionData.find((item) => item.iscorrect)?.id;
+          if (correctAnswerId === selectedAnswers) {
+            newScore += 1;
+          }
+        } else {
+          const correctAnswer = questionData.find((item) => item.iscorrect)?.text.trim().toLowerCase();
+          if (correctAnswer && (selectedAnswers as string).trim().toLowerCase() === correctAnswer) {
+            newScore += 1;
+          }
         }
       });
 
       setScore(newScore);
+
       return updatedAnswers;
     });
   };
 
   const handleNextQuestion = () => {
-    setCurrentQuestionIndex((prevIndex) => (prevIndex < Object.keys(groupedData).length - 1 ? prevIndex + 1 : prevIndex));
+    setCurrentQuestionIndex((prevIndex) =>
+      prevIndex < Object.keys(groupedData).length - 1 ? prevIndex + 1 : prevIndex
+    );
   };
 
   const handlePreviosQuestion = () => {
@@ -113,7 +147,8 @@ const TestPage: FC = () => {
     const date = new Date().toISOString();
 
     const total_score = Object.keys(groupedData).reduce((acc, questionId) => {
-      const correctAnswers = groupedData[Number(questionId)].filter(item => item.iscorrect).length;
+      const correctAnswers = groupedData[Number(questionId)].filter((item) => item.iscorrect)
+        .length;
       return acc + correctAnswers;
     }, 0);
 
@@ -125,7 +160,7 @@ const TestPage: FC = () => {
       user_id: user_id,
     };
 
-    console.log('Payload:', payload); // Debugging log
+    console.log('Payload:', payload);
 
     try {
       const response = await axios.post('http://localhost:8000/result/create', payload, {
@@ -135,7 +170,6 @@ const TestPage: FC = () => {
       });
       console.log('Results submitted successfully:', response.data);
 
-      // Очистка локального хранилища после успешной отправки
       localStorage.removeItem('answers');
       localStorage.removeItem('score');
       setAnswers({});
@@ -158,21 +192,49 @@ const TestPage: FC = () => {
         {currentQuestion.length > 0 ? (
           <div className="question-group">
             <h3>{currentQuestion[0].question.text}</h3>
-            {currentQuestion.map((item) => (
-              <div key={item.id} className="data-item">
-                <label htmlFor={`answer-${item.id}`}>{item.text}</label>
-                <input
-                  type="checkbox"
-                  id={`answer-${item.id}`}
-                  name={`answer-${item.id}`}
-                  onChange={(e) => handleAnswerChange(e, item.question.id, item.id)}
-                  checked={answers[item.question.id]?.includes(item.id) || false}
-                />
-                <span style={{ color: item.iscorrect ? 'green' : 'red' }}>
-                  {item.iscorrect ? '✓' : '✗'}
-                </span>
-              </div>
-            ))}
+            <p>Тип вопроса: {currentQuestion[0].question.type}</p>
+            {currentQuestion[0].question.type === 2 ? (
+              <input
+                type="text"
+                onChange={(e) => handleAnswerChange(e, currentQuestion[0].question.id)}
+                value={answers[currentQuestion[0].question.id] as string || ''}
+              />
+            ) : currentQuestion[0].question.type === 3 ? (
+              currentQuestion.map((item) => (
+                <div key={item.id} className="data-item">
+                  <label htmlFor={`answer-${item.id}`}>{item.text}</label>
+                  <input
+                    type="radio"
+                    id={`answer-${item.id}`}
+                    name={`answer-${currentQuestion[0].question.id}`}
+                    onChange={(e) => handleAnswerChange(e, item.question.id, item.id)}
+                    checked={answers[item.question.id] === item.id}
+                  />
+                  <span style={{ color: item.iscorrect ? 'green' : 'red' }}>
+                    {item.iscorrect ? '✓' : '✗'}
+                  </span>
+                </div>
+              ))
+            ) : (
+              currentQuestion.map((item) => (
+                <div key={item.id} className="data-item">
+                  <label htmlFor={`answer-${item.id}`}>{item.text}</label>
+                  <input
+                    type="checkbox"
+                    id={`answer-${item.id}`}
+                    name={`answer-${item.id}`}
+                    onChange={(e) => handleAnswerChange(e, item.question.id, item.id)}
+                    checked={
+                      Array.isArray(answers[item.question.id]) &&
+                      (answers[item.question.id] as number[]).includes(item.id)
+                    }
+                  />
+                  <span style={{ color: item.iscorrect ? 'green' : 'red' }}>
+                    {item.iscorrect ? '✓' : '✗'}
+                  </span>
+                </div>
+              ))
+            )}
           </div>
         ) : (
           <p>No data available</p>
@@ -194,7 +256,7 @@ const TestPage: FC = () => {
         )}
       </form>
       <div>
-        <h2>Score: {score}</h2> {/* Добавлено отображение счета */}
+        <h2>Score: {score}</h2>
       </div>
     </div>
   );

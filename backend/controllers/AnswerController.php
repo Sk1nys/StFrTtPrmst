@@ -83,6 +83,7 @@ class AnswerController extends Controller
                     'text' => $answer->question->text, // Здесь 'text' - поле вопроса
                     'test_id' => $answer->question->test_id,
                     'id' => $answer->question->id,
+                    'type' => $answer->question->type,
                 ],
             ];
         }
