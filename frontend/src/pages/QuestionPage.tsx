@@ -16,6 +16,10 @@ interface Question {
   type: number;
 }
 
+const shuffleArray = (array: any[]) => {
+  return array.sort(() => Math.random() - 0.5);
+};
+
 const TestPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<DataItem[]>([]);
@@ -184,7 +188,7 @@ const TestPage: FC = () => {
 
   const questionKeys = Object.keys(groupedData);
   const currentQuestionKey = questionKeys[currentQuestionIndex];
-  const currentQuestion = currentQuestionKey ? groupedData[Number(currentQuestionKey)] : [];
+  const currentQuestion = currentQuestionKey ? shuffleArray(groupedData[Number(currentQuestionKey)]) : [];
 
   return (
     <div>
@@ -249,7 +253,7 @@ const TestPage: FC = () => {
             <input type="button" value="Следующий вопрос" onClick={handleNextQuestion} />
           )}
         </div>
-        {currentQuestionIndex === questionKeys.length - 1 && (
+        {currentQuestionIndex === questionKeys.length -  1 && (
           <div>
             <button type="submit">Отправить ответы</button>
           </div>
