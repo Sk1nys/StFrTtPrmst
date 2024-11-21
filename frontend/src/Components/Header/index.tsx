@@ -60,7 +60,7 @@ const Header:  React.FC<HeaderProps> = ({ isBurgerOpen }) => {
             {isBurger? <div className={styles.logocon}><div className={styles.logoMb}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div></div>:<div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div> }
              
 
-      <Link to={cookies.username ?  "/proftest":`/proftest`} className={styles.link}>
+      <Link to={cookies.username ?  "/proftest":`/auth`} className={styles.link}>
       {cookies.username ? (
         isBurger ? (
           <ButtonAroundBorder>НАШ ТЕСТ</ButtonAroundBorder>
