@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+import styles from "./styles/QuestPage.module.scss";
 
 interface DataItem {
   id: number;
@@ -192,10 +193,11 @@ const TestPage: FC = () => {
   const currentQuestion = currentQuestionKey ? groupedData[currentQuestionKey] : [];
 
   return (
-    <div>
-      <form className="data-list" onSubmit={handleSubmit}>
+    <div className={styles.QuestCon}>
+      <div className={styles.hedlist}><button>НАЗАД</button> <h1>Название Теста</h1></div>
+      <form className={styles.questionGroup} onSubmit={handleSubmit}>
         {currentQuestion.length > 0 ? (
-          <div className="question-group">
+          <div >
             <h3>{currentQuestion[0].question.text}</h3>
             <p>Тип вопроса: {currentQuestion[0].question.type}</p>
             {currentQuestion[0].question.type === 2 ? (
@@ -207,17 +209,15 @@ const TestPage: FC = () => {
             ) : currentQuestion[0].question.type === 3 ? (
               currentQuestion.map((item) => (
                 <div key={item.id} className="data-item">
-                  <label htmlFor={`answer-${item.id}`}>{item.text}</label>
                   <input
                     type="radio"
+                    className={styles.rad1}
                     id={`answer-${item.id}`}
                     name={`answer-${currentQuestion[0].question.id}`}
                     onChange={(e) => handleAnswerChange(e, item.question.id, item.id)}
                     checked={answers[item.question.id] === item.id}
                   />
-                  <span style={{ color: item.iscorrect ? 'green' : 'red' }}>
-                    {item.iscorrect ? '✓' : '✗'}
-                  </span>
+                  <label className={styles.radlab} htmlFor={`answer-${item.id}`}>{item.text}</label>
                 </div>
               ))
             ) : (
@@ -234,18 +234,15 @@ const TestPage: FC = () => {
                       (answers[item.question.id] as number[]).includes(item.id)
                     }
                   />
-                  <span style={{ color: item.iscorrect ? 'green' : 'red' }}>
-                    {item.iscorrect ? '✓' : '✗'}
-                  </span>
                 </div>
               ))
             )}
           </div>
         ) : (
-          <p>No data available</p>
+         <p>No data available</p>
         )}
 
-        <div>
+        <div className={styles.PrevNext}>
           {currentQuestionIndex > 0 && (
             <input type="button" value="Преведущий вопрос" onClick={handlePreviosQuestion} />
           )}
