@@ -1,5 +1,6 @@
  import React, { useEffect, useRef } from 'react'
 import styles from './styles/ProfTestPage.module.scss'
+import ButtonShine from '../Components/Buttons/ButtonShine';
 
 const ProfTestPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -12,17 +13,21 @@ useEffect(() => {
   }
   interface Color { r: number; g: number; b: number; }
   class pointerPrototype {
-    
+    id: number;
     x: number;
     y: number;
     dx: number;
     dy: number;
     color: Color;
     moved: boolean;
+    down: boolean;
+ 
     constructor() {
         this.x = this.y = this.dx = this.dy = 0;
         this.color = generateColor();
         this.moved = false;
+        this.down = false;
+        this.id = -1;
     }
 }
 const pointers = [new pointerPrototype()];
@@ -878,15 +883,40 @@ canvas?.addEventListener('mousemove', e => {
   pointers[0].x = e.offsetX;
   pointers[0].y = e.offsetY;
 });
-canvas?.addEventListener('touchstart', (e: TouchEvent) => {
-  const touch = e.touches[0];
-  pointers[0].moved = true;
-  pointers[0].dx = (touch.clientX - pointers[0].x) * 5.0;
-  pointers[0].dy = (touch.clientY - pointers[0].y) * 5.0;
-  pointers[0].x = touch.clientX;
-  pointers[0].y = touch.clientY;
+canvas?.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const touches = e.targetTouches;
+  for (let i = 0; i < touches.length; i++) {
+      const pointer = pointers[i];
+      pointer.moved = pointer.down;
+      pointer.dx = (touches[i].pageX - pointer.x) * 8.0;
+      pointer.dy = (touches[i].pageY - pointer.y) * 8.0;
+      pointer.x = touches[i].pageX;
+      pointer.y = touches[i].pageY;
+  }
+}, false);
+window.addEventListener('touchend', e => {
+  const touches = e.changedTouches;
+  for (let i = 0; i < touches.length; i++)
+      for (let j = 0; j < pointers.length; j++)
+          if (touches[i].identifier == pointers[j].id)
+              pointers[j].down = false;
 });
+canvas?.addEventListener('touchstart', e => {
 
+  e.preventDefault();
+  const touches = e.targetTouches;
+  for (let i = 0; i < touches.length; i++) {
+      if (i >= pointers.length)
+          pointers.push(new pointerPrototype());
+
+      pointers[i].id = touches[i].identifier;
+      pointers[i].down = true;
+      pointers[i].x = touches[i].pageX;
+      pointers[i].y = touches[i].pageY;
+     
+  }
+});
 function generateColor () {
 const c = HSVtoRGB(0.08, 0.6, 1.0);
   return { r: c.r * 0.15, g: c.g * 0.15, b: c.b * 0.15 };
@@ -924,12 +954,15 @@ function getTextureScale (texture: Texture, width: number, height: number) {
     <>
     <div className={styles.prof_container}>
     <div className={styles.centered_info}>
-      <div className={styles.info_text}>
-        Click and drag to move the fluid.
-        <br/>
-        Click and touch to add more sprays.
+     
+       <h1 className={styles.profDesc}>
+        Наш тест
+       </h1>
+       <ButtonShine>
+        запустить тест
+       </ButtonShine>
       </div>  
-</div>
+
 <canvas className={styles.profCanvas} ref={canvasRef}></canvas>
     </div>
    
