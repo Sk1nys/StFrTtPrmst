@@ -4,7 +4,7 @@ interface ButtonShineProps{
 }
 const ButtonShine:React.FC<ButtonShineProps> = ({children}) => {
   return (
-    <button>
+    <button className={styles.shine}>
     <span className={styles.shine_text}>{children}</span>
     <span className={styles.shimmer}></span>
 </button>
