@@ -53,7 +53,7 @@
     font-family: "Moderustic", sans-serif;
     font-size: 3vh;
     text-align: center;
-    padding-top: 10%;
+    padding: 5%;
 }
 .quest>input[type='text']{
     margin: 20px;
@@ -73,7 +73,7 @@
     box-shadow: 0 3px 5px 2px black;
     outline: none;
 }
-.quest>div>input{
+.PrevNext>input{
     margin: 20px;
     padding: 10px;
     border: none;
@@ -83,10 +83,10 @@
     border-bottom: 2px solid black;
     transition: all 0.5s ease-in-out;
 }
-.quest>div>input:hover{
+.PrevNext>input:hover{
     border-bottom: 2px solid rgb(0, 80, 133);
 }
-.quest>div>button{
+.subb>button{
     margin: 20px;
     padding: 10px;
     border: none;
@@ -96,7 +96,7 @@
     border-bottom: 2px solid black;
     transition: all 0.5s ease-in-out;
 }
-.QuestCon>div>h2{
+.quest>div>h2{
     padding: 10px;
     font-family: "Moderustic", sans-serif;
 }
@@ -106,7 +106,7 @@
     min-width: 100px;
     display: flex;
     margin: 10px;
-    padding: 5px;
+    padding: 10px;
     border-radius: 10px;
     flex-direction: row;
     align-items: center;

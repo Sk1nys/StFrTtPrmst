@@ -60,7 +60,7 @@ const TestPage: FC = () => {
             </div>
                 //<div>No data available</div>
             )}
-           <ButtonSquish className={styles.header_button}> <a href={`/question/${id}`}>НАЧАТЬ ТЕСТ</a></ButtonSquish>
+           <a href={`/question/${id}`}><ButtonSquish className={styles.header_button}> НАЧАТЬ ТЕСТ</ButtonSquish></a>
         </div>
         
     );
