@@ -197,9 +197,9 @@ const TestPage: FC = () => {
       <div className={styles.hedlist}><button>НАЗАД</button> <h1>Название Теста</h1></div>
       <form className={styles.questionGroup} onSubmit={handleSubmit}>
         {currentQuestion.length > 0 ? (
-          <div >
+          <div className={styles.quest}>
             <h3>{currentQuestion[0].question.text}</h3>
-            <p>Тип вопроса: {currentQuestion[0].question.type}</p>
+            
             {currentQuestion[0].question.type === 2 ? (
               <input
                 type="text"
@@ -208,7 +208,7 @@ const TestPage: FC = () => {
               />
             ) : currentQuestion[0].question.type === 3 ? (
               currentQuestion.map((item) => (
-                <div key={item.id} className="data-item">
+                <div key={item.id} className={styles.dataItem}>
                   <input
                     type="radio"
                     className={styles.rad1}
@@ -253,13 +253,13 @@ const TestPage: FC = () => {
 
         </div>
         {currentQuestionIndex === shuffledQuestionKeys.length - 1 && (
-          <div>
+          <div className={styles.subb}>
             <button type="submit">Отправить ответы</button>
           </div>
         )}
       </form>
       <div>
-        <h2>Score: {score}</h2>
+        
       </div>
     </div>
   );
