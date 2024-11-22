@@ -26,6 +26,7 @@ const TestPage: FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [groupedData, setGroupedData] = useState<Record<number, DataItem[]>>({});
+  const [shuffledQuestionKeys, setShuffledQuestionKeys] = useState<number[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<Record<number, number[] | string | number>>(
     JSON.parse(localStorage.getItem('answers') || '{}')
@@ -58,6 +59,7 @@ const TestPage: FC = () => {
         return acc;
       }, {} as Record<number, DataItem[]>);
       setGroupedData(result);
+      setShuffledQuestionKeys(shuffleArray(Object.keys(result).map(Number)));
     }
   }, [data]);
 
@@ -136,7 +138,7 @@ const TestPage: FC = () => {
 
   const handleNextQuestion = () => {
     setCurrentQuestionIndex((prevIndex) =>
-      prevIndex < Object.keys(groupedData).length - 1 ? prevIndex + 1 : prevIndex
+      prevIndex < shuffledQuestionKeys.length - 1 ? prevIndex + 1 : prevIndex
     );
   };
 
@@ -186,9 +188,8 @@ const TestPage: FC = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  const questionKeys = Object.keys(groupedData);
-  const currentQuestionKey = questionKeys[currentQuestionIndex];
-  const currentQuestion = currentQuestionKey ? shuffleArray(groupedData[Number(currentQuestionKey)]) : [];
+  const currentQuestionKey = shuffledQuestionKeys[currentQuestionIndex];
+  const currentQuestion = currentQuestionKey ? groupedData[currentQuestionKey] : [];
 
   return (
     <div>
@@ -249,11 +250,12 @@ const TestPage: FC = () => {
             <input type="button" value="Преведущий вопрос" onClick={handlePreviosQuestion} />
           )}
 
-          {currentQuestionIndex < questionKeys.length - 1 && (
+          {currentQuestionIndex < shuffledQuestionKeys.length - 1 && (
             <input type="button" value="Следующий вопрос" onClick={handleNextQuestion} />
           )}
+
         </div>
-        {currentQuestionIndex === questionKeys.length -  1 && (
+        {currentQuestionIndex === shuffledQuestionKeys.length - 1 && (
           <div>
             <button type="submit">Отправить ответы</button>
           </div>
