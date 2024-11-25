@@ -1,6 +1,7 @@
  import React, { useEffect, useRef } from 'react'
 import styles from './styles/ProfTestPage.module.scss'
 import ButtonShine from '../Components/Buttons/ButtonShine';
+import { Link } from 'react-router-dom';
 
 const ProfTestPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -960,9 +961,11 @@ function getTextureScale (texture: Texture, width: number, height: number) {
        <p className={styles.profText}>
       Советуем проходить тест на компьютере
        </p>
-       <ButtonShine>
+       <Link to="/">
+       <ButtonShine className={styles.startButton}>
         начать тест
        </ButtonShine>
+       </Link>
       </div>  
 
 <canvas className={styles.profCanvas} ref={canvasRef}></canvas>
