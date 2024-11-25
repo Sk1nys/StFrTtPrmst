@@ -961,7 +961,7 @@ function getTextureScale (texture: Texture, width: number, height: number) {
       Советуем проходить тест на компьютере
        </p>
        <ButtonShine>
-        запустить тест
+        начать тест
        </ButtonShine>
       </div>  
 
