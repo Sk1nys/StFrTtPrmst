@@ -876,7 +876,6 @@ function multipleSplats (amount: number) {
   }
 }
 canvas?.addEventListener('mousemove', e => {
-  
   pointers[0].moved = true;
   pointers[0].dx = (e.offsetX - pointers[0].x) * 5.0;
   pointers[0].dy = (e.offsetY - pointers[0].y) * 5.0;
@@ -956,8 +955,11 @@ function getTextureScale (texture: Texture, width: number, height: number) {
     <div className={styles.centered_info}>
      
        <h1 className={styles.profDesc}>
-        Наш тест
+        приглашаем вас на проверку знаний о профессии веб-разработчика
        </h1>
+       <p className={styles.profText}>
+      Советуем проходить тест на компьютере
+       </p>
        <ButtonShine>
         запустить тест
        </ButtonShine>
