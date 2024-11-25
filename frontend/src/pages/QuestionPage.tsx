@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import styles from "./styles/QuestPage.module.scss";
+import { Link } from "react-router-dom";
+import ButtonSquish from '../Components/Buttons/ButtonSquish';
 
 interface DataItem {
   id: number;
@@ -194,7 +196,7 @@ const TestPage: FC = () => {
 
   return (
     <div className={styles.QuestCon}>
-      <div className={styles.hedlist}><button>НАЗАД</button> <h1>Название Теста</h1></div>
+      <div className={styles.hedlist}><Link to="/list" className={styles.btnBack}><ButtonSquish>НАЗАД</ButtonSquish></Link> <h1>Название Теста</h1></div>
       <form className={styles.questionGroup} onSubmit={handleSubmit}>
         {currentQuestion.length > 0 ? (
           <div className={styles.quest}>
@@ -222,9 +224,9 @@ const TestPage: FC = () => {
               ))
             ) : (
               currentQuestion.map((item) => (
-                <div key={item.id} className="data-item">
-                  <label htmlFor={`answer-${item.id}`}>{item.text}</label>
+                <div key={item.id} className={styles.dataItem}>
                   <input
+                    className={styles.check}
                     type="checkbox"
                     id={`answer-${item.id}`}
                     name={`answer-${item.id}`}
@@ -234,6 +236,7 @@ const TestPage: FC = () => {
                       (answers[item.question.id] as number[]).includes(item.id)
                     }
                   />
+                  <label htmlFor={`answer-${item.id}`} className={styles.checkboxBtn}>{item.text}</label>
                 </div>
               ))
             )}

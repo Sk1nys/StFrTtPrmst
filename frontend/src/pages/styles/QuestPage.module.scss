@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #E7DFFE;
     justify-content: space-between;
     
 }
@@ -27,7 +28,7 @@
     font-family: "Moderustic", sans-serif;
     font-size: 3.5vh;
 }
-.hedlist>button{
+.btnBack{
     position: absolute;
     left: 30px;
 }
@@ -35,14 +36,15 @@
     width: 50%;
     border:2px solid black;
     border-radius: 15px;
-    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: #E7DFFE;
 }
 .quest{
     position: relative;
+    
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -106,25 +108,63 @@
     min-width: 100px;
     display: flex;
     margin: 10px;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     font-family: "Moderustic", sans-serif
 }
-  .rad1{
-    margin-left:20px;
+.checkboxBtn{
+  position: relative;
+
+  &:before{
+    content:'';
+    position: absolute;
+    top: -5px;
+    left: -40px;
+    @include radio-wh();
+    border:2px solid black;
   }
+  &:after{
+    content:'';
+    position:absolute;
+    top: 5px;
+    left: -35px;
+    @include radio-wh(15px, 15px);
+    background:black;
+    transition: all;
+    opacity:0;
+  }
+}
+.check[type="checkbox"]:checked{
+  & + label::before{
+    animation: checkBtnChk .3s linear forwards;
+  }
+  & + label::after{
+    animation: checkBtnChk2 .3s linear forwards;
+  }
+}
+.check[type="checkbox"]:not(:checked){
+  & + label::before{
+    animation: checkBtnChkAlt .3s linear forwards;
+  }
+  & + label::after{
+    animation: checkBtnChk2Alt .3s linear forwards;
+  }
+}
+.rad1{
+  margin-left:20px;
+}
   .rad1[type="radio"]:checked + label::before{
     animation: flipRadioCir .3s linear forwards;
 }
-.rad1[type='radio']{
+.rad1[type='radio'],input[type='checkbox']{
   opacity:0;
 }
 .radlab{
   color: #000000;
-  margin-right: 20px;
+  
   position: relative;
   
   &:before{
@@ -148,6 +188,53 @@
     opacity:0;
   }
 }
+@keyframes checkBtnChk{
+  0%{
+    height:25px
+  } 
+  100%{
+    top: 10px;
+    left: -30px;
+    height:0px;
+    transform: rotate(-52deg);
+  } 
+}
+@keyframes checkBtnChkAlt{
+  0%{
+    height:0px
+  } 
+  100%{
+    top: -5px;
+    left: -40px;
+    height:25px;
+    transform: rotate(0deg);
+  } 
+}
+@keyframes checkBtnChk2{
+  from{
+    opacity:0;
+  } 
+  to{
+    top:15px;
+    left: -33px;
+    height:5px;
+    width:10px;
+    opacity:1;
+    transform: rotate(40deg);
+  }
+}
+@keyframes checkBtnChk2Alt{
+  from{
+    opacity:1;
+   
+  } 
+  to{
+    height: 0;
+    opacity:0;
+    transform: rotate(0deg);
+  }
+}
+
 @keyframes flipRadioCir{
     from{
       transform: rotateY(0deg);
