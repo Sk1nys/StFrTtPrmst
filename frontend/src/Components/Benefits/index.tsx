@@ -3,8 +3,58 @@ import styles from "./Benefits.module.css";
 import image1 from "../../assets/Benefit1.jpg";
 import image2 from "../../assets/Benefit2.jpg";
 import image3 from "../../assets/benefit3.jpg";
+import { useHeight } from '../HeightContext';
+import scissors from '../../assets/scissors.svg';
 
 const Benefits = () => {
+  const [lineWidth, setLineWidth] = useState<number>(0);
+
+  const scissorsRef = useRef<HTMLImageElement | null>(null);
+  const lineRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (lineRef.current) {
+      setLineWidth(lineRef.current.offsetWidth);
+    }
+
+    const handleResize = () => {
+      if (lineRef.current) {
+        setLineWidth(lineRef.current.offsetWidth);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      const newPosition = lineWidth * scrollPercentage;
+      if (scissorsRef.current && newPosition * 2 < document.body.offsetWidth) {
+        scissorsRef.current.style.transform = `translateX(${newPosition * 4}px)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lineWidth]);
+
+  const { setHeight } = useHeight();
+   const blockRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => { 
+      if (blockRef.current) {
+      const computedStyle = getComputedStyle(blockRef.current);
+
+         setHeight('benefits', blockRef.current.offsetHeight +  parseFloat(computedStyle.marginTop) + 
+         parseFloat(computedStyle.marginBottom)); 
+        }
+ }, [setHeight]);
   const [isVisible1, setIsVisible1] = useState(false);
   const [isVisible2, setIsVisible2] = useState(false);
   const [isVisible3, setIsVisible3] = useState(false);
@@ -139,10 +189,18 @@ const Benefits = () => {
 
   return (
     <>
+       <div className={styles.scroll_container} ref={blockRef}>
+            <div ref={lineRef} className={styles.dashed_line}></div>
+            <img
+              src={scissors}
+              alt=""
+              className={styles.scissors}
+              ref={scissorsRef}
+            />
     <div className={styles.text}>
       Почему вам стоит остаться
     </div>
-      <div className={styles.grid_container}>
+      <div className={styles.grid_containerBenef}>
         <div className={`${styles.grid_item_left} ${styles.grid_item1}`}>
           <div
             className={`${styles.txt_four_page} ${
@@ -255,6 +313,8 @@ const Benefits = () => {
           </div>
         </div>
       </div>
+    <div ref={lineRef} className={styles.dashed_line_end}></div>
+    </div>
     </>
   );
 };

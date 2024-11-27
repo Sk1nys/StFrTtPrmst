@@ -1,0 +1,275 @@
+@mixin radio-wh($w:$radio-btn-width, $h:$radio-btn-height){
+    width:$w;
+    height:$h;
+  }
+  $radio-btn-width:25px;
+  $radio-btn-height:25px;
+.QuestCon{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #E7DFFE;
+    justify-content: space-between;
+    
+}
+.hedlist{
+    margin-bottom: 30px;
+    width: 100%;
+    height: 10vh;
+    background-color: #90b1f8a2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px dashed black;
+}
+.hedlist>h1{
+    font-family: "Moderustic", sans-serif;
+    font-size: 3.5vh;
+}
+.btnBack{
+    position: absolute;
+    left: 30px;
+}
+.questionGroup{
+    width: 50%;
+    border:2px solid black;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #E7DFFE;
+}
+.quest{
+    position: relative;
+    
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.quest>h3{
+    font-family: "Moderustic", sans-serif;
+    font-size: 3vh;
+    text-align: center;
+    padding: 5%;
+}
+.quest>input[type='text']{
+    margin: 20px;
+    padding: 5px;
+    font-family: 'Montserrat', sans-serif;
+    border: 2px solid black;
+    font-size: 16px;
+    color: rgb(184, 184, 214);
+    border-radius: 10px;
+    transition: all 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);;
+}
+.quest>input[type='text']:focus{
+    
+    transition: all 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);;
+    color: black;
+    padding: 10px;
+    box-shadow: 0 3px 5px 2px black;
+    outline: none;
+}
+.PrevNext>input{
+    margin: 20px;
+    padding: 10px;
+    border: none;
+    background: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    border-bottom: 2px solid black;
+    transition: all 0.5s ease-in-out;
+}
+.PrevNext>input:hover{
+    border-bottom: 2px solid rgb(0, 80, 133);
+}
+.subb>button{
+    margin: 20px;
+    padding: 10px;
+    border: none;
+    background: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    border-bottom: 2px solid black;
+    transition: all 0.5s ease-in-out;
+}
+.quest>div>h2{
+    padding: 10px;
+    font-family: "Moderustic", sans-serif;
+}
+.dataItem{
+    border: 2px solid black;
+    position: relative;
+    min-width: 100px;
+    display: flex;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: "Moderustic", sans-serif
+}
+.checkboxBtn{
+  position: relative;
+
+  &:before{
+    content:'';
+    position: absolute;
+    top: -5px;
+    left: -40px;
+    @include radio-wh();
+    border:2px solid black;
+  }
+  &:after{
+    content:'';
+    position:absolute;
+    top: 5px;
+    left: -35px;
+    @include radio-wh(15px, 15px);
+    background:black;
+    transition: all;
+    opacity:0;
+  }
+}
+.check[type="checkbox"]:checked{
+  & + label::before{
+    animation: checkBtnChk .3s linear forwards;
+  }
+  & + label::after{
+    animation: checkBtnChk2 .3s linear forwards;
+  }
+}
+.check[type="checkbox"]:not(:checked){
+  & + label::before{
+    animation: checkBtnChkAlt .3s linear forwards;
+  }
+  & + label::after{
+    animation: checkBtnChk2Alt .3s linear forwards;
+  }
+}
+.rad1{
+  margin-left:20px;
+}
+  .rad1[type="radio"]:checked + label::before{
+    animation: flipRadioCir .3s linear forwards;
+}
+.rad1[type='radio'],input[type='checkbox']{
+  opacity:0;
+}
+.radlab{
+  color: #000000;
+  
+  position: relative;
+  
+  &:before{
+    content:'';
+    position: absolute;
+    top: -5px;
+    left: -40px;
+    @include radio-wh();
+    border-radius:50%;
+    border:2px solid black;
+  }
+  &:after{
+    content:'';
+    position:absolute;
+    top: 5px;
+    left: -35px;
+    @include radio-wh(15px, 15px);
+    border-radius:50%;
+    background:black;
+    transition: all;
+    opacity:0;
+  }
+}
+@keyframes checkBtnChk{
+  0%{
+    height:25px
+  } 
+  100%{
+    top: 10px;
+    left: -30px;
+    height:0px;
+    transform: rotate(-52deg);
+  } 
+}
+@keyframes checkBtnChkAlt{
+  0%{
+    height:0px
+  } 
+  100%{
+    top: -5px;
+    left: -40px;
+    height:25px;
+    transform: rotate(0deg);
+  } 
+}
+@keyframes checkBtnChk2{
+  from{
+    opacity:0;
+  } 
+  to{
+    top:15px;
+    left: -33px;
+    height:5px;
+    width:10px;
+    opacity:1;
+    transform: rotate(40deg);
+  }
+}
+@keyframes checkBtnChk2Alt{
+  from{
+    opacity:1;
+   
+  } 
+  to{
+    height: 0;
+    opacity:0;
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes flipRadioCir{
+    from{
+      transform: rotateY(0deg);
+    } 
+    to{
+      background:rgb(0, 0, 0);
+      transform: rotateY(180deg);
+    }
+  }
+@media (max-width:600px) {
+    .questionGroup{
+        width: 80%;
+        padding: 10px;
+        border:2px solid black;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .quest>div>input{
+        margin: 10px;
+        padding: 5px;
+    }
+    .quest>div>button{
+        margin: 10px;
+        padding: 5px;
+        border-bottom: 2px solid black;
+        transition: all 0.5s ease-in-out;
+    }
+     .PrevNext{
+         display: flex;
+         flex-direction: column;
+     }
+    .quest>h3{
+        padding-top: 5%;
+    }
+  }
