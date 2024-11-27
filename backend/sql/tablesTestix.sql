@@ -47,7 +47,7 @@ CREATE TABLE public.questions (
 	id int GENERATED ALWAYS AS IDENTITY NOT NULL,
 	test_id int NOT NULL,
 	"text" varchar(255) NOT NULL,
-	type varchar(255),
+	type int,
 	CONSTRAINT questions_pk PRIMARY KEY (id),
 	CONSTRAINT test_fk FOREIGN KEY (test_id)
 		REFERENCES public.tests (id) MATCH SIMPLE
