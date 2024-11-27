@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
+import CryptoJS from 'crypto-js';
 
 interface DataItem {
   id: number;
@@ -21,9 +22,20 @@ interface Test {
   title: string;
 }
 
-const TestPage: FC = () => {
-  const [cookies, setCookie] = useCookies(['id']);
-  const userId = cookies.id;
+const decrypt = (text: string) => {
+  const bytes = CryptoJS.AES.decrypt(text, 'secret-key');
+  return bytes.toString(CryptoJS.enc.Utf8);
+};
+
+const ProfilePage: FC = () => {
+  const [cookies] = useCookies(['id']);
+  const [decryptedUserId, setDecryptedUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (cookies.id) {
+      setDecryptedUserId(decrypt(cookies.id));
+    }
+  }, [cookies]);
 
   const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,7 +44,7 @@ const TestPage: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<DataItem[]>(`http://localhost:8000/result/user-results?user_id=${userId}`);
+        const response = await axios.get<DataItem[]>(`http://localhost:8000/result/user-results?user_id=${decryptedUserId}`);
         setData(response.data);
       } catch (error: any) {
         setError(error.message);
@@ -41,8 +53,10 @@ const TestPage: FC = () => {
       }
     };
 
-    fetchData();
-  }, [userId]);
+    if (decryptedUserId) {
+      fetchData();
+    }
+  }, [decryptedUserId]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -67,4 +81,4 @@ const TestPage: FC = () => {
   );
 };
 
-export default TestPage;
+export default ProfilePage;

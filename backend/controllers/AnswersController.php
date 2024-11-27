@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\models\Answers;
 use app\models\Questions;
-use app\models\Tests;
+use app\models\Results;
 use Yii;
 use yii\bootstrap5\ActiveForm;
 use yii\data\ActiveDataProvider;
@@ -13,21 +13,18 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
-use yii\web\BadRequestHttpException;
 use yii\web\Response;
-
 /**
- * TestController implements the CRUD actions for Tests model.
+ * ResultController implements the CRUD actions for Results model.
  */
-class TestController extends ActiveController
+class AnswersController extends ActiveController
 {
-
-    public $modelClass = 'app\models\Tests';
-    /**
-     * @inheritDoc
-     */
-
-     
+    public $modelClass = 'app\models\Answers';
+    public function init()
+    {
+        parent::init();
+        \Yii::$app->user->enableSession=false;
+    }
     public function behaviors() 
     {
         $behaviors = parent::behaviors();
@@ -39,7 +36,7 @@ class TestController extends ActiveController
             'formatParam' => '_format',
             'formats' => [
                 'application/json' => \yii\web\Response::FORMAT_JSON,
-                //'xml' => \yii\web\Response::FORMAT_XML,
+                'xml' => \yii\web\Response::FORMAT_XML,
             ],
         ];
 
@@ -49,44 +46,51 @@ class TestController extends ActiveController
     }
 
     /**
-     * Lists all Tests models.
+     * Lists all Results models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        
-        // Получаем все записи из таблицы
-        $data = Tests::find()->all();
-        
-        return $data;
+        $dataProvider = new ActiveDataProvider([
+            'query' => Results::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
-    
+
     /**
-     * Displays a single Tests model.
+     * Displays a single Results model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($user_id)
     {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $test = Tests::findOne($id);
-        if ($test === null) {
-            throw new \yii\web\NotFoundHttpException('Запись не найдена'); 
-        }
-        return $test;
+        
     }
+   
 
     /**
-     * Creates a new Tests model.
+     * Creates a new Results model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Tests();
+        $model = new  Answers();
 
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -108,7 +112,7 @@ class TestController extends ActiveController
     }
 
     /**
-     * Updates an existing Tests model.
+     * Updates an existing Results model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -128,7 +132,7 @@ class TestController extends ActiveController
     }
 
     /**
-     * Deletes an existing Tests model.
+     * Deletes an existing Results model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -142,15 +146,15 @@ class TestController extends ActiveController
     }
 
     /**
-     * Finds the Tests model based on its primary key value.
+     * Finds the Results model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Tests the loaded model
+     * @return Results the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Tests::findOne(['id' => $id])) !== null) {
+        if (($model = Results::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
