@@ -72,6 +72,7 @@ SetWidthScreen(window.screen.width);
     };
   }, [scrollLimit, scrollLimitUnset, containerHeight, isAbsolute, scaleValue]);
 
+
   const images = [
     { id: 1, src: Path1, alt: 'Image 1' },
     { id: 2, src: Path2, alt: 'Image 2' },
@@ -116,9 +117,15 @@ SetWidthScreen(window.screen.width);
                 }}
               >
                 {index === 7 && showTextBlock ? (
-                  <div className={styles.text_block}>
-                    <h2>Текстовый блок</h2>
-                    <p>Это пример текстового блока, который заменяет изображение.</p>
+                  <div
+                  style={{
+                    
+                    maxWidth: index ===7? (showTextBlock? `${WidthScreen}px`:'100%') : '100%',
+                    transform: index === 7 ?(showTextBlock?`scale(${1.1 / scaleValue}) scaleY(1)`: 'none')  : 'none',
+                  }}
+                  className={styles.text_block}>
+                    <h2 className={styles.headNS} >Текстовый блок</h2>
+                    <p className={styles.textBlock}>Это пример текстового блока, который заменяет изображение.</p>
                   </div>
                 ) : (
                   <img 
@@ -126,7 +133,7 @@ SetWidthScreen(window.screen.width);
                   style={{
                     
                     maxWidth: index ===4? (showTextBlock? `${WidthScreen}px`:'100%') : '100%',
-                    transform: index === 4 ?(showTextBlock?`scaleX(${2.5 / scaleValue})`: 'none')  : 'none',
+                    transform: index === 4 ?(showTextBlock?`scaleX(${2.5 / scaleValue}) scaleY(1)`: 'none')  : '',
                   }} src={image.src} alt={image.alt} />
                 )}
               </div>
