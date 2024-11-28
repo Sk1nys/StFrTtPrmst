@@ -10,7 +10,7 @@ import Path7 from '../../assets/NS7.jpg';
 import Path8 from '../../assets/NS8.jpg';
 import Path9 from '../../assets/NS9.jpg';
 import { useHeight } from '../HeightContext';
-
+import useIntersectionObserver from './useIntersectionObserver';
 const NeedStay: React.FC = () => {
   const { getTotalHeight } = useHeight();
   const totalHeight = getTotalHeight();
@@ -24,6 +24,9 @@ const [WidthScreen, SetWidthScreen]= useState(0);
   const height = window.innerHeight;
   const scrollLimit = totalHeight + 175 + 135;
   const scrollLimitUnset = scrollLimit + height;
+  const [headRef, isHeadVisible] = useIntersectionObserver<HTMLDivElement>({ threshold: 0.5 }); 
+  const [textRef, isTextVisible] = useIntersectionObserver<HTMLDivElement>({ threshold: 0.5});
+  
   useEffect(() => {
 SetWidthScreen(window.screen.width);
 
@@ -124,8 +127,8 @@ SetWidthScreen(window.screen.width);
                     transform: index === 7 ?(showTextBlock?`scale(${1.1 / scaleValue}) scaleY(1)`: 'none')  : 'none',
                   }}
                   className={styles.text_block}>
-                    <h2 className={styles.headNS} >Текстовый блок</h2>
-                    <p className={styles.textBlock}>Это пример текстового блока, который заменяет изображение.</p>
+                    <h2 className={`${styles.headNS} ${isHeadVisible ? styles.visible : ''}`} ref={headRef}>Текстовый блок</h2>
+                    <p className={`${styles.textBlock} ${isTextVisible ? styles.visible : ''}`} ref={textRef}>Это пример текстового блока, который заменяет изображение.</p>
                   </div>
                 ) : (
                   <img 

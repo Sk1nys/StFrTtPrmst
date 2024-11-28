@@ -89,20 +89,28 @@ word-wrap: break-word;
   padding:30px;
   transform: scaleX(1.5) scaleY(1.5);
  }
- /* YourStyles.module.css */
-.headNS {
-  animation: fadeInScale 2s ease forwards;
+ .headNS {
+  opacity: 0; /* начальное состояние */
 }
 
 .textBlock {
+  opacity: 0; /* начальное состояние */
+}
+
+.visible.headNS {
+  animation: fadeInScale 2s ease forwards;
+  opacity: 1;
+}
+
+.visible.textBlock {
   animation: slideIn 2s ease forwards;
-  opacity: 0;
+  opacity: 1;
 }
 
 @keyframes fadeInScale {
   0% {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.4);
   }
   100% {
     opacity: 1;
@@ -120,6 +128,7 @@ word-wrap: break-word;
     transform: translateY(0);
   }
 }
+
 
   .center_item{
     z-index: 999;
