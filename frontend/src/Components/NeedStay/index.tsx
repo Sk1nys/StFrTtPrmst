@@ -89,7 +89,7 @@ SetWidthScreen(window.screen.width);
   ];
 
   return (
-    <section style={{ width: '100%', height: '385vh' }}>
+    <section style={{ width: '100%', height: '330vh' }}>
       <div className={styles.container}>
         <div className={styles.content}>
           <h3 className={styles.heading}>Большой потенциал</h3>
@@ -127,8 +127,19 @@ SetWidthScreen(window.screen.width);
                     transform: index === 7 ?(showTextBlock?`scale(${1.1 / scaleValue}) scaleY(1)`: 'none')  : 'none',
                   }}
                   className={styles.text_block}>
+                    <div>
                     <h2 className={`${styles.headNS} ${isHeadVisible ? styles.visible : ''}`} ref={headRef}>Текстовый блок</h2>
                     <p className={`${styles.textBlock} ${isTextVisible ? styles.visible : ''}`} ref={textRef}>Это пример текстового блока, который заменяет изображение.</p>
+                    </div>
+                 <div className={styles.advantages}>
+                  <ul>
+                    <li className={styles.advantage}>Особенность теста</li>
+                    <li className={styles.advantage}>Особенность теста</li>
+                    <li className={styles.advantage}>Особенность теста</li>
+                    <li className={styles.advantage}>Особенность теста</li>
+                  </ul>
+                 </div>
+                 
                   </div>
                 ) : (
                   <img 
