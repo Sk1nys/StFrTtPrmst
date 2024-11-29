@@ -780,7 +780,6 @@ function render (target: null) {
   const height = target == null ? gl.drawingBufferHeight : dyeHeight;
   gl.viewport(0, 0, width, height);
       colorProgram.bind();
-      document.body.style.backgroundColor = `rgb(123, 129, 210)`;
       blit(target);
       const program =  displayBloomShadingProgram;
       program.bind();
