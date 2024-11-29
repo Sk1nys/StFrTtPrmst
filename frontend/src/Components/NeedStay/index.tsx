@@ -92,8 +92,8 @@ SetWidthScreen(window.screen.width);
     <section style={{ width: '100%', height: '330vh' }}>
       <div className={styles.container}>
         <div className={styles.content}>
-          <h3 className={styles.heading}>Большой потенциал</h3>
-          <div className={styles.description}>Вы должны нам денег</div>
+          <h3 className={styles.heading}>ТЕСТЫ КОТОРЫЕ ВЫ ХОТИТЕ ВИДЕТЬ</h3>
+          <div className={styles.description}>Наше представление о тестах</div>
         </div>
       </div>
       <div
