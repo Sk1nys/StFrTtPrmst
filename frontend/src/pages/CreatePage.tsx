@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -40,6 +38,13 @@ const CreatePage: React.FC = () => {
     const savedQuestions = localStorage.getItem('questionForms');
     return savedQuestions ? JSON.parse(savedQuestions) : [{ text: '', type: '', answers: [{ answer_text: '', iscorrect: 0 }] }];
   });
+
+  const [file, setFile] = useState<File | null>(null);
+  const [message, setMessage] = useState<string>('');
+  const [fileData, setFileData] = useState<string>('');
+  const [excelFile, setExcelFile] = useState<File | null>(null);
+  const [excelMessage, setExcelMessage] = useState<string>('');
+  const [excelData, setExcelData] = useState<string>('');
 
   useEffect(() => {
     localStorage.setItem('formData', JSON.stringify(formData));
@@ -95,65 +100,114 @@ const CreatePage: React.FC = () => {
     setQuestionForms(newQuestionForms);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleExcelFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setExcelFile(e.target.files[0]);
+    }
+  };
+
+  const handleFileUpload = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!file) {
+      setMessage('Пожалуйста, выберите файл.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await axios.post('http://localhost:8000/upload/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setMessage('Файл успешно загружен.');
+      setFileData(response.data.data);
+    } catch (error) {
+      setMessage('Ошибка при загрузке файла.');
+    }
+  };
+
+  const handleExcelUpload = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!excelFile) {
+      setExcelMessage('Пожалуйста, выберите файл.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', excelFile);
+
+    try {
+      const response = await axios.post('http://localhost:8000/upload/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setExcelMessage('Файл успешно загружен.');
+      setExcelData(response.data.data);
+    } catch (error) {
+      setExcelMessage('Ошибка при загрузке файла.');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Decrypt the user ID from the cookie
     const decryptedUserId = decrypt(cookies.id);
-
-    // Add today's date to the formData object before submitting and add user_id from decrypted cookie
     const today = new Date().toISOString().split('T')[0];
     const formDataWithDateAndUserId = { ...formData, data: today, user_id: Number(decryptedUserId) };
 
-    // Log formData to console
-    console.log('Form Data:', formDataWithDateAndUserId);
-
     try {
-      // Create the test first
       const testResponse = await axios.post('http://localhost:8000/test/create', formDataWithDateAndUserId, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      // Set the test ID in the question form data
       const testId = testResponse.data.id;
 
-      // Log questionFormData to console
       questionForms.forEach(async (questionFormData, qIndex) => {
         const questionFormDataWithTestId = { ...questionFormData, test_id: testId };
-        console.log(`Question Data ${qIndex + 1}:`, questionFormDataWithTestId);
 
-        // Create the questions
         const questionResponse = await axios.post('http://localhost:8000/question/create', questionFormDataWithTestId, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
 
-        // Create the answers for each question
         const questionId = questionResponse.data.id;
         questionFormData.answers.forEach(async (answerFormData, aIndex) => {
           const answerFormDataWithQuestionId = { ...answerFormData, question_id: questionId };
-          console.log(`Answer Data ${qIndex + 1}-${aIndex + 1}:`, answerFormDataWithQuestionId);
 
-          const answerResponse = await axios.post('http://localhost:8000/answers/create', answerFormDataWithQuestionId, {
+          await axios.post('http://localhost:8000/answers/create', answerFormDataWithQuestionId, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-
-          console.log(`Answer Success ${qIndex + 1}-${aIndex + 1}:`, answerResponse.data);
         });
       });
 
-      // Clear the localStorage after submission
       localStorage.removeItem('formData');
       localStorage.removeItem('questionForms');
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
+  
+  
 
   return (
     <div>
@@ -185,91 +239,79 @@ const CreatePage: React.FC = () => {
           <label htmlFor='description'>Описание</label>
         </div>
         <div>
-          <input
-            type='text'
-            name='subject'
-            value={formData.subject}
-            onChange={handleChange}
-            placeholder='Предмет'
-          />
-          <label htmlFor='subject'>Предмет</label>
-        </div>
-        {questionForms.map((questionFormData, qIndex) => (
-          <div key={qIndex}>
-            <h2>Создать Вопрос {qIndex + 1}</h2>
-            <input
-              type='text'
-              name='text'
-              value={questionFormData.text}
-              onChange={(e) => handleQuestionChange(qIndex, e)}
-              placeholder='Вопрос'
-            />
-            <label htmlFor='text'>Вопрос</label>
-            <div>
-              <select
-                name='type'
-                value={questionFormData.type}
-                onChange={(e) => handleQuestionChange(qIndex, e)}
-              >
-                <option value='' disabled>Выберите тип вопроса</option>
-                <option value='Множественный выбор'>Множественный выбор</option>
-                <option value='Вписать ответ'>Вписать ответ</option>
-                <option value='Один правильный ответ'>Один правильный ответ</option>
-              </select>
-              <label htmlFor='type'>Тип вопроса</label>
-            </div>
-            <h3>Создать Ответы</h3>
-            {questionFormData.answers.map((answerFormData, aIndex) => (
-              <div key={aIndex}>
+          {questionForms.map((questionForm, qIndex) => (
+            <div key={qIndex}>
+              <div>
                 <input
                   type='text'
-                  name='answer_text'
-                  value={answerFormData.answer_text}
-                  onChange={(e) => handleAnswerChange(qIndex, aIndex, e)}
-                  placeholder='Ответ'
+                  name='text'
+                  value={questionForm.text}
+                  onChange={(e) => handleQuestionChange(qIndex, e)}
+                  placeholder='Вопрос'
                 />
-                <label htmlFor='answer_text'>Ответ</label>
-                {questionFormData.type === 'Множественный выбор' ? (
-                  <>
-                    <input
-                      type='checkbox'
-                      name='iscorrect'
-                      checked={answerFormData.iscorrect === 1}
-                      onChange={() => handleCorrectChange(qIndex, aIndex)}
-                    />
-                    <label htmlFor='iscorrect'>Правильный</label>
-                  </>
-                ) : questionFormData.type !== 'Вписать ответ' && (
-                  <>
-                    <input
-                      type='radio'
-                      name={`iscorrect-${qIndex}`}
-                      checked={answerFormData.iscorrect === 1}
-                      onChange={() => handleCorrectChange(qIndex, aIndex)}
-                    />
-                    <label htmlFor='iscorrect'>Правильный</label>
-                  </>
-                )}
-                <button type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}>Удалить Ответ</button>
-
+                <label htmlFor='text'>Вопрос</label>
               </div>
-            ))}
-            <div>
+              <div>
+                <select name='type' value={questionForm.type} onChange={(e) => handleQuestionChange(qIndex, e)}>
+                  <option value=''>Выберите тип</option>
+                  <option value='text'>Текст</option>
+                  <option value='multiple-choice'>Множественный выбор</option>
+                </select>
+                <label htmlFor='type'>Тип вопроса</label>
+              </div>
+              {questionForm.answers.map((answer, aIndex) => (
+                <div key={aIndex}>
+                  <input
+                    type='text'
+                    name='answer_text'
+                    value={answer.answer_text}
+                    onChange={(e) => handleAnswerChange(qIndex, aIndex, e)}
+                    placeholder='Ответ'
+                  />
+                  <label htmlFor='answer_text'>Ответ</label>
+                  <input
+                    type='checkbox'
+                    checked={answer.iscorrect === 1}
+                    onChange={() => handleCorrectChange(qIndex, aIndex)}
+                  />
+                  <label htmlFor='iscorrect'>Правильный?</label>
+                  <button type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}>Удалить ответ</button>
+                </div>
+              ))}
               <button type='button' onClick={() => addAnswerForm(qIndex)}>Добавить Ответ</button>
+              <button type='button' onClick={() => removeQuestionForm(qIndex)}>Удалить вопрос</button>
             </div>
-            <button type='button' onClick={() => removeQuestionForm(qIndex)}>Удалить вопрос</button>
-          </div>
-          
-        ))}
-        <div>
+          ))}
           <button type='button' onClick={addQuestionForm}>Добавить Вопрос</button>
         </div>
-        <div>
-          <button type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
-        </div>
+        <button type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
       </form>
+      <form onSubmit={handleFileUpload}>
+        <h2>Загрузка Word файлов</h2>
+        <input type="file" accept=".docx" onChange={handleFileChange} />
+        <button type="submit">Загрузить</button>
+      </form>
+      {message && <p>{message}</p>}
+      <div>
+        <h2>Данные файла</h2>
+        <pre>{fileData}</pre>
+      </div>
+      <form onSubmit={handleExcelUpload}>
+        <h2>Загрузка Excel файлов</h2>
+        <input type="file" accept=".xlsx" onChange={handleExcelFileChange} />
+        <button type="submit">Загрузить</button>
+      </form>
+      {excelMessage && <p>{excelMessage}</p>}
+      <div>
+        <h2>Данные Excel файла</h2>
+        <pre>{excelData}</pre>
+      </div>
     </div>
   );
+  
+  
+  
+  
 };
 
 export default CreatePage;
