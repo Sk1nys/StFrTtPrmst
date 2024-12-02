@@ -29,9 +29,11 @@ const decrypt = (text: string) => {
 
 const CreatePage: React.FC = () => {
   const [cookies] = useCookies(['id']);
+  const decryptedUserId = decrypt(cookies.id);
+  
   const [formData, setFormData] = useState<FormData>(() => {
     const savedData = localStorage.getItem('formData');
-    return savedData ? JSON.parse(savedData) : { title: '', description: '', subject: '' };
+    return savedData ? JSON.parse(savedData) : { title: '', description: '', subject: '', user_id: undefined };
   });
 
   const [questionForms, setQuestionForms] = useState<QuestionFormData[]>(() => {
@@ -122,11 +124,12 @@ const CreatePage: React.FC = () => {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('user_id', decryptedUserId); // Добавляем decryptedUserId
 
     console.log('Uploading file:', file);
 
     try {
-      const response = await axios.post('http://localhost:8000/upload/upload', formData, {
+      const response = await axios.post('http://localhost:8000', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -149,6 +152,7 @@ const CreatePage: React.FC = () => {
 
     const formData = new FormData();
     formData.append('file', excelFile);
+    formData.append('user_id', decryptedUserId); // Добавляем decryptedUserId
 
     console.log('Uploading Excel file:', excelFile);
 
@@ -166,10 +170,10 @@ const CreatePage: React.FC = () => {
     }
   };
 
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const decryptedUserId = decrypt(cookies.id);
     const today = new Date().toISOString().split('T')[0];
     const formDataWithDateAndUserId = { ...formData, data: today, user_id: Number(decryptedUserId) };
 
@@ -335,20 +339,14 @@ const CreatePage: React.FC = () => {
         <button type="submit">Загрузить</button>
       </form>
       {message && <p>{message}</p>}
-      <div>
-        <h2>Данные файла</h2>
-        <pre>{fileData}</pre>
-      </div>
+    
       <form onSubmit={handleExcelUpload}>
         <h2>Загрузка Excel файлов</h2>
         <input type="file" accept=".xlsx" onChange={handleExcelFileChange} />
         <button type="submit">Загрузить</button>
       </form>
       {excelMessage && <p>{excelMessage}</p>}
-      <div>
-        <h2>Данные Excel файла</h2>
-        <pre>{excelData}</pre>
-      </div>
+     
     </div>
   );
 };
