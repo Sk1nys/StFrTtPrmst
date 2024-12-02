@@ -24,7 +24,7 @@
     }
   }
   
-.formContainer{
+.formContainer, .formContainerAuth{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,7 +36,7 @@
 	transform: translate3d(0, 0, 0);
 
  }
- .formContainer>h1{
+ .formContainer>h1, .formContainerAuth>h1{
         font-family: "Moderustic", sans-serif;
         font-weight: 600;
         font-style: normal;
@@ -269,7 +269,7 @@
       .RegAuth{
         padding-left: unset;
       }
-      .formContainer{
+      .formContainer, .formContainerAuth{
         height: auto;
      }
      .backBtnlink{
@@ -280,6 +280,9 @@
   .formContainer{
     height: 120vh;
  }
+ .formContainerAuth{
+  height: 100vh;
+}
  .backBtnlink{
   position: relative;
   top:-15px;
