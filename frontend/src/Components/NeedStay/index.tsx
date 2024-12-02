@@ -89,7 +89,7 @@ SetWidthScreen(window.screen.width);
   ];
 
   return (
-    <section style={{ width: '100%', height: '330vh' }}>
+    <section style={{ width: '100%', height: '330vh', minHeight: '1500px' }}>
       <div className={styles.container}>
         <div className={styles.content}>
           <h3 className={styles.heading}>ТЕСТЫ КОТОРЫЕ ВЫ ХОТИТЕ ВИДЕТЬ</h3>
