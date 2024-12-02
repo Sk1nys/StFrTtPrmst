@@ -123,6 +123,8 @@ const CreatePage: React.FC = () => {
     const formData = new FormData();
     formData.append('file', file);
 
+    console.log('Uploading file:', file);
+
     try {
       const response = await axios.post('http://localhost:8000/upload/upload', formData, {
         headers: {
@@ -148,6 +150,8 @@ const CreatePage: React.FC = () => {
     const formData = new FormData();
     formData.append('file', excelFile);
 
+    console.log('Uploading Excel file:', excelFile);
+
     try {
       const response = await axios.post('http://localhost:8000/upload/upload', formData, {
         headers: {
@@ -168,6 +172,9 @@ const CreatePage: React.FC = () => {
     const decryptedUserId = decrypt(cookies.id);
     const today = new Date().toISOString().split('T')[0];
     const formDataWithDateAndUserId = { ...formData, data: today, user_id: Number(decryptedUserId) };
+
+    console.log('Form data:', formDataWithDateAndUserId);
+    console.log('Question forms:', questionForms);
 
     try {
       const testResponse = await axios.post('http://localhost:8000/test/create', formDataWithDateAndUserId, {
@@ -206,6 +213,7 @@ const CreatePage: React.FC = () => {
     }
   };
 
+
   
   
 
@@ -239,52 +247,87 @@ const CreatePage: React.FC = () => {
           <label htmlFor='description'>Описание</label>
         </div>
         <div>
-          {questionForms.map((questionForm, qIndex) => (
-            <div key={qIndex}>
-              <div>
+          <input
+            type='text'
+            name='subject'
+            value={formData.subject}
+            onChange={handleChange}
+            placeholder='Предмет'
+          />
+          <label htmlFor='subject'>Предмет</label>
+        </div>
+        {questionForms.map((questionFormData, qIndex) => (
+          <div key={qIndex}>
+            <h2>Создать Вопрос {qIndex + 1}</h2>
+            <input
+              type='text'
+              name='text'
+              value={questionFormData.text}
+              onChange={(e) => handleQuestionChange(qIndex, e)}
+              placeholder='Вопрос'
+            />
+            <label htmlFor='text'>Вопрос</label>
+            <div>
+              <select
+                name='type'
+                value={questionFormData.type}
+                onChange={(e) => handleQuestionChange(qIndex, e)}
+              >
+                <option value='' disabled>Выберите тип вопроса</option>
+                <option value='Множественный выбор'>Множественный выбор</option>
+                <option value='Вписать ответ'>Вписать ответ</option>
+                <option value='Один правильный ответ'>Один правильный ответ</option>
+              </select>
+              <label htmlFor='type'>Тип вопроса</label>
+            </div>
+            <h3>Создать Ответы</h3>
+            {questionFormData.answers.map((answerFormData, aIndex) => (
+              <div key={aIndex}>
                 <input
                   type='text'
-                  name='text'
-                  value={questionForm.text}
-                  onChange={(e) => handleQuestionChange(qIndex, e)}
-                  placeholder='Вопрос'
+                  name='answer_text'
+                  value={answerFormData.answer_text}
+                  onChange={(e) => handleAnswerChange(qIndex, aIndex, e)}
+                  placeholder='Ответ'
                 />
-                <label htmlFor='text'>Вопрос</label>
+                <label htmlFor='answer_text'>Ответ</label>
+                {questionFormData.type === 'Множественный выбор' ? (
+                  <>
+                    <input
+                      type='checkbox'
+                      name='iscorrect'
+                      checked={answerFormData.iscorrect === 1}
+                      onChange={() => handleCorrectChange(qIndex, aIndex)}
+                    />
+                    <label htmlFor='iscorrect'>Правильный</label>
+                  </>
+                ) : questionFormData.type !== 'Вписать ответ' && (
+                  <>
+                    <input
+                      type='radio'
+                      name={`iscorrect-${qIndex}`}
+                      checked={answerFormData.iscorrect === 1}
+                      onChange={() => handleCorrectChange(qIndex, aIndex)}
+                    />
+                    <label htmlFor='iscorrect'>Правильный</label>
+                  </>
+                )}
+                <button type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}>Удалить Ответ</button>
               </div>
-              <div>
-                <select name='type' value={questionForm.type} onChange={(e) => handleQuestionChange(qIndex, e)}>
-                  <option value=''>Выберите тип</option>
-                  <option value='text'>Текст</option>
-                  <option value='multiple-choice'>Множественный выбор</option>
-                </select>
-                <label htmlFor='type'>Тип вопроса</label>
-              </div>
-              {questionForm.answers.map((answer, aIndex) => (
-                <div key={aIndex}>
-                  <input
-                    type='text'
-                    name='answer_text'
-                    value={answer.answer_text}
-                    onChange={(e) => handleAnswerChange(qIndex, aIndex, e)}
-                    placeholder='Ответ'
-                  />
-                  <label htmlFor='answer_text'>Ответ</label>
-                  <input
-                    type='checkbox'
-                    checked={answer.iscorrect === 1}
-                    onChange={() => handleCorrectChange(qIndex, aIndex)}
-                  />
-                  <label htmlFor='iscorrect'>Правильный?</label>
-                  <button type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}>Удалить ответ</button>
-                </div>
-              ))}
+            ))}
+            <div>
               <button type='button' onClick={() => addAnswerForm(qIndex)}>Добавить Ответ</button>
-              <button type='button' onClick={() => removeQuestionForm(qIndex)}>Удалить вопрос</button>
             </div>
-          ))}
+            <button type='button' onClick={() => removeQuestionForm(qIndex)}>Удалить вопрос</button>
+          </div>
+          
+        ))}
+        <div>
           <button type='button' onClick={addQuestionForm}>Добавить Вопрос</button>
         </div>
-        <button type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
+        <div>
+          <button type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
+        </div>
       </form>
       <form onSubmit={handleFileUpload}>
         <h2>Загрузка Word файлов</h2>
@@ -308,10 +351,7 @@ const CreatePage: React.FC = () => {
       </div>
     </div>
   );
-  
-  
-  
-  
 };
+
 
 export default CreatePage;

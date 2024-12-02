@@ -7,6 +7,7 @@ use yii\rest\ActiveController;
 use yii\web\UploadedFile;
 use yii\web\BadRequestHttpException;
 use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpSpreadsheet\IOFactory as ExcelIOFactory;
 use app\models\Answers;
 use app\models\Questions;
 use app\models\Tests;
@@ -44,7 +45,13 @@ class UploadController extends ActiveController
             if (Yii::$app->request->isPost) {
                 $file = UploadedFile::getInstanceByName('file');
                 if ($file && $file->tempName) {
-                    $data = $this->processWordFile($file->tempName);
+                    if ($file->extension === 'docx') {
+                        $data = $this->processWordFile($file->tempName);
+                    } elseif ($file->extension === 'xlsx') {
+                        $data = $this->processExcelFile($file->tempName);
+                    } else {
+                        throw new BadRequestHttpException('Unsupported file type.');
+                    }
                     $this->saveDataToDatabase($data);
                     Yii::info('Data returned: ' . print_r($data, true), __METHOD__);
                     return ['status' => 'success', 'data' => $data];
@@ -129,6 +136,70 @@ class UploadController extends ActiveController
         }
     }
 
+    private function processExcelFile($filePath)
+    {
+        try {
+            $spreadsheet = ExcelIOFactory::load($filePath);
+            $sheet = $spreadsheet->getActiveSheet();
+            $data = [];
+            Yii::info('Number of rows in Excel sheet: ' . $sheet->getHighestRow(), __METHOD__);
+
+            $currentTest = null;
+            $currentQuestion = null;
+
+            foreach ($sheet->getRowIterator() as $row) {
+                $cellIterator = $row->getCellIterator();
+                $cellIterator->setIterateOnlyExistingCells(false);
+
+                foreach ($cellIterator as $cell) {
+                    $text = $cell->getValue();
+                    Yii::info('Processed cell text: ' . $text, __METHOD__);
+
+                    // Parse the text based on predefined markers
+                    if (strpos($text, 'Название:') === 0) {
+                        $currentTest['title'] = trim(str_replace('Название:', '', $text));
+                    } elseif (strpos($text, 'Описание:') === 0) {
+                        $currentTest['description'] = trim(str_replace('Описание:', '', $text));
+                    } elseif (strpos($text, 'Предмет:') === 0) {
+                        $currentTest['subject'] = trim(str_replace('Предмет:', '', $text));
+                    } elseif (strpos($text, 'Вопрос:') === 0) {
+                        if ($currentQuestion) {
+                            $currentTest['questions'][] = $currentQuestion;
+                        }
+                        $currentQuestion = [
+                            'text' => trim(str_replace('Вопрос:', '', $text)),
+                            'answers' => []
+                        ];
+                    } elseif (strpos($text, 'Тип:') === 0) {
+                        if ($currentQuestion) {
+                            $currentQuestion['type'] = trim(str_replace('Тип:', '', $text));
+                        }
+                    } elseif (strpos($text, 'Ответы:') === 0) {
+                        continue;  // Skip this line
+                    } elseif (preg_match('/^\d+\.\s*(.+?)\s*\((правильный|неправильный)\)$/', $text, $matches)) {
+                        if ($currentQuestion) {
+                            $currentQuestion['answers'][] = [
+                                'text' => $matches[1],
+                                'isCorrect' => $matches[2] === 'правильный'
+                            ];
+                        }
+                    }
+                }
+            }
+
+            if ($currentQuestion) {
+                $currentTest['questions'][] = $currentQuestion;
+            }
+
+            $data[] = $currentTest;
+            return $data;
+
+        } catch (\Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
+    }
+
     private function saveDataToDatabase($data)
     {
         try {
@@ -139,14 +210,14 @@ class UploadController extends ActiveController
                 $test->subject = $testData['subject'];
                 $test->data = date('Y-m-d');
                 $test->user_id = 1;  // Replace this with the actual user ID
-                
+
                 if ($test->save()) {
                     foreach ($testData['questions'] as $questionData) {
                         $question = new Questions();
                         $question->test_id = $test->id;
                         $question->text = $questionData['text'];
                         $question->type = $questionData['type'] === 'Один правильный ответ' ? 1 : 2;  // Adjust based on your needs
-                        
+
                         if ($question->save()) {
                             foreach ($questionData['answers'] as $answerData) {
                                 $answer = new Answers();
@@ -165,3 +236,4 @@ class UploadController extends ActiveController
         }
     }
 }
+?>
