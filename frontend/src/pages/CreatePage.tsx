@@ -48,7 +48,7 @@ const CreatePage: React.FC = () => {
   const [fileData, setFileData] = useState<string>('');
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [excelMessage, setExcelMessage] = useState<string>('');
-  const [excelData, setExcelData] = useState<string>('');
+  const [excelData, setExcelData] = useState<any>(null);
 
   useEffect(() => {
     localStorage.setItem('formData', JSON.stringify(formData));
@@ -57,6 +57,28 @@ const CreatePage: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('questionForms', JSON.stringify(questionForms));
   }, [questionForms]);
+
+  useEffect(() => {
+    if (excelData) {
+      const loadedTest = excelData.tests[0];
+      setFormData({
+        title: loadedTest.title,
+        description: loadedTest.description,
+        subject: loadedTest.subject,
+        user_id: Number(decryptedUserId)
+      });
+
+      const loadedQuestions = excelData.questions.map((question: any) => ({
+        text: question.text,
+        type: question.type,
+        answers: excelData.answers.filter((answer: any) => answer.question_text === question.text).map((answer: any) => ({
+          answer_text: answer.answer_text,
+          iscorrect: answer.is_correct ? 1 : 0
+        }))
+      }));
+      setQuestionForms(loadedQuestions);
+    }
+  }, [excelData, decryptedUserId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -126,7 +148,7 @@ const CreatePage: React.FC = () => {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('user_id', decryptedUserId); // Добавляем decryptedUserId
+    formData.append('user_id', decryptedUserId);
 
     console.log('Uploading file:', file);
 
@@ -154,7 +176,7 @@ const CreatePage: React.FC = () => {
 
     const formData = new FormData();
     formData.append('file', excelFile);
-    formData.append('user_id', decryptedUserId); // Добавляем decryptedUserId
+    formData.append('user_id', decryptedUserId);
 
     console.log('Uploading Excel file:', excelFile);
 
@@ -166,12 +188,11 @@ const CreatePage: React.FC = () => {
       });
 
       setExcelMessage('Файл успешно загружен.');
-      setExcelData(response.data.data);
+      setExcelData(response.data);  // Обновляем excelData полученными данными
     } catch (error) {
       setExcelMessage('Ошибка при загрузке файла.');
     }
   };
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -221,7 +242,6 @@ const CreatePage: React.FC = () => {
 
   
   
-
   return (
     <div className={styles.conMain}>
       <form onSubmit={handleSubmit}>
@@ -328,7 +348,6 @@ const CreatePage: React.FC = () => {
             </div>
             <button className={styles.delQue} type='button' onClick={() => removeQuestionForm(qIndex)}></button>
           </div>
-          
         ))}
         <div>
           <button className={styles.plusQue} type='button' onClick={addQuestionForm}></button>
@@ -350,9 +369,9 @@ const CreatePage: React.FC = () => {
         <button type="submit">Загрузить</button>
       </form>
       {excelMessage && <p>{excelMessage}</p>}
-     
     </div>
   );
+  
 };
 
 

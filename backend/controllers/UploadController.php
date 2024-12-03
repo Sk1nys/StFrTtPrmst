@@ -5,9 +5,6 @@ use Yii;
 use yii\rest\ActiveController;
 use yii\web\UploadedFile;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use app\models\Answers;
-use app\models\Questions;
-use app\models\Tests;
 use yii\filters\Cors;
 
 class UploadController extends ActiveController
@@ -18,7 +15,6 @@ class UploadController extends ActiveController
     {
         $behaviors = parent::behaviors();
         
-
         $behaviors['cors'] = Cors::class;
         $behaviors['contentNegotiator'] = [
             'class' => \yii\filters\ContentNegotiator::class,
@@ -29,19 +25,16 @@ class UploadController extends ActiveController
             ],
         ];
 
-
-       
         return $behaviors;
     }
+
     public function actions()
     {
         $actions = parent::actions();
-        // Отключаем стандартные действия, если необходимо
         unset($actions['create'], $actions['update'], $actions['delete']);
 
         return $actions;
     }
-
 
     public function actionUpload()
     {
@@ -55,70 +48,69 @@ class UploadController extends ActiveController
 
                 $currentTest = null;
                 $currentQuestion = null;
-                $uploadedData = [];
+                $uploadedData = [
+                    'tests' => [],
+                    'questions' => [],
+                    'answers' => [],
+                ];
 
                 foreach ($sheetData as $row) {
                     if (isset($row['A']) && isset($row['B']) && !empty($row['B'])) {
                         switch ($row['A']) {
                             case 'Название':
-                                $currentTest = new Tests();
-                                $currentTest->title = $row['B'];
+                                $currentTest = [
+                                    'title' => $row['B'],
+                                    'description' => '',
+                                    'subject' => '',
+                                    'date' => date('Y-m-d'),
+                                    'user_id' => $userId,
+                                ];
+                                $uploadedData['tests'][] = $currentTest;
                                 break;
                             case 'Описание':
                                 if ($currentTest) {
-                                    $currentTest->description = $row['B'];
+                                    $currentTest['description'] = $row['B'];
+                                    $uploadedData['tests'][array_key_last($uploadedData['tests'])] = $currentTest;
                                 }
                                 break;
                             case 'Предмет':
                                 if ($currentTest) {
-                                    $currentTest->subject = $row['B'];
-                                    $currentTest->data = date('Y-m-d');
-                                    $currentTest->user_id = $userId;
-                                    if (!$currentTest->save()) {
-                                        throw new \Exception('Error saving test');
-                                    }
-                                    $uploadedData[] = ['test' => $currentTest];
+                                    $currentTest['subject'] = $row['B'];
+                                    $uploadedData['tests'][array_key_last($uploadedData['tests'])] = $currentTest;
                                 }
                                 break;
                             case 'Вопрос':
                                 if ($currentTest) {
-                                    $currentQuestion = new Questions();
-                                    $currentQuestion->test_id = $currentTest->id;
-                                    $currentQuestion->text = $row['B'];
+                                    $currentQuestion = [
+                                        'test_title' => $currentTest['title'],
+                                        'text' => $row['B'],
+                                        'type' => '',
+                                    ];
+                                    $uploadedData['questions'][] = $currentQuestion;
                                 }
                                 break;
                             case 'Тип':
                                 if ($currentQuestion) {
-                                    $currentQuestion->type = $row['B'];
-                                    if (!$currentQuestion->save()) {
-                                        throw new \Exception('Error saving question');
-                                    }
-                                    $uploadedData[] = ['question' => $currentQuestion];
+                                    $currentQuestion['type'] = $row['B'];
+                                    $uploadedData['questions'][array_key_last($uploadedData['questions'])] = $currentQuestion;
                                 }
                                 break;
                             default:
-                                if (strpos($row['A'], 'Ответ') !== false) {
-                                    if ($currentQuestion) {
-                                        $answer = new Answers();
-                                        $answer->question_id = $currentQuestion->id;
-                                        $answer->answer_text = $row['B'];
-                                        $answer->iscorrect = (strpos($row['B'], '(правильный)') !== false);
-                                        $answer->answer_text = str_replace(['(правильный)', '(неправильный)'], '', $answer->answer_text);
-                                        if (!$answer->save()) {
-                                            throw new \Exception('Error saving answer');
-                                        }
-                                        $uploadedData[] = ['answer' => $answer];
-                                    }
+                                if (strpos($row['A'], 'Ответ') !== false && $currentQuestion) {
+                                    $answer = [
+                                        'question_text' => $currentQuestion['text'],
+                                        'answer_text' => str_replace(['(правильный)', '(неправильный)'], '', $row['B']),
+                                        'is_correct' => (strpos($row['B'], '(правильный)') !== false),
+                                    ];
+                                    $uploadedData['answers'][] = $answer;
                                 }
                                 break;
                         }
                     }
                 }
 
-                $response = "Upload successful. Processed data:\n" . print_r($uploadedData, true);
-                Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
-                Yii::$app->response->headers->set('Content-Type', 'text/plain');
-                return $response;
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                return $uploadedData;
             }
 
             return 'File or user ID not found';
