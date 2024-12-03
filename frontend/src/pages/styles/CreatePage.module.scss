@@ -1,0 +1,224 @@
+.conMain{
+    min-height: 100vh;
+    background-color: #E7DFFE;
+    display: flex;
+    flex-direction: column;
+}
+.headSt{
+        width: 100%;
+        height: 10vh;
+        background-color: #90b1f8a2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px dashed black;
+}
+.backBtn{
+    position: absolute;
+    left: 0;
+    padding-left:3vw;
+}
+form:first-child{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+.op{
+    border: 2px solid black;
+    border-radius: 15px;
+    width: 80%;
+    min-height: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-evenly;
+}
+.quepro{
+    position: relative;
+    border: 2px solid black;
+    border-radius: 15px;
+    width: 80%;
+    min-height: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-evenly;
+}
+.quepro>*{
+    margin: 20px;
+    margin-left: 11%;
+}
+.titles>input{
+    font-family: "Moderustic", sans-serif;
+    font-size: 2vh;
+    background: none;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    outline: 1px solid rgb(112, 112, 112);
+    transition: all 0.1s;
+}
+.titles>input::placeholder{
+    color: rgb(223, 92, 92);
+}
+.titles>input:focus{
+    background: none;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    outline: 3px solid black; 
+    transition: all 0.1s;
+}
+.desc{
+    font-size: 25px;
+    position: relative;
+    margin-left: 10%;
+    font-family: 'Montserrat', sans-serif;
+    padding: 15px;
+    width:50% ;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+.desc>label{
+    padding: 5px;
+}
+.desc>input{
+    font-family: 'Montserrat', sans-serif;
+    padding: 5px;
+    font-size: 20px;
+    margin: 5px;
+    background: none;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
+    outline: 1px solid rgb(0, 0, 0);
+    transition: all 0.1s;
+}
+.desc>input:focus{
+    padding: 15px;
+}
+.subj{
+    font-size: 25px;
+    position: relative;
+    margin-left: 10%;
+    font-family: 'Montserrat', sans-serif;
+    padding: 15px;
+    width:50% ;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+.subj>label{
+    padding: 5px;
+}
+.subj>input{
+    font-family: 'Montserrat', sans-serif;
+    padding: 5px;
+    font-size: 20px;
+    margin: 5px;
+    background: none;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
+    outline: 1px solid rgb(0, 0, 0);
+    transition: all 0.1s;
+}
+.subj>input:focus{
+    padding: 15px;
+}
+.quename{
+    width: 80%;
+    padding: 10px;
+    background: none;
+    outline: 2px solid black;
+    border: none;
+    border-radius: 10px ;
+    font-size: 2vh;
+    font-family: 'Montserrat', sans-serif;
+}
+.queSel{
+    border: none;
+    outline: 2px solid black;
+    background:none;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 2vh;
+}
+.queSel>option{
+    background: none;
+    border: 2px solid black;
+}
+.answGr{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%;
+}
+.answ{
+    border: none;
+    outline: 2px solid black;
+    background:none;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 2vh;
+    width: 50vh;
+}
+.delAnsw{
+    background: none;
+    background-image: url(../../assets/X.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    width: 3vh;
+    height: 3vh;
+    border:none;
+    outline:none;
+}
+.plusAnsw{
+    background: none;
+    background-image: url(../../assets/plusQue.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    width: 5vh;
+    height: 5vh;
+    border:none;
+    outline:none;
+}
+.plusQue{
+    background: none;
+    background-image: url(../../assets/plusQue.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    width: 5vh;
+    height: 5vh;
+    border:none;
+    outline:none;
+}
+.delQue{
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    background: none;
+    background-image: url(../../assets/DelQue.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    width: 5vh;
+    height: 5vh;
+    border:none;
+    outline:none;
+}
