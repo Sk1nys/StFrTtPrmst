@@ -271,7 +271,7 @@ const CreatePage: React.FC = () => {
               name='text'
               value={questionFormData.text}
               onChange={(e) => handleQuestionChange(qIndex, e)}
-              placeholder='Задйте вопрос'
+              placeholder='Задайте вопрос'
             />
             
             <div>
@@ -302,22 +302,22 @@ const CreatePage: React.FC = () => {
                     <input
                       type='checkbox'
                       name='iscorrect'
-                      className={styles.answ}
+                      className={styles.answC}
                       checked={answerFormData.iscorrect === 1}
                       onChange={() => handleCorrectChange(qIndex, aIndex)}
                     />
-                    <label htmlFor='iscorrect'>Правильный</label>
+                    <label className={styles.CLab} htmlFor='iscorrect'>Правильный</label>
                   </>
                 ) : questionFormData.type !== 'Вписать ответ' && (
                   <>
                     <input
                       type='radio'
                       name={`iscorrect-${qIndex}`}
-                      className={styles.answ}
+                      className={styles.answR}
                       checked={answerFormData.iscorrect === 1}
                       onChange={() => handleCorrectChange(qIndex, aIndex)}
                     />
-                    <label htmlFor='iscorrect'>Правильный</label>
+                    <label htmlFor='iscorrect' className={styles.RLab}>Правильный</label>
                   </>
                 )}
                 <button className={styles.delAnsw} type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}></button>
@@ -334,7 +334,7 @@ const CreatePage: React.FC = () => {
           <button className={styles.plusQue} type='button' onClick={addQuestionForm}></button>
         </div>
         <div>
-          <button type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
+        <ButtonSquish><button className={styles.subchik} type='submit'>СОЗДАТЬ</button></ButtonSquish>
         </div>
       </form>
       <form onSubmit={handleFileUpload}>

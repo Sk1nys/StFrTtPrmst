@@ -1,3 +1,10 @@
+@mixin radio-wh($w:$radio-btn-width, $h:$radio-btn-height){
+    width:$w;
+    height:$h;
+  }
+  $radio-btn-width:25px;
+  $radio-btn-height:25px;
+
 .conMain{
     min-height: 100vh;
     background-color: #E7DFFE;
@@ -25,6 +32,13 @@ form:first-child{
     align-items: center;
     justify-content: space-between;
 }
+form:first-child>*{
+margin: 20px;
+}
+form:first-child>:first-child{
+    margin: 0;
+    margin-bottom: 20px;
+    }
 .op{
     border: 2px solid black;
     border-radius: 15px;
@@ -222,3 +236,166 @@ form:first-child{
     border:none;
     outline:none;
 }
+.subchik{
+    width: 100px;
+    height: 40px;
+    background: none;
+    outline: none;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2vh;
+    font-weight: 600    ;
+}
+
+
+
+.CLab{
+    font-family: 'Montserrat', sans-serif;
+    position: relative;
+    font-size: 15px;
+    margin-right: 20px;
+
+    &:before{
+      content:'';
+      position: absolute;
+      top: -5px;
+      left: -40px;
+      @include radio-wh();
+      border:2px solid black;
+      
+    }
+    &:after{
+      content:'';
+      position:absolute;
+      top: 5px;
+      left: -35px;
+      @include radio-wh(15px, 15px);
+      background:black;
+      transition: all;
+      opacity:0;
+    }
+  }
+  .answC ,.answR{
+    margin-left: 30px;
+    margin-right: 10px;
+    z-index: 2;
+    width: 50px;
+    height: 50px;
+    opacity: 1;
+  }
+  .answC[type="checkbox"]:checked{
+    & + label::before{
+      animation: checkBtnChk .3s linear forwards;
+    }
+    & + label::after{
+      animation: checkBtnChk2 .3s linear forwards;
+    }
+  }
+  .answC[type="checkbox"]:not(:checked){
+    & + label::before{
+      animation: checkBtnChkAlt .3s linear forwards;
+    }
+    & + label::after{
+      animation: checkBtnChk2Alt .01s linear forwards;
+    }
+  }
+  .answR{
+    margin-left:20px;
+  }
+    .answR[type="radio"]:checked + label::before{
+      animation: flipRadioCir .3s linear forwards;
+  }
+  .answR[type='radio'],input[type='checkbox']{
+    opacity:0;
+  }
+  .RLab{
+    color: #000000;
+    font-family: 'Montserrat', sans-serif;
+    position: relative;
+    font-size: 15px;
+    margin-right: 20px;
+    &:before{
+      content:'';
+      position: absolute;
+      top: -5px;
+      left: -40px;
+      @include radio-wh();
+      border-radius:50%;
+      border:2px solid black;
+    }
+    &:after{
+      content:'';
+      position:absolute;
+      top: 5px;
+      left: -35px;
+      @include radio-wh(15px, 15px);
+      border-radius:50%;
+      background:black;
+      transition: all;
+      opacity:0;
+    }
+  }
+
+
+
+@keyframes checkBtnChk{
+    0%{
+      height:25px
+    } 
+    100%{
+      top: 10px;
+      left: -30px;
+      height:0px;
+      transform: rotate(-52deg);
+    } 
+  }
+  @keyframes checkBtnChkAlt{
+    0%{
+      height:0px
+    } 
+    100%{
+      top: -5px;
+      left: -40px;
+      height:25px;
+      transform: rotate(0deg);
+    } 
+  }
+  @keyframes checkBtnChk2{
+    from{
+      opacity:0;
+    } 
+    to{
+      top:15px;
+      left: -33px;
+      height:5px;
+      width:10px;
+      opacity:1;
+      transform: rotate(40deg);
+    }
+  }
+  @keyframes checkBtnChk2Alt{
+    from{
+        top:15px;
+        left: -33px;
+      opacity:1;
+     height: 5px;
+     transform: rotate(40deg);
+    } 
+    to{
+        top:15px;
+        left: -33px;
+        transform: rotate(40deg);
+      opacity:0;
+      height: 5px;
+    }
+  }
+  
+  @keyframes flipRadioCir{
+      from{
+        transform: rotateY(0deg);
+      } 
+      to{
+        background:rgb(0, 0, 0);
+        transform: rotateY(180deg);
+      }
+    }
