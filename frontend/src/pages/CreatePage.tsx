@@ -318,7 +318,7 @@ const CreatePage: React.FC = () => {
                   placeholder='Ответ'
                 />
                 {questionFormData.type === 'Множественный выбор' ? (
-                  <>
+                  <div className={styles.in}>
                     <input
                       type='checkbox'
                       name='iscorrect'
@@ -327,7 +327,7 @@ const CreatePage: React.FC = () => {
                       onChange={() => handleCorrectChange(qIndex, aIndex)}
                     />
                     <label className={styles.CLab} htmlFor='iscorrect'>Правильный</label>
-                  </>
+                  </div>
                 ) : questionFormData.type !== 'Вписать ответ' && (
                   <>
                     <input
