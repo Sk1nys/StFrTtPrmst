@@ -356,19 +356,25 @@ const CreatePage: React.FC = () => {
         <ButtonSquish><button className={styles.subchik} type='submit'>СОЗДАТЬ</button></ButtonSquish>
         </div>
       </form>
-      <form onSubmit={handleFileUpload}>
+      <div className={styles.doc}>
+      <form onSubmit={handleFileUpload} className={styles.wordDoc}>
         <h2>Загрузка Word файлов</h2>
-        <input type="file" accept=".docx" onChange={handleFileChange} />
-        <button type="submit">Загрузить</button>
+        <div className={styles.iconDoc}>
+        <i title="doc"></i>
+        <input type="file" accept=".docx" onChange={handleFileChange} className={styles.i}/></div>
+        <ButtonSquish> <button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
       </form>
       {message && <p>{message}</p>}
     
-      <form onSubmit={handleExcelUpload}>
+      <form onSubmit={handleExcelUpload} className={styles.exelDoc}>
         <h2>Загрузка Excel файлов</h2>
-        <input type="file" accept=".xlsx" onChange={handleExcelFileChange} />
-        <button type="submit">Загрузить</button>
+        <div className={styles.iconSheet}>
+        <i title="xlsx"></i>
+        <input type="file" accept=".xlsx" onChange={handleExcelFileChange} className={styles.i}/></div>
+        <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
       </form>
       {excelMessage && <p>{excelMessage}</p>}
+      </div>
     </div>
   );
   
