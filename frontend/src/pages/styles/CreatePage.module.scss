@@ -203,8 +203,9 @@ margin: 20px;
     background-repeat: no-repeat;
     background-size: contain;
     cursor: pointer;
-    width: 3vh;
-    height: 3vh;
+    width: 30px;
+    height: 30px;
+    margin: 10px;
     border:none;
     outline:none;
 }
@@ -546,5 +547,52 @@ margin: 20px;
       to{
         background:rgb(0, 0, 0);
         transform: rotateY(180deg);
+      }
+    }
+    .in{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    .in>input{
+      margin: 20px;
+    }
+    @media (max-width:600px) {
+      .desc>input{
+        width: 135%;
+      }
+      .wordDoc>h2,.exelDoc>h2{
+        text-align: center;
+      }
+      .subj>input{
+        width: 135%;
+      }
+      .quename{
+        width: 70%;
+      }
+      select{
+        width: 122%;
+      }
+      .answ{
+        width: 31.5vh;
+      }
+      .answGr{
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .in{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      .in>input{
+        margin: 0;
       }
     }
