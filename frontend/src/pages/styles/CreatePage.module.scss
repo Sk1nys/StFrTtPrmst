@@ -2,8 +2,19 @@
     width:$w;
     height:$h;
   }
+  @mixin center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
   $radio-btn-width:25px;
   $radio-btn-height:25px;
+  $white: #E7DFFE;
+  $sheets: #0f9d58;
+  $doc: #4285f4;
+ 
+  
 
 .conMain{
     min-height: 100vh;
@@ -25,17 +36,17 @@
     left: 0;
     padding-left:3vw;
 }
-form:first-child{
+.conMain>form:first-child{
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
 }
-form:first-child>*{
+.conMain>form:first-child>*{
 margin: 20px;
 }
-form:first-child>:first-child{
+.conMain>form:first-child>:first-child{
     margin: 0;
     margin-bottom: 20px;
     }
@@ -335,6 +346,144 @@ form:first-child>:first-child{
       opacity:0;
     }
   }
+
+  .doc{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+.wordDoc,.exelDoc{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 50%;
+  height: 30vh;
+}
+.wordDoc>h2,.exelDoc>h2{
+  font-family: "Moderustic", sans-serif;
+  font-weight: 500;
+  font-size: 3vh;
+}
+.o{
+  width: 100px;
+  height: 40px;
+  background: none;
+  outline: none;
+  border: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 2vh;
+  font-weight: 600;
+}
+.iconDoc, .iconSheet {
+  border: none;
+  outline: none;
+  background: none;
+	display: inline-block;
+	width: 40px;
+	height: 50px;
+	border-radius: 2px;
+	cursor: pointer;
+	position: relative;
+	margin: 0 5px;
+
+	&::after {
+		content: '';
+		position: absolute;
+		display: block;
+		top: 0;
+		right: 0;
+		width: 0;
+		height: 0;
+		border-radius: 0 2px;
+		transition: all 0.2s linear;
+		backface-visibility: hidden;
+	}
+
+	&.iconDoc {
+		background-color: $doc;
+
+		&::after {
+			background: linear-gradient(45deg, lighten($doc, 15%) 50%, $white 50%);
+		}
+
+		i {
+			&::before {
+				content: '☰';
+			}
+		}
+	}
+
+	&.iconSheet {
+		background-color: $sheets;
+
+		&::after {
+			background: linear-gradient(45deg, lighten($sheets, 15%) 50%, $white 50%);
+		}
+
+		i {
+			&::before {
+				content: '⊟';
+			}
+		}
+	}
+
+
+	i {
+		@include center;
+		display: block;
+    font-size: 10px;
+		color: $white;
+		font-weight: 500;
+
+		&::before,
+		&::after {
+			display: block;
+			transition: all 0.2s linear;
+		}
+
+		&::before {
+			text-align: center;
+			font-size: 12px;
+			opacity: 0;
+			transform: translateY(5px);
+		}
+
+		&::after {
+			content: attr(title);
+			transform: translateY(-5px);
+
+		}
+	}
+
+	&:hover {
+		border-radius: 2px 4px 2px 2px;
+
+		&::after {
+			width: 12px;
+			height: 12px;
+		}
+
+		i {
+			&::before {
+				transform: translateY(0);
+				opacity: 1;
+			}
+
+			&::after {
+				transform: translateY(0);
+			}
+		}
+	}
+}
+.i{
+  width: 10px;
+  height: 12px;
+  padding: 15px;
+  opacity:0;
+}
+
+
 
 
 
