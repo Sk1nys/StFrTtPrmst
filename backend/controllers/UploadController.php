@@ -5,6 +5,7 @@ use Yii;
 use yii\rest\ActiveController;
 use yii\web\UploadedFile;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpWord\IOFactory as WordIOFactory;
 use yii\filters\Cors;
 
 class UploadController extends ActiveController
@@ -36,7 +37,7 @@ class UploadController extends ActiveController
         return $actions;
     }
 
-    public function actionUpload()
+    public function actionExel()
     {
         try {
             $file = UploadedFile::getInstanceByName('file');
@@ -118,4 +119,117 @@ class UploadController extends ActiveController
             return 'Error: ' . $e->getMessage();
         }
     }
+    public function actionWord()
+    {
+        try {
+            $file = UploadedFile::getInstanceByName('file');
+            $userId = Yii::$app->request->post('user_id');
+    
+            if ($file && $userId) {
+                Yii::info('File received: ' . $file->name, __METHOD__);
+                Yii::info('User  ID: ' . $userId, __METHOD__);
+    
+                try {
+                    $phpWord = \PhpOffice\PhpWord\IOFactory::load($file->tempName);
+                    Yii::info('File loaded in PhpWord', __METHOD__);
+                } catch (\Exception $e) {
+                    Yii::error('Error loading PhpWord: ' . $e->getMessage(), __METHOD__);
+                    return [
+                        'status' => 'error',
+                        'message' => 'Error loading Word file: ' . $e->getMessage(),
+                    ];
+                }
+    
+                $sections = $phpWord->getSections();
+                Yii::info('Number of sections: ' . count($sections), __METHOD__);
+    
+                $uploadedData = [
+                    'tests' => [],
+                    'questions' => [],
+                    'answers' => [],
+                ];
+    
+                $currentTest = null;
+                $currentQuestion = null;
+    
+                foreach ($sections as $section) {
+                    $elements = $section->getElements();
+                    $testTitle = '';
+                    $description = '';
+                    $subject = '';
+    
+                    foreach ($elements as $element) {
+                        if ($element instanceof \PhpOffice\PhpWord\Element\TextRun) {
+                            $text = $element->getText();
+                            if (strpos($text, 'Название:') === 0) {
+                                $testTitle = trim(substr($text, strlen('Название:')));
+                                $currentTest = [
+                                    'title' => $testTitle,
+                                    'description' => '',
+                                    'subject' => '',
+                                    'date' => date('Y-m-d'),
+                                    'user_id' => $userId,
+                                ];
+                                $uploadedData['tests'][] = $currentTest;
+                            } elseif (strpos($text, 'Описание:') === 0) {
+                                if ($currentTest) {
+                                    $currentTest['description'] = trim(substr($text, strlen('Описание:')));
+                                    $uploadedData['tests'][array_key_last($uploadedData['tests'])] = $currentTest;
+                                }
+                            } elseif (strpos($text, 'Предмет:') === 0) {
+                                if ($currentTest) {
+                                    $currentTest['subject'] = trim(substr($text, strlen('Предмет:')));
+                                    $uploadedData['tests'][array_key_last($uploadedData['tests'])] = $currentTest;
+                                }
+                            } elseif (strpos($text, 'Вопрос:') === 0) {
+                                if ($currentQuestion !== null) {
+                                    $uploadedData['questions'][] = $currentQuestion;
+                                }
+                                $currentQuestion = [
+                                    'test_title' => $testTitle,
+                                    'text' => trim(substr($text, strlen('Вопрос:'))),
+                                    'type' => '',
+                                    'answers' => [],
+                                ];
+                            } elseif (strpos($text, 'Тип:') === 0) {
+                                if ($currentQuestion) {
+                                    $currentQuestion['type'] = trim(substr($text, strlen('Тип:')));
+                                }
+                            } elseif (strpos($text, 'Ответ') === 0) {
+                                if ($currentQuestion) {
+                                    $answerText = trim(substr($text, strlen('Ответ ')));
+                                    $isCorrect = strpos($answerText, '(правильный)') !== false;
+                                    $answer = [
+                                        'question_text' => $currentQuestion['text'],
+                                        'answer_text' => str_replace(['(правильный)', '(неправильный)'], '', $answerText),
+                                        'is_correct' => $isCorrect,
+                                    ];
+                                    $uploadedData['answers'][] = $answer;
+                                    $currentQuestion['answers'][] = $answer; // Добавляем ответ к текущему вопросу
+                                }
+                            }
+                        }
+                    }
+    
+                    // Добавляем последний вопрос, если он существует
+                    if ($currentQuestion !== null) {
+                        $uploadedData['questions'][] = $currentQuestion;
+                    }
+                }
+    
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                return $uploadedData;
+            }
+    
+            Yii::error('File or user_id not found', __METHOD__);
+            return 'File or user ID not found';
+        } catch (\Exception $e) {
+            Yii::error('Error: ' . $e->getMessage(), __METHOD__);
+            return 'Error: ' . $e->getMessage();
+        }
+    }
+    
+    
+    
+
 }

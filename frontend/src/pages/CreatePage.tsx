@@ -41,12 +41,13 @@ const CreatePage: React.FC = () => {
     return savedQuestions ? JSON.parse(savedQuestions) : [{ text: '', type: '', answers: [{ answer_text: '', iscorrect: 0 }] }];
   });
 
-  const [file, setFile] = useState<File | null>(null);
-  const [message, setMessage] = useState<string>('');
-  const [fileData, setFileData] = useState<string>('');
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [excelMessage, setExcelMessage] = useState<string>('');
   const [excelData, setExcelData] = useState<any>(null);
+  const [wordFile, setWordFile] = useState<File | null>(null);
+  const [wordMessage, setWordMessage] = useState<string>('');
+  const [wordData, setWordData] = useState<any>(null);
+
 
   useEffect(() => {
     localStorage.setItem('formData', JSON.stringify(formData));
@@ -57,26 +58,53 @@ const CreatePage: React.FC = () => {
   }, [questionForms]);
 
   useEffect(() => {
-    if (excelData) {
+    if (excelData && excelData.tests && excelData.tests.length > 0) {
       const loadedTest = excelData.tests[0];
       setFormData({
-        title: loadedTest.title,
-        description: loadedTest.description,
-        subject: loadedTest.subject,
+        title: loadedTest.title || '',
+        description: loadedTest.description || '',
+        subject: loadedTest.subject || '',
         user_id: Number(decryptedUserId)
       });
-
+  
       const loadedQuestions = excelData.questions.map((question: any) => ({
-        text: question.text,
-        type: question.type,
+        text: question.text || '',
+        type: question.type || '',
         answers: excelData.answers.filter((answer: any) => answer.question_text === question.text).map((answer: any) => ({
-          answer_text: answer.answer_text,
+          answer_text: answer.answer_text || '',
           iscorrect: answer.is_correct ? 1 : 0
         }))
       }));
       setQuestionForms(loadedQuestions);
     }
   }, [excelData, decryptedUserId]);
+  
+  useEffect(() => {
+    console.log('Word data updated:', wordData); // Добавлено для отладки
+    if (wordData && wordData.tests && wordData.tests.length > 0) {
+      const loadedTest = wordData.tests[0];
+  
+      setFormData({
+        title: loadedTest.title || '',
+        description: loadedTest.description || '',
+        subject: loadedTest.subject || '',
+        user_id: Number(decryptedUserId)
+      });
+  
+      const loadedQuestions = wordData.questions.map((question: any) => ({
+        text: question.text || '',
+        type: question.type || '',
+        answers: wordData.answers.filter((answer: any) => answer.question_text === question.text).map((answer: any) => ({
+          answer_text: answer.answer_text || '',
+          iscorrect: answer.is_correct ? 1 : 0
+        }))
+      }));
+  
+      setQuestionForms(loadedQuestions);
+    }
+  }, [wordData, decryptedUserId]);
+  
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -124,45 +152,47 @@ const CreatePage: React.FC = () => {
     setQuestionForms(newQuestionForms);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
 
   const handleExcelFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setExcelFile(e.target.files[0]);
     }
   };
-
-  const handleFileUpload = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleWordFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setWordFile(e.target.files[0]);
+    }
+  };
+  
+  const handleWordUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!file) {
-      setMessage('Пожалуйста, выберите файл.');
+  
+    if (!wordFile) {
+      setWordMessage('Пожалуйста, выберите файл.');
       return;
     }
-
+  
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', wordFile);
     formData.append('user_id', decryptedUserId);
 
-    console.log('Uploading file:', file);
+    console.log('Uploading Excel file:', wordFile);
 
     try {
-      const response = await axios.post('http://localhost:8000', formData, {
+      const response = await axios.post('http://localhost:8000/upload/word', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      setMessage('Файл успешно загружен.');
-      setFileData(response.data.data);
+      setWordMessage('Файл успешно загружен.');
+      setWordData(response.data);  // Обновляем excelData полученными данными
     } catch (error) {
-      setMessage('Ошибка при загрузке файла.');
+      setWordMessage('Ошибка при загрузке файла.');
     }
   };
+  
+  
 
   const handleExcelUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -179,14 +209,15 @@ const CreatePage: React.FC = () => {
     console.log('Uploading Excel file:', excelFile);
 
     try {
-      const response = await axios.post('http://localhost:8000/upload/upload', formData, {
+      const response = await axios.post('http://localhost:8000/upload/exel', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       setExcelMessage('Файл успешно загружен.');
-      setExcelData(response.data);  // Обновляем excelData полученными данными
+      setExcelData(response.data);
+      console.log(response.data) // Обновляем excelData полученными данными
     } catch (error) {
       setExcelMessage('Ошибка при загрузке файла.');
     }
@@ -352,12 +383,13 @@ const CreatePage: React.FC = () => {
           <button type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
         </div>
       </form>
-      <form onSubmit={handleFileUpload}>
-        <h2>Загрузка Word файлов</h2>
-        <input type="file" accept=".docx" onChange={handleFileChange} />
-        <button type="submit">Загрузить</button>
-      </form>
-      {message && <p>{message}</p>}
+      <form onSubmit={handleWordUpload}>
+  <h2>Загрузка Word файлов</h2>
+  <input type="file" accept=".docx" onChange={handleWordFileChange} />
+  <button type="submit">Загрузить</button>
+</form>
+{wordMessage && <p>{wordMessage}</p>}
+
     
       <form onSubmit={handleExcelUpload}>
         <h2>Загрузка Excel файлов</h2>
