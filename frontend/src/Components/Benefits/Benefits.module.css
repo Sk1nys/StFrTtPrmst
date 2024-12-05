@@ -78,7 +78,7 @@ margin-bottom: -1px;
   .big_text_four_right {
     font-weight: bold;
     padding-bottom: 2%;
-    font-size: 96px;
+    font-size: 56px;
     opacity: 0;
     transition: opacity 1s ease-in-out, transform 1s ease-in-out;
     transform: translateY(20px);
@@ -114,7 +114,7 @@ margin-bottom: -1px;
   .big_text_four_right {
     font-weight: bold;
     padding-bottom: 2%;
-    font-size: 96px;
+    font-size: 56px;
     text-align: right;
   }
   
@@ -193,6 +193,7 @@ margin-bottom: -1px;
     }
     .big_text_four_right{
       text-align: left;
+      font-size: 52px;
     }
     .text_four_right{
       text-align: left;
@@ -214,6 +215,7 @@ margin-bottom: -1px;
     .big_text_four_page,
     .big_text_four_right {
       padding-bottom: 0;
+      font-size: 36px;
     }
   }
   @media screen and (max-width: 450px){

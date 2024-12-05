@@ -58,14 +58,14 @@ font-family: "Moderustic", sans-serif;
     position: fixed;
     top: 0;
     left: 0;
-    width: 50%;
+    width: 65%;
     z-index: 12;
   background-color: #ffffff;
     animation: headerAppear 0.4s ease-in-out forwards;
     height: 101vh;
   }
   .logocon{
-    background: #9977FF;
+    background-color: #7b81d2;
     width: 100%;
     display: flex;
     align-items: center;

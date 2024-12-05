@@ -198,7 +198,7 @@ const Benefits = () => {
               ref={scissorsRef}
             />
     <div className={styles.text}>
-      Почему вам стоит остаться
+    ЕЩЁ БОЛЬШЕ ПРИЧИН ОСТАТЬСЯ
     </div>
       <div className={styles.grid_containerBenef}>
         <div className={`${styles.grid_item_left} ${styles.grid_item1}`}>
@@ -213,11 +213,11 @@ const Benefits = () => {
                 isVisible1 ? styles.fadeIn : ""
               }`}
             >
-              01
+              01. <br />Отслеживание прогресса.
             </h1>
             <p>
-              ЧIНАЗЕС!!!<br className={styles.br_partner}/>
-              угар века
+            <br className={styles.br_partner}/>
+            Смотрите за вашими достижениями в реальном времени.
             </p>
           </div>
         </div>
@@ -266,11 +266,11 @@ const Benefits = () => {
                 isVisible2 ? styles.fadeIn : ""
               }`}
             >
-              02
+              02. <br /> Понятный редактор. 
             </h1>
             <p className={styles.text_four_right}>
-             САМЫЙ ПОПУЛЯРНЫЙ ИСПОЛНИТЕЛЬ <br className={styles.br_partner} />
-              СЛУШАТ ОНЛАЙН
+             <br className={styles.br_partner} />
+             Простой в усвоении редактор с кучей функций.
             </p>
           </div>
         </div>
@@ -287,11 +287,11 @@ const Benefits = () => {
                 isVisible3 ? styles.fadeIn : ""
               }`}
             >
-              03
+              03. <br />Новый опыт. 
             </h1>{" "}
             <p>
-              АБУЗ 2024 <br className={styles.br_partner} />
-             КАК ВОРОВАТЬ ПРАВИЛЬНО
+            <br className={styles.br_partner} />
+            Получите новый опыт в прохождении тестов.
             </p>
           </div>
         </div>

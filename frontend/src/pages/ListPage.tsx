@@ -44,18 +44,22 @@ const DataFetchingComponent: React.FC = () => {
       <div className={styles.hedlist}> <Link to="/home" className={styles.linkii}><ButtonSquish className={styles.header_button}>НАЗАД</ButtonSquish></Link><h1>СПИСОК ТЕСТОВ</h1></div>
       <div className={styles.dataList}>
       <div  className={styles.dataItem}>
-              <a href="pox">Обзорный тест</a> {/* название */}
+              
+              <h2>Обзорный тест</h2> {/* название */}
               <p>НАШ ТЕСТ</p> {/* описание */}
               <p>Программирование</p> {/* предмет */}
               <p>Неизвестно</p> {/* дата */}
+              <Link to={"/proftest"} className={styles.lik}></Link>
             </div>
         {data.length > 0 ? (
           data.map((item) => (
             <div key={item.id} className={styles.dataItem}>
-              <a href={`/test/${item.id}`}>{item.title}</a> {/* название */}
+              
+              <h2>{item.title}</h2> {/* название */}
               <p>{item.description}</p> {/* описание */}
               <p>{item.subject}</p> {/* предмет */}
               <p>{item.data}</p> {/* дата */}
+              <a href={`/test/${item.id}`} className={styles.lik}></a>
             </div>
           ))
         ) : (

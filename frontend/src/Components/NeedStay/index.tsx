@@ -10,7 +10,7 @@ import Path7 from '../../assets/NS7.jpg';
 import Path8 from '../../assets/NS8.jpg';
 import Path9 from '../../assets/NS9.jpg';
 import { useHeight } from '../HeightContext';
-
+import useIntersectionObserver from './useIntersectionObserver';
 const NeedStay: React.FC = () => {
   const { getTotalHeight } = useHeight();
   const totalHeight = getTotalHeight();
@@ -24,6 +24,9 @@ const [WidthScreen, SetWidthScreen]= useState(0);
   const height = window.innerHeight;
   const scrollLimit = totalHeight + 175 + 135;
   const scrollLimitUnset = scrollLimit + height;
+  const [headRef, isHeadVisible] = useIntersectionObserver<HTMLDivElement>({ threshold: 0.5 }); 
+  const [textRef, isTextVisible] = useIntersectionObserver<HTMLDivElement>({ threshold: 0.5});
+  
   useEffect(() => {
 SetWidthScreen(window.screen.width);
 
@@ -72,6 +75,7 @@ SetWidthScreen(window.screen.width);
     };
   }, [scrollLimit, scrollLimitUnset, containerHeight, isAbsolute, scaleValue]);
 
+
   const images = [
     { id: 1, src: Path1, alt: 'Image 1' },
     { id: 2, src: Path2, alt: 'Image 2' },
@@ -85,11 +89,11 @@ SetWidthScreen(window.screen.width);
   ];
 
   return (
-    <section style={{ width: '100%', height: '385vh' }}>
+    <section style={{ width: '100%', height: '330vh', minHeight: '1500px' }}>
       <div className={styles.container}>
         <div className={styles.content}>
-          <h3 className={styles.heading}>Большой потенциал</h3>
-          <div className={styles.description}>Вы должны нам денег</div>
+          <h3 className={styles.heading}>ТЕСТЫ КОТОРЫЕ ВЫ ХОТИТЕ ВИДЕТЬ</h3>
+          <div className={styles.description}>Наше представление о тестах</div>
         </div>
       </div>
       <div
@@ -116,9 +120,26 @@ SetWidthScreen(window.screen.width);
                 }}
               >
                 {index === 7 && showTextBlock ? (
-                  <div className={styles.text_block}>
-                    <h2>Текстовый блок</h2>
-                    <p>Это пример текстового блока, который заменяет изображение.</p>
+                  <div
+                  style={{
+                    
+                    maxWidth: index ===7? (showTextBlock? `${WidthScreen}px`:'100%') : '100%',
+                    transform: index === 7 ?(showTextBlock?`scale(${1.1 / scaleValue}) scaleY(1)`: 'none')  : 'none',
+                  }}
+                  className={styles.text_block}>
+                    <div>
+                    <h2 className={`${styles.headNS} ${isHeadVisible ? styles.visible : ''}`} ref={headRef}>Текстовый блок</h2>
+                    <p className={`${styles.textBlock} ${isTextVisible ? styles.visible : ''}`} ref={textRef}>Это пример текстового блока, который заменяет изображение.</p>
+                    </div>
+                 <div className={styles.advantages}>
+                  <ul>
+                    <li className={styles.advantage}>Особенность теста</li>
+                    <li className={styles.advantage}>Особенность теста</li>
+                    <li className={styles.advantage}>Особенность теста</li>
+                    <li className={styles.advantage}>Особенность теста</li>
+                  </ul>
+                 </div>
+                 
                   </div>
                 ) : (
                   <img 
@@ -126,7 +147,7 @@ SetWidthScreen(window.screen.width);
                   style={{
                     
                     maxWidth: index ===4? (showTextBlock? `${WidthScreen}px`:'100%') : '100%',
-                    transform: index === 4 ?(showTextBlock?`scaleX(${2.5 / scaleValue})`: 'none')  : 'none',
+                    transform: index === 4 ?(showTextBlock?`scaleX(${2.5 / scaleValue}) scaleY(1)`: 'none')  : '',
                   }} src={image.src} alt={image.alt} />
                 )}
               </div>

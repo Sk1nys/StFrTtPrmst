@@ -49,7 +49,7 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className={styles.formContainer}>
+    <div className={styles.formContainerAuth}>
       <Link to="/home" className={styles.backBtnlink}>
         <div className={styles.butnSub}>
           <button className={styles.sub}>НА ГЛАВНУЮ</button>
