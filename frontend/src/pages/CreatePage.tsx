@@ -3,8 +3,6 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import CryptoJS from 'crypto-js';
-import styles from './styles/CreatePage.module.scss';
-import ButtonSquish from '../Components/Buttons/ButtonSquish';
 
 interface FormData {
   title: string;
@@ -43,12 +41,13 @@ const CreatePage: React.FC = () => {
     return savedQuestions ? JSON.parse(savedQuestions) : [{ text: '', type: '', answers: [{ answer_text: '', iscorrect: 0 }] }];
   });
 
-  const [file, setFile] = useState<File | null>(null);
-  const [message, setMessage] = useState<string>('');
-  const [fileData, setFileData] = useState<string>('');
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [excelMessage, setExcelMessage] = useState<string>('');
   const [excelData, setExcelData] = useState<any>(null);
+  const [wordFile, setWordFile] = useState<File | null>(null);
+  const [wordMessage, setWordMessage] = useState<string>('');
+  const [wordData, setWordData] = useState<any>(null);
+
 
   useEffect(() => {
     localStorage.setItem('formData', JSON.stringify(formData));
@@ -59,26 +58,53 @@ const CreatePage: React.FC = () => {
   }, [questionForms]);
 
   useEffect(() => {
-    if (excelData) {
+    if (excelData && excelData.tests && excelData.tests.length > 0) {
       const loadedTest = excelData.tests[0];
       setFormData({
-        title: loadedTest.title,
-        description: loadedTest.description,
-        subject: loadedTest.subject,
+        title: loadedTest.title || '',
+        description: loadedTest.description || '',
+        subject: loadedTest.subject || '',
         user_id: Number(decryptedUserId)
       });
-
+  
       const loadedQuestions = excelData.questions.map((question: any) => ({
-        text: question.text,
-        type: question.type,
+        text: question.text || '',
+        type: question.type || '',
         answers: excelData.answers.filter((answer: any) => answer.question_text === question.text).map((answer: any) => ({
-          answer_text: answer.answer_text,
+          answer_text: answer.answer_text || '',
           iscorrect: answer.is_correct ? 1 : 0
         }))
       }));
       setQuestionForms(loadedQuestions);
     }
   }, [excelData, decryptedUserId]);
+  
+  useEffect(() => {
+    console.log('Word data updated:', wordData); // Добавлено для отладки
+    if (wordData && wordData.tests && wordData.tests.length > 0) {
+      const loadedTest = wordData.tests[0];
+  
+      setFormData({
+        title: loadedTest.title || '',
+        description: loadedTest.description || '',
+        subject: loadedTest.subject || '',
+        user_id: Number(decryptedUserId)
+      });
+  
+      const loadedQuestions = wordData.questions.map((question: any) => ({
+        text: question.text || '',
+        type: question.type || '',
+        answers: wordData.answers.filter((answer: any) => answer.question_text === question.text).map((answer: any) => ({
+          answer_text: answer.answer_text || '',
+          iscorrect: answer.is_correct ? 1 : 0
+        }))
+      }));
+  
+      setQuestionForms(loadedQuestions);
+    }
+  }, [wordData, decryptedUserId]);
+  
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -126,45 +152,47 @@ const CreatePage: React.FC = () => {
     setQuestionForms(newQuestionForms);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
 
   const handleExcelFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setExcelFile(e.target.files[0]);
     }
   };
-
-  const handleFileUpload = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleWordFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setWordFile(e.target.files[0]);
+    }
+  };
+  
+  const handleWordUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!file) {
-      setMessage('Пожалуйста, выберите файл.');
+  
+    if (!wordFile) {
+      setWordMessage('Пожалуйста, выберите файл.');
       return;
     }
-
+  
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', wordFile);
     formData.append('user_id', decryptedUserId);
 
-    console.log('Uploading file:', file);
+    console.log('Uploading Excel file:', wordFile);
 
     try {
-      const response = await axios.post('http://localhost:8000', formData, {
+      const response = await axios.post('http://localhost:8000/upload/word', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      setMessage('Файл успешно загружен.');
-      setFileData(response.data.data);
+      setWordMessage('Файл успешно загружен.');
+      setWordData(response.data);  // Обновляем excelData полученными данными
     } catch (error) {
-      setMessage('Ошибка при загрузке файла.');
+      setWordMessage('Ошибка при загрузке файла.');
     }
   };
+  
+  
 
   const handleExcelUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -181,14 +209,15 @@ const CreatePage: React.FC = () => {
     console.log('Uploading Excel file:', excelFile);
 
     try {
-      const response = await axios.post('http://localhost:8000/upload/upload', formData, {
+      const response = await axios.post('http://localhost:8000/upload/exel', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       setExcelMessage('Файл успешно загружен.');
-      setExcelData(response.data);  // Обновляем excelData полученными данными
+      setExcelData(response.data);
+      console.log(response.data) // Обновляем excelData полученными данными
     } catch (error) {
       setExcelMessage('Ошибка при загрузке файла.');
     }
@@ -240,18 +269,19 @@ const CreatePage: React.FC = () => {
     }
   };
 
+
   
   
   return (
-    <div className={styles.conMain}>
-      <form onSubmit={handleSubmit}>
-      <div className={styles.headSt}>
-      <Link to='/home' className={styles.backBtn}>
-      <ButtonSquish>
-        НАЗАД
-      </ButtonSquish>
+    <div>
+      <Link to='/home'>
+        <div>
+          <button>НА ГЛАВНУЮ</button>
+        </div>
       </Link>
-      <div className={styles.titles}>
+      <form onSubmit={handleSubmit}>
+        <h1>СОЗДАТЬ ТЕСТ И ВОПРОСЫ</h1>
+        <div>
           <input
             type='text'
             name='title'
@@ -259,11 +289,9 @@ const CreatePage: React.FC = () => {
             onChange={handleChange}
             placeholder='Название теста'
           />
+          <label htmlFor='title'>Название теста</label>
         </div>
-        </div>
-        <div className={styles.op}>
-        <div className={styles.desc}>
-        <label htmlFor='description'>Описание</label>
+        <div>
           <input
             type='text'
             name='description'
@@ -271,9 +299,9 @@ const CreatePage: React.FC = () => {
             onChange={handleChange}
             placeholder='Описание'
           />
+          <label htmlFor='description'>Описание</label>
         </div>
-        <div className={styles.subj}>
-        <label htmlFor='subject'>Предмет</label>
+        <div>
           <input
             type='text'
             name='subject'
@@ -281,24 +309,23 @@ const CreatePage: React.FC = () => {
             onChange={handleChange}
             placeholder='Предмет'
           />
-        </div>
+          <label htmlFor='subject'>Предмет</label>
         </div>
         {questionForms.map((questionFormData, qIndex) => (
-          <div key={qIndex} className={styles.quepro}>  
+          <div key={qIndex}>
+            <h2>Создать Вопрос {qIndex + 1}</h2>
             <input
-              className={styles.quename}
               type='text'
               name='text'
               value={questionFormData.text}
               onChange={(e) => handleQuestionChange(qIndex, e)}
-              placeholder='Задайте вопрос'
+              placeholder='Вопрос'
             />
-            
+            <label htmlFor='text'>Вопрос</label>
             <div>
               <select
                 name='type'
                 value={questionFormData.type}
-                className={styles.queSel}
                 onChange={(e) => handleQuestionChange(qIndex, e)}
               >
                 <option value='' disabled>Выберите тип вопроса</option>
@@ -306,75 +333,70 @@ const CreatePage: React.FC = () => {
                 <option value='Вписать ответ'>Вписать ответ</option>
                 <option value='Один правильный ответ'>Один правильный ответ</option>
               </select>
+              <label htmlFor='type'>Тип вопроса</label>
             </div>
+            <h3>Создать Ответы</h3>
             {questionFormData.answers.map((answerFormData, aIndex) => (
-              <div className={styles.answGr} key={aIndex}>
+              <div key={aIndex}>
                 <input
                   type='text'
                   name='answer_text'
-                  className={styles.answ}
                   value={answerFormData.answer_text}
                   onChange={(e) => handleAnswerChange(qIndex, aIndex, e)}
                   placeholder='Ответ'
                 />
+                <label htmlFor='answer_text'>Ответ</label>
                 {questionFormData.type === 'Множественный выбор' ? (
-                  <div className={styles.in}>
+                  <>
                     <input
                       type='checkbox'
                       name='iscorrect'
-                      className={styles.answC}
                       checked={answerFormData.iscorrect === 1}
                       onChange={() => handleCorrectChange(qIndex, aIndex)}
                     />
-                    <label className={styles.CLab} htmlFor='iscorrect'>Правильный</label>
-                  </div>
+                    <label htmlFor='iscorrect'>Правильный</label>
+                  </>
                 ) : questionFormData.type !== 'Вписать ответ' && (
                   <>
                     <input
                       type='radio'
                       name={`iscorrect-${qIndex}`}
-                      className={styles.answR}
                       checked={answerFormData.iscorrect === 1}
                       onChange={() => handleCorrectChange(qIndex, aIndex)}
                     />
-                    <label htmlFor='iscorrect' className={styles.RLab}>Правильный</label>
+                    <label htmlFor='iscorrect'>Правильный</label>
                   </>
                 )}
-                <button className={styles.delAnsw} type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}></button>
+                <button type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}>Удалить Ответ</button>
               </div>
             ))}
             <div>
-              <button className={styles.plusAnsw} type='button' onClick={() => addAnswerForm(qIndex)}></button>
+              <button type='button' onClick={() => addAnswerForm(qIndex)}>Добавить Ответ</button>
             </div>
-            <button className={styles.delQue} type='button' onClick={() => removeQuestionForm(qIndex)}></button>
+            <button type='button' onClick={() => removeQuestionForm(qIndex)}>Удалить вопрос</button>
           </div>
         ))}
         <div>
-          <button className={styles.plusQue} type='button' onClick={addQuestionForm}></button>
+          <button type='button' onClick={addQuestionForm}>Добавить Вопрос</button>
         </div>
         <div>
-        <ButtonSquish><button className={styles.subchik} type='submit'>СОЗДАТЬ</button></ButtonSquish>
+          <button type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
         </div>
       </form>
-      <div className={styles.doc}>
-      <form onSubmit={handleFileUpload} className={styles.wordDoc}>
-        <h2>Загрузка Word файлов</h2>
-        <div className={styles.iconDoc}>
-        <i title="doc"></i>
-        <input type="file" accept=".docx" onChange={handleFileChange} className={styles.i}/></div>
-        <ButtonSquish> <button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
-      </form>
-      {message && <p>{message}</p>}
+      <form onSubmit={handleWordUpload}>
+  <h2>Загрузка Word файлов</h2>
+  <input type="file" accept=".docx" onChange={handleWordFileChange} />
+  <button type="submit">Загрузить</button>
+</form>
+{wordMessage && <p>{wordMessage}</p>}
+
     
-      <form onSubmit={handleExcelUpload} className={styles.exelDoc}>
+      <form onSubmit={handleExcelUpload}>
         <h2>Загрузка Excel файлов</h2>
-        <div className={styles.iconSheet}>
-        <i title="xlsx"></i>
-        <input type="file" accept=".xlsx" onChange={handleExcelFileChange} className={styles.i}/></div>
-        <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
+        <input type="file" accept=".xlsx" onChange={handleExcelFileChange} />
+        <button type="submit">Загрузить</button>
       </form>
       {excelMessage && <p>{excelMessage}</p>}
-      </div>
     </div>
   );
   
