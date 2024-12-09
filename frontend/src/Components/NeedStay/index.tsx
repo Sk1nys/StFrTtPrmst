@@ -128,8 +128,8 @@ SetWidthScreen(window.screen.width);
                   }}
                   className={styles.text_block}>
                     <div>
-                    <h2 className={`${styles.headNS} ${isHeadVisible ? styles.visible : ''}`} ref={headRef}>Текстовый блок</h2>
-                    <p className={`${styles.textBlock} ${isTextVisible ? styles.visible : ''}`} ref={textRef}>Это пример текстового блока, который заменяет изображение.</p>
+                    <h2 className={`${styles.headNS} ${isHeadVisible ? styles.visible : ''}`} ref={headRef}>Причины попробовать наш тест</h2>
+                    <p className={`${styles.textBlock} ${isTextVisible ? styles.visible : ''}`} ref={textRef}>Краткое описание фишек нашего теста</p>
                     </div>
                  <div className={styles.advantages}>
                   <ul>
