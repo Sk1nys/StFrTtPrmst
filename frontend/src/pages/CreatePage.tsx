@@ -80,7 +80,6 @@ const CreatePage: React.FC = () => {
   }, [excelData, decryptedUserId]);
   
   useEffect(() => {
-    console.log('Word data updated:', wordData); // Добавлено для отладки
     if (wordData && wordData.tests && wordData.tests.length > 0) {
       const loadedTest = wordData.tests[0];
   
@@ -176,7 +175,6 @@ const CreatePage: React.FC = () => {
     formData.append('file', wordFile);
     formData.append('user_id', decryptedUserId);
 
-    console.log('Uploading Excel file:', wordFile);
 
     try {
       const response = await axios.post('http://localhost:8000/upload/word', formData, {
@@ -206,7 +204,6 @@ const CreatePage: React.FC = () => {
     formData.append('file', excelFile);
     formData.append('user_id', decryptedUserId);
 
-    console.log('Uploading Excel file:', excelFile);
 
     try {
       const response = await axios.post('http://localhost:8000/upload/exel', formData, {
@@ -217,7 +214,6 @@ const CreatePage: React.FC = () => {
 
       setExcelMessage('Файл успешно загружен.');
       setExcelData(response.data);
-      console.log(response.data) // Обновляем excelData полученными данными
     } catch (error) {
       setExcelMessage('Ошибка при загрузке файла.');
     }
@@ -229,8 +225,6 @@ const CreatePage: React.FC = () => {
     const today = new Date().toISOString().split('T')[0];
     const formDataWithDateAndUserId = { ...formData, data: today, user_id: Number(decryptedUserId) };
 
-    console.log('Form data:', formDataWithDateAndUserId);
-    console.log('Question forms:', questionForms);
 
     try {
       const testResponse = await axios.post('http://localhost:8000/test/create', formDataWithDateAndUserId, {
@@ -265,7 +259,6 @@ const CreatePage: React.FC = () => {
       localStorage.removeItem('formData');
       localStorage.removeItem('questionForms');
     } catch (error) {
-      console.error('Error:', error);
     }
   };
 

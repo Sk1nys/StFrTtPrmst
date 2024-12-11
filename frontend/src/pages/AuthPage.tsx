@@ -41,10 +41,8 @@ const AuthPage: React.FC = () => {
         setCookie('username', encrypt(response.data.username), { path: '/' });
         setCookie('id', encrypt(response.data.id.toString()), { path: '/' });
       }
-      console.log('Response:', response.data);
     } catch (error) {
       alert('Ошибка входа');
-      console.error('Error:', error);
     }
   };
 

@@ -39,11 +39,9 @@ const AuthPage: React.FC = () => {
         },
       });
       
-      console.log('Success:', response.data);
     } catch (error) {
-      console.error('Error:', error);
     }
-  };console.log(formData)
+  };
 
   return (
     

@@ -75,10 +75,6 @@ class ResultController extends ActiveController
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($user_id)
-    {
-        
-    }
     public function actionUserResults($user_id){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
@@ -110,6 +106,36 @@ class ResultController extends ActiveController
     
         return $result;
     }
+    public function actionTestUsers($test_id) {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    
+        // Получаем результаты теста с присоединением к пользователю и фильтрацией по test_id
+        $results = Results::find()
+            ->joinWith('user') // Присоединяем таблицу users
+            ->where(['results.test_id' => $test_id]) // Фильтруем по test_id
+            ->all();
+    
+
+        if (empty($results)) {
+            throw new \yii\web\NotFoundHttpException('Записи не найдены');
+        }
+    
+
+        $result = [];
+        foreach ($results as $resultItem) {
+            $result[] = [
+                'id' => $resultItem->id,
+                'score' => $resultItem->score,
+                'total_score' => $resultItem->total_score,
+                'user' => [
+                    'username' => $resultItem->user->username, 
+                ],
+            ];
+        }
+    
+        return $result;
+    }
+    
     /**
      * Creates a new Results model.
      * If creation is successful, the browser will be redirected to the 'view' page.
