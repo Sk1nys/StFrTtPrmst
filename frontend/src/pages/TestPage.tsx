@@ -2,10 +2,9 @@ import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import { Link } from "react-router-dom";
-import ButtonSquish from '../Components/Buttons/ButtonSquish'
-import styles from "./styles/TestPage.module.scss"
+import ButtonSquish from '../Components/Buttons/ButtonSquish';
+import styles from "./styles/TestPage.module.scss";
 
-// Интерфейс для данных, которые мы получаем с сервера
 interface Data {
     id: number;
     title: string;
@@ -14,55 +13,89 @@ interface Data {
     data: string;
 }
 
-const TestPage: FC = () => {
-    const { id } = useParams<{ id: string }>(); // Получаем параметр id из URL
+interface User {
+    id: number;
+    username: string;
+}
 
-    // Состояния компонента для загрузки данных
-    const [data, setData] = useState<Data | null>(null); // Данные с сервера
-    const [loading, setLoading] = useState<boolean>(true); // Статус загрузки
-    const [error, setError] = useState<AxiosError | null>(null); // Ошибка (если есть)
+interface Result {
+    id: number;
+    score: number;
+    total_score: number;
+    user: User; // Adjusted to reflect the user structure
+}
+
+const TestPage: FC = () => {
+    const { id } = useParams<{ id: string }>(); 
+
+    const [data, setData] = useState<Data | null>(null);
+    const [results, setResults] = useState<Result[]>([]); // Changed to array of Results
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<AxiosError | null>(null);
 
     useEffect(() => {
-        //if (!id) return; // Если id нет, не выполняем запрос
-
-        // Отправляем GET-запрос на сервер с указанием ID
         axios.get<Data>(`http://localhost:8000/test/view?id=${id}`)
             .then((response) => {
-                setData(response.data); // Записываем полученные данные в состояние
+                setData(response.data);
                 setLoading(false);
             })
             .catch((err: AxiosError) => {
-                setError(err); // Обрабатываем ошибку
+                setError(err); 
                 setLoading(false);
             });
-    }, [id]); // Эффект срабатывает при изменении id
+    }, [id]);
 
-    // Условный рендеринг в зависимости от состояния загрузки и ошибок
+    useEffect(() => {
+        axios.get<Result[]>(`http://localhost:8000/result/test-users?test_id=${id}`)
+            .then((response) => {
+                setResults(response.data);
+                setLoading(false);
+            })
+            .catch((err: AxiosError) => {
+                setError(err); 
+                setLoading(false);
+            });
+    }, [id]);
+
     if (loading) return <div>Loading...</div>;
-    //if (error) return <div>Error: {error.message}</div>;
 
     return (
         <div className={styles.DescContainer}>
-            <div className={styles.hedlist}> <Link to="/list" className={styles.linkii}><ButtonSquish className={styles.header_button}>НАЗАД</ButtonSquish></Link><h1>ОПИСАНИЕ</h1></div>
+            <div className={styles.hedlist}> 
+                <Link to="/list" className={styles.linkii}>
+                    <ButtonSquish className={styles.header_button}>НАЗАД</ButtonSquish>
+                </Link>
+                <h1>ОПИСАНИЕ</h1>
+            </div>
             {data ? (
                 <div className={styles.blockDescriptoins}>
-                    <h3>{data.title}</h3> {/* Название */}
-                    <p>{data.description}</p> {/* Описание */}
-                    <p>{data.subject}</p> {/* Предмет */}
-                    <p>{data.data}</p> {/* Дата */}
+                    <h3>{data.title}</h3> 
+                    <p>{data.description}</p>
+                    <p>{data.subject}</p> 
+                    <p>{data.data}</p> 
                 </div>
             ) : (
                 <div className={styles.blockDescriptoins}>
-                <h3>Название</h3> {/* Название */}
-                <p>Описание</p> {/* Описание */}
-                <p>Предмет</p> {/* Предмет */}
-                <p>Дата</p> {/* Дата */}
-            </div>
-                //<div>No data available</div>
+                    <h3>Название</h3>
+                    <p>Описание</p> 
+                    <p>Предмет</p> 
+                    <p>Дата</p> 
+                </div>
             )}
-           <a href={`/question/${id}`}><ButtonSquish className={styles.header_button}> НАЧАТЬ ТЕСТ</ButtonSquish></a>
+            <a href={`/question/${id}`}>
+                <ButtonSquish className={styles.header_button}>НАЧАТЬ ТЕСТ</ButtonSquish>
+            </a>
+
+            <div className={styles.resultsContainer}>
+                <h2>Результаты пользователей:</h2>
+                {results.map(result => (
+                    <div key={result.id} className={styles.resultItem}>
+                        <p>Пользователь: {result.user.username}</p>
+                        <p>Счет: {result.score} / {result.total_score}</p>
+                    </div>
+                ))}
+            </div>
         </div>
-        
     );
 };
 

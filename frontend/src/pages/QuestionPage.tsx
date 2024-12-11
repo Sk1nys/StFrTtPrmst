@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import styles from "./styles/QuestPage.module.scss";
 import { Link } from "react-router-dom";
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
+import CryptoJS from 'crypto-js';
 
 interface DataItem {
   id: number;
@@ -16,9 +17,12 @@ interface DataItem {
 interface Question {
   id: number;
   text: string;
-  type: number;
+  type: string;
 }
-
+const decrypt = (text: string) => {
+  const bytes = CryptoJS.AES.decrypt(text, 'secret-key');
+  return bytes.toString(CryptoJS.enc.Utf8);
+};
 const shuffleArray = (array: any[]) => {
   return array.sort(() => Math.random() - 0.5);
 };
@@ -34,7 +38,8 @@ const TestPage: FC = () => {
   const [answers, setAnswers] = useState<Record<number, number[] | string | number>>(
     JSON.parse(localStorage.getItem('answers') || '{}')
   );
-  const [cookies, setCookie] = useCookies(['id']);
+  const [cookies] = useCookies(['id']);
+  const decryptedUserId = decrypt(cookies.id);
   const [score, setScore] = useState<number>(JSON.parse(localStorage.getItem('score') || '0'));
 
   useEffect(() => {
@@ -151,16 +156,16 @@ const TestPage: FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const user_id = cookies.id;
+  
+    const user_id = decryptedUserId;
     const date = new Date().toISOString();
-
+  
     const total_score = Object.keys(groupedData).reduce((acc, questionId) => {
       const correctAnswers = groupedData[Number(questionId)].filter((item) => item.iscorrect)
         .length;
       return acc + correctAnswers;
     }, 0);
-
+  
     const payload = {
       test_id: id,
       score: score,
@@ -168,25 +173,26 @@ const TestPage: FC = () => {
       data: date,
       user_id: user_id,
     };
-
-    console.log('Payload:', payload);
-
+  
+    // Вывод данных в консоль
+    console.log("Отправляемые данные:", payload);
+  
     try {
       const response = await axios.post('http://localhost:8000/result/create', payload, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Results submitted successfully:', response.data);
-
+  
       localStorage.removeItem('answers');
       localStorage.removeItem('score');
       setAnswers({});
       setScore(0);
     } catch (error: any) {
-      console.error('Error submitting results:', error);
+      console.error("Ошибка при отправке данных:", error);
     }
   };
+  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -202,13 +208,13 @@ const TestPage: FC = () => {
           <div className={styles.quest}>
             <h3>{currentQuestion[0].question.text}</h3>
             
-            {currentQuestion[0].question.type === 2 ? (
+            {currentQuestion[0].question.type === 'Вписать ответ' ? (
               <input
                 type="text"
                 onChange={(e) => handleAnswerChange(e, currentQuestion[0].question.id)}
                 value={answers[currentQuestion[0].question.id] as string || ''}
               />
-            ) : currentQuestion[0].question.type === 3 ? (
+            ) : currentQuestion[0].question.type === 'Один правильный ответ' ? (
               currentQuestion.map((item) => (
                 <div key={item.id} className={styles.dataItem}>
                   <input
