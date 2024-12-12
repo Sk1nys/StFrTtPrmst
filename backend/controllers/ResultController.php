@@ -128,6 +128,7 @@ class ResultController extends ActiveController
                 'score' => $resultItem->score,
                 'total_score' => $resultItem->total_score,
                 'user' => [
+                    'id'=>$resultItem->user->id, 
                     'username' => $resultItem->user->username, 
                 ],
             ];
