@@ -10,6 +10,7 @@ interface FormData {
   title: string;
   description: string;
   subject: string;
+  disposable: number;
   user_id?: number;
 }
 
@@ -32,10 +33,10 @@ const decrypt = (text: string) => {
 const CreatePage: React.FC = () => {
   const [cookies] = useCookies(['id']);
   const decryptedUserId = decrypt(cookies.id);
-  
+
   const [formData, setFormData] = useState<FormData>(() => {
     const savedData = localStorage.getItem('formData');
-    return savedData ? JSON.parse(savedData) : { title: '', description: '', subject: '', user_id: undefined };
+    return savedData ? JSON.parse(savedData) : { title: '', description: '', subject: '', disposable: 0, user_id: undefined };
   });
 
   const [questionForms, setQuestionForms] = useState<QuestionFormData[]>(() => {
@@ -66,6 +67,7 @@ const CreatePage: React.FC = () => {
         title: loadedTest.title || '',
         description: loadedTest.description || '',
         subject: loadedTest.subject || '',
+        disposable: loadedTest.disposable ? 1 : 0, // Добавляем обработку disposable
         user_id: Number(decryptedUserId)
       });
   
@@ -89,6 +91,7 @@ const CreatePage: React.FC = () => {
         title: loadedTest.title || '',
         description: loadedTest.description || '',
         subject: loadedTest.subject || '',
+        disposable: loadedTest.disposable ? 1 : 0,
         user_id: Number(decryptedUserId)
       });
   
@@ -106,10 +109,16 @@ const CreatePage: React.FC = () => {
   }, [wordData, decryptedUserId]);
   
   
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = e.target;
+    setFormData({ ...formData, disposable: checked ? 1 : 0 }); // Устанавливаем 1 или 0
   };
 
   const handleQuestionChange = (index: number, e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => {
@@ -227,7 +236,8 @@ const CreatePage: React.FC = () => {
     const today = new Date().toISOString().split('T')[0];
     const formDataWithDateAndUserId = { ...formData, data: today, user_id: Number(decryptedUserId) };
 
-
+    console.log('Отправляемые данные теста:', formDataWithDateAndUserId);
+    console.log('Отправляемые вопросы:', questionForms);
     try {
       const testResponse = await axios.post('http://localhost:8000/test/create', formDataWithDateAndUserId, {
         headers: {
@@ -271,38 +281,25 @@ const CreatePage: React.FC = () => {
     <div className={styles.conMain}>
       <form onSubmit={handleSubmit}>
         <div className={styles.headSt}>
-        <Link to='/home' className={styles.backBtn}>
-        <ButtonSquish>НАЗАД</ButtonSquish>
-      </Link>
-      <div className={styles.titles}>
-      <input
-            type='text'
-            name='title'
-            value={formData.title}
-            onChange={handleChange}
-            placeholder='Название теста'
-          />
+          <Link to='/home' className={styles.backBtn}>
+            <ButtonSquish>НАЗАД</ButtonSquish>
+          </Link>
+          <div className={styles.titles}>
+            <input type='text' name='title' value={formData.title} onChange={handleChange} placeholder='Название теста' />
           </div>
         </div>
         <div className={styles.op}>
           <div className={styles.desc}>
-          <input
-            type='text'
-            name='description'
-            value={formData.description}
-            onChange={handleChange}
-            placeholder='Описание'
-          /></div>
+            <input type='text' name='description' value={formData.description} onChange={handleChange} placeholder='Описание' />
+          </div>
           <div className={styles.subj}>
-          <input
-            type='text'
-            name='subject'
-            value={formData.subject}
-            onChange={handleChange}
-            placeholder='Предмет'
-          />
+            <input type='text' name='subject' value={formData.subject} onChange={handleChange} placeholder='Предмет' />
           </div>
+          <div className={styles.disposable}>
+            <input type="checkbox" checked={formData.disposable === 1} onChange={handleCheckboxChange} />
+            <label>Одноразовый тест</label>
           </div>
+        </div>
         {questionForms.map((questionFormData, qIndex) => (
           <div key={qIndex} className={styles.quepro}>
             <input
