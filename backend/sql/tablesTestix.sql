@@ -34,6 +34,7 @@ CREATE TABLE public.tests (
 	description varchar(255) NOT NULL,
 	subject varchar(255) NOT NULL,
 	data DATE NOT NULL,
+	disposable BOOLEAN NOT NULL,
 	user_id int NOT NULL,
 	CONSTRAINT test_pk PRIMARY KEY (id),
 	CONSTRAINT user_fk FOREIGN KEY (user_id)

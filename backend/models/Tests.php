@@ -13,6 +13,7 @@ use Yii;
  * @property string $subject
  * @property string $data
  * @property int $user_id
+ * @property bool|null $disposable
  *
  * @property Questions[] $questions
  * @property Results[] $results
@@ -38,6 +39,7 @@ class Tests extends \yii\db\ActiveRecord
             [['data'], 'safe'],
             [['user_id'], 'default', 'value' => null],
             [['user_id'], 'integer'],
+            [['disposable'], 'boolean'],
             [['title', 'description', 'subject'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -55,6 +57,7 @@ class Tests extends \yii\db\ActiveRecord
             'subject' => 'Subject',
             'data' => 'Data',
             'user_id' => 'User ID',
+            'disposable' => 'Disposable',
         ];
     }
 
@@ -87,6 +90,4 @@ class Tests extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Users::class, ['id' => 'user_id']);
     }
-
-    
 }

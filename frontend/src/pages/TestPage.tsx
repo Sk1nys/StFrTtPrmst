@@ -4,6 +4,8 @@ import axios, { AxiosError } from 'axios';
 import { Link } from "react-router-dom";
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
 import styles from "./styles/TestPage.module.scss";
+import { useCookies } from 'react-cookie';
+import CryptoJS from 'crypto-js';
 
 interface Data {
     id: number;
@@ -11,6 +13,7 @@ interface Data {
     description: string;
     subject: string;
     data: string;
+    disposable: boolean;
 }
 
 interface User {
@@ -22,16 +25,25 @@ interface Result {
     id: number;
     score: number;
     total_score: number;
-    user: User; // Adjusted to reflect the user structure
+    user: User;
 }
 
+const decrypt = (text: string) => {
+    const bytes = CryptoJS.AES.decrypt(text, 'secret-key');
+    return bytes.toString(CryptoJS.enc.Utf8);
+};
+
 const TestPage: FC = () => {
+    const [cookies] = useCookies(['id']);
+    const decryptedUserId = decrypt(cookies.id);
+
     const { id } = useParams<{ id: string }>(); 
 
     const [data, setData] = useState<Data | null>(null);
-    const [results, setResults] = useState<Result[]>([]); // Changed to array of Results
+    const [results, setResults] = useState<Result[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<AxiosError | null>(null);
+    const [hasTakenTest, setHasTakenTest] = useState<boolean>(false); // Новое состояние
 
     useEffect(() => {
         axios.get<Data>(`http://localhost:8000/test/view?id=${id}`)
@@ -50,12 +62,16 @@ const TestPage: FC = () => {
             .then((response) => {
                 setResults(response.data);
                 setLoading(false);
+                
+                // Проверка, прошел ли пользователь тест
+                const userHasTakenTest = response.data.some(result => result.user.id.toString() === decryptedUserId);
+                setHasTakenTest(userHasTakenTest);
             })
             .catch((err: AxiosError) => {
                 setError(err); 
                 setLoading(false);
             });
-    }, [id]);
+    }, [id, decryptedUserId]);
 
     if (loading) return <div>Loading...</div>;
 
@@ -73,6 +89,7 @@ const TestPage: FC = () => {
                     <p>{data.description}</p>
                     <p>{data.subject}</p> 
                     <p>{data.data}</p> 
+                    <p>{data.disposable === true ? 'Одноразовый тест' : 'Многоразовый тест'}</p>
                 </div>
             ) : (
                 <div className={styles.blockDescriptoins}>
@@ -82,9 +99,13 @@ const TestPage: FC = () => {
                     <p>Дата</p> 
                 </div>
             )}
-            <a href={`/question/${id}`}>
-                <ButtonSquish className={styles.header_button}>НАЧАТЬ ТЕСТ</ButtonSquish>
-            </a>
+            {data?.disposable === true && hasTakenTest ? (
+                <p>Вы уже прошли этот тест.</p>
+            ) : (
+                <a href={`/question/${id}`}>
+                    <ButtonSquish className={styles.header_button}>НАЧАТЬ ТЕСТ</ButtonSquish>
+                </a>
+            )}
 
             <div className={styles.resultsContainer}>
                 <h2>Результаты пользователей:</h2>
