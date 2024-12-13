@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useCookies } from 'react-cookie';
 import styles from "./styles/QuestPage.module.scss";
 import { Link } from "react-router-dom";
@@ -18,20 +18,40 @@ interface Question {
   id: number;
   text: string;
   type: string;
+  test: Test;
 }
+interface Test {
+  disposable: boolean;
+}
+
+interface User {
+  id: number;
+  username: string;
+}
+
+interface Result {
+  id: number;
+  score: number;
+  total_score: number;
+  user: User;
+}
+
 const decrypt = (text: string) => {
   const bytes = CryptoJS.AES.decrypt(text, 'secret-key');
   return bytes.toString(CryptoJS.enc.Utf8);
 };
+
 const shuffleArray = (array: any[]) => {
   return array.sort(() => Math.random() - 0.5);
 };
 
-const TestPage: FC = () => {
+const QuestionPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<DataItem[]>([]);
+  const [test, setTest] = useState<Test | null>(null);
+  const [results, setResults] = useState<Result[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AxiosError | null>(null);
   const [groupedData, setGroupedData] = useState<Record<number, DataItem[]>>({});
   const [shuffledQuestionKeys, setShuffledQuestionKeys] = useState<number[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -41,6 +61,7 @@ const TestPage: FC = () => {
   const [cookies] = useCookies(['id']);
   const decryptedUserId = decrypt(cookies.id);
   const [score, setScore] = useState<number>(JSON.parse(localStorage.getItem('score') || '0'));
+  const [hasTakenTest, setHasTakenTest] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,6 +91,34 @@ const TestPage: FC = () => {
       setShuffledQuestionKeys(shuffleArray(Object.keys(result).map(Number)));
     }
   }, [data]);
+
+  useEffect(() => {
+    axios.get<Test>(`http://localhost:8000/test/view?id=${id}`)
+      .then((response) => {
+        setTest(response.data);
+        setLoading(false);
+      })
+      .catch((err: AxiosError) => {
+        setError(err);
+        setLoading(false);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    axios.get<Result[]>(`http://localhost:8000/result/test-users?test_id=${id}`)
+      .then((response) => {
+        setResults(response.data);
+        setLoading(false);
+        
+        // Проверка, прошел ли пользователь тест
+        const userHasTakenTest = response.data.some(result => result.user.id.toString() === decryptedUserId);
+        setHasTakenTest(userHasTakenTest);
+      })
+      .catch((err: AxiosError) => {
+        setError(err); 
+        setLoading(false);
+      });
+  }, [id, decryptedUserId]);
 
   useEffect(() => {
     localStorage.setItem('answers', JSON.stringify(answers));
@@ -192,10 +241,12 @@ const TestPage: FC = () => {
       console.error("Ошибка при отправке данных:", error);
     }
   };
-  
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+
+  if (hasTakenTest && test?.disposable) {
+    return <div>Вы уже прошли этот тест, он одноразовый.</div>;
+  }
 
   const currentQuestionKey = shuffledQuestionKeys[currentQuestionIndex];
   const currentQuestion = currentQuestionKey ? groupedData[currentQuestionKey] : [];
@@ -203,6 +254,7 @@ const TestPage: FC = () => {
   return (
     <div className={styles.QuestCon}>
       <div className={styles.hedlist}><Link to="/list" className={styles.btnBack}><ButtonSquish>НАЗАД</ButtonSquish></Link> <h1>Название Теста</h1></div>
+      
       <form className={styles.questionGroup} onSubmit={handleSubmit}>
         {currentQuestion.length > 0 ? (
           <div className={styles.quest}>
@@ -274,4 +326,4 @@ const TestPage: FC = () => {
   );
 };
 
-export default TestPage;
+export default QuestionPage;
