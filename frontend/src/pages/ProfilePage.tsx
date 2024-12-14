@@ -28,7 +28,7 @@ const decrypt = (text: string) => {
 };
 
 const ProfilePage: FC = () => {
-  const [cookies] = useCookies(['id']);
+  const [cookies, setCookie, removeCookie] = useCookies(['id']);
   const [decryptedUserId, setDecryptedUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -57,12 +57,18 @@ const ProfilePage: FC = () => {
       fetchData();
     }
   }, [decryptedUserId]);
+  const handleExit = () => {
 
+    removeCookie('id');
+   
+    window.location.href = '/'; 
+  };
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
+      <button onClick={handleExit}>Выйти</button>
       {data.length > 0 ? (
         <div>
           {data.map((item) => (
