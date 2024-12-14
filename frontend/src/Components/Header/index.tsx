@@ -42,64 +42,20 @@ const Header: React.FC<HeaderProps> = ({ isBurgerOpen }) => {
       }`}
     >
       <div className={styles.header}>
-        <Link to={decryptedUsername ? '/create' : '/auth'} className={styles.link}>
-          {decryptedUsername ? (
-            isBurger ? (
-              <ButtonAroundBorder>СОЗДАТЬ ТЕСТ</ButtonAroundBorder>
-            ) : (
-              <ButtonSquish className={styles.header_button}>СОЗДАТЬ ТЕСТ</ButtonSquish>
-            )
-          ) : (
-            isBurger ? (
-              <ButtonAroundBorder>СОЗДАТЬ ТЕСТ</ButtonAroundBorder>
-            ) : (
-              <ButtonSquish className={styles.header_button}>СОЗДАТЬ ТЕСТ</ButtonSquish>
-            )
-          )}
+        <Link to="/create" className={styles.link}>
+        {isBurger? <ButtonAroundBorder children='Создать тест'/> :  <ButtonSquish className={styles.header_button}>СОЗДАТЬ ТЕСТ</ButtonSquish>}
+        
         </Link>
-        <Link to={decryptedUsername ? '/list' : '/auth'} className={styles.link}>
-          {decryptedUsername ? (
-            isBurger ? (
-              <ButtonAroundBorder>СПИСОК ТЕСТОВ</ButtonAroundBorder>
-            ) : (
-              <ButtonSquish className={styles.header_button}>СПИСОК ТЕСТОВ</ButtonSquish>
-            )
-          ) : (
-            isBurger ? (
-              <ButtonAroundBorder>СПИСОК ТЕСТОВ</ButtonAroundBorder>
-            ) : (
-              <ButtonSquish className={styles.header_button}>СПИСОК ТЕСТОВ</ButtonSquish>
-            )
-          )}
-        </Link>
+        <Link to="/list" className={styles.link}>
+            {isBurger? <ButtonAroundBorder children='Список тестов'/> :    <ButtonSquish className={styles.header_button}>СПИСОК ТЕСТОВ</ButtonSquish>}
 
-        {isBurger ? (
-          <div className={styles.logocon}>
-            <div className={styles.logoMb}>
-              <img src={Logo} alt="" /> <h3>TESTIX🎀</h3>
-            </div>
-          </div>
-        ) : (
-          <div className={styles.logo}>
-            <img src={Logo} alt="" /> <h3>TESTIX🎀</h3>
-          </div>
-        )}
-
-        <Link to={decryptedUsername ? '/proftest' : '/auth'} className={styles.link}>
-          {decryptedUsername ? (
-            isBurger ? (
-              <ButtonAroundBorder>НАШ ТЕСТ</ButtonAroundBorder>
-            ) : (
-              <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish>
-            )
-          ) : (
-            isBurger ? (
-              <ButtonAroundBorder>НАШ ТЕСТ</ButtonAroundBorder>
-            ) : (
-              <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish>
-            )
-          )}
-        </Link>
+            </Link>
+            {isBurger? <div className={styles.logocon}><div className={styles.logoMb}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div></div>:<div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div> }
+             
+            
+            <Link to="/proftest" className={styles.link}>
+            {isBurger? <ButtonAroundBorder children='Наш тест'/> :     <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish> }
+            </Link>
 
         <Link to={decryptedUsername ? `/profile/${decryptedUserId}` : '/auth'} className={styles.link}>
           {decryptedUsername ? (
