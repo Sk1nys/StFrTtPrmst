@@ -249,7 +249,7 @@ margin: 20px;
     outline:none;
 }
 .subchik{
-    width: 100px;
+    width: 200px;
     height: 40px;
     background: none;
     outline: none;
@@ -485,7 +485,14 @@ margin: 20px;
 }
 
 
-
+.disposable{
+  font-size: 25px;
+  position: relative;
+  margin-left: 7%;
+  font-family: 'Montserrat', sans-serif;
+  padding: 15px;
+  width:50% ;
+}
 
 
 @keyframes checkBtnChk{
