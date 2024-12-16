@@ -11,7 +11,7 @@ import RegPage from './RegPage.tsx';
 import TestPage from './TestPage.tsx';
 import QuestionPage from './QuestionPage.tsx';
 import ProfilePage from './ProfilePage.tsx';
-import PrivateRoute from './PrivateRoute'; // Убедитесь, что путь правильный
+import PrivateRoute from './PrivateRoute'; 
 
 const Router: FC = () => {
   const routeConfig: RouteType[] = [

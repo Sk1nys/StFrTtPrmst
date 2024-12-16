@@ -28,7 +28,7 @@ const decrypt = (text: string) => {
 };
 
 const ProfilePage: FC = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(['id']);
+  const [cookies, setCookie, removeCookie] = useCookies(['id','username']);
   const [decryptedUserId, setDecryptedUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -58,10 +58,10 @@ const ProfilePage: FC = () => {
     }
   }, [decryptedUserId]);
   const handleExit = () => {
-
+    window.location.href = '/home'; 
     removeCookie('id');
-   
-    window.location.href = '/'; 
+    removeCookie('username');
+    
   };
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
