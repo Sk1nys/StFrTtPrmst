@@ -296,8 +296,8 @@ const CreatePage: React.FC = () => {
             <input type='text' name='subject' value={formData.subject} onChange={handleChange} placeholder='Предмет' />
           </div>
           <div className={styles.disposable}>
-            <input type="checkbox" checked={formData.disposable === 1} onChange={handleCheckboxChange} />
-            <label>Одноразовый тест</label>
+            <input type="checkbox" checked={formData.disposable === 1} onChange={handleCheckboxChange} className={styles.answC}/>
+            <label className={styles.CLab}>Одноразовый тест</label>
           </div>
         </div>
         {questionForms.map((questionFormData, qIndex) => (
