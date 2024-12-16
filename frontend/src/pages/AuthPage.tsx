@@ -15,11 +15,30 @@ const AuthPage: React.FC = () => {
     username: '',
     password: '',
   });
+  const [errors, setErrors] = useState({
+    username: '',
+    password: '',
+  });
   const [cookies, setCookie, removeCookie] = useCookies(['username', 'id']);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    validateField(name, value);
+  };
+
+  const validateField = (fieldName: string, value: string) => {
+    let errorMessage = '';
+    if (fieldName === 'username') {
+      if (!/^[a-zA-Z0-9-]*$/i.test(value)) {
+        errorMessage = 'Разрешены только латиница, цифры и тире';
+      }
+    } else if (fieldName === 'password') {
+      if (value.length <= 5) {
+        errorMessage = 'Пароль должен быть не менее 6 символов';
+      }
+    }
+    setErrors({ ...errors, [fieldName]: errorMessage });
   };
 
   const encrypt = (text: string) => {
@@ -28,6 +47,10 @@ const AuthPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (errors.username || errors.password) {
+      alert('Пожалуйста, исправьте ошибки в форме');
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:8000/auth/login', formData, {
         headers: {
@@ -36,10 +59,13 @@ const AuthPage: React.FC = () => {
           withCredentials: true,
         },
       });
-      if (response.status === 200) {
+      if (response.data && response.data.username && response.data.id) {
         window.location.href = 'home'; 
         setCookie('username', encrypt(response.data.username), { path: '/' });
         setCookie('id', encrypt(response.data.id.toString()), { path: '/' });
+      }
+      else{
+        alert('Логин или пароль неверный');
       }
     } catch (error) {
       alert('Ошибка входа');
@@ -65,6 +91,7 @@ const AuthPage: React.FC = () => {
             placeholder="Имя пользователя"
           />
           <label htmlFor="username" className={styles.labelForm}>ИМЯ ПОЛЬЗОВАТЕЛЯ</label>
+          {errors.username && <p className={styles.error}>{errors.username}</p>}
           <div className={styles.FormShadows}></div>
         </div>
         <div className={styles.formBox}>
@@ -77,6 +104,7 @@ const AuthPage: React.FC = () => {
             placeholder="Пароль"
           />
           <label htmlFor="password" className={styles.labelForm}>ПАРОЛЬ</label>
+          {errors.password && <div className={styles.error}>{errors.password}</div>}
           <div className={styles.FormShadows}></div>
         </div>
         <div className={styles.butnSub}>

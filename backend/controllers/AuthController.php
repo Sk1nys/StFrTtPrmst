@@ -89,7 +89,7 @@ class AuthController extends ActiveController
             $password = $request->post('password');
             $user = Users::findOne(['username' => $username]);
 
-            if ($user && Yii::$app->security->validatePassword($password, $user->hashPassword($password))) {
+            if ($user && $user->validatePassword($password)) {
                 Yii::$app->user->login($user);
 
                 $cookieUsername = new \yii\web\Cookie([

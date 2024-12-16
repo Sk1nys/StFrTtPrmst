@@ -43,7 +43,7 @@ const TestPage: FC = () => {
     const [results, setResults] = useState<Result[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<AxiosError | null>(null);
-    const [hasTakenTest, setHasTakenTest] = useState<boolean>(false); // Новое состояние
+    const [hasTakenTest, setHasTakenTest] = useState<boolean>(false); 
 
     useEffect(() => {
         axios.get<Data>(`http://localhost:8000/test/view?id=${id}`)

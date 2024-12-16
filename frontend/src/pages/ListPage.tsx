@@ -13,7 +13,7 @@ interface DataItem {
   data: string;
 }
 
-const DataFetchingComponent: React.FC = () => {
+const ListPage: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]); // Состояние для данных
   const [loading, setLoading] = useState<boolean>(true); // Состояние загрузки
   const [error, setError] = useState<string | null>(null); // Состояние ошибки
@@ -72,4 +72,4 @@ const DataFetchingComponent: React.FC = () => {
   );
 };
 
-export default DataFetchingComponent;
+export default ListPage;

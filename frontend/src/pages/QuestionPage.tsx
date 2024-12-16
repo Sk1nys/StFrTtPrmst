@@ -62,6 +62,7 @@ const QuestionPage: FC = () => {
   const decryptedUserId = decrypt(cookies.id);
   const [score, setScore] = useState<number>(JSON.parse(localStorage.getItem('score') || '0'));
   const [hasTakenTest, setHasTakenTest] = useState<boolean>(false);
+  const [validationError, setValidationError] = useState<string | null>(null); // Состояние для ошибок валидации
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +70,7 @@ const QuestionPage: FC = () => {
         const response = await axios.get<DataItem[]>(`http://localhost:8000/answer/view?test_id=${id}`);
         setData(response.data);
       } catch (error: any) {
-        setError(error.message);
+        //setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -205,16 +206,29 @@ const QuestionPage: FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
+    // Проверка на заполненность всех полей
+    const unansweredQuestions = shuffledQuestionKeys.filter((key) => {
+      const answer = answers[Number(key)];
+      return answer === undefined || (Array.isArray(answer) && answer.length === 0);
+    });
+
+    if (unansweredQuestions.length > 0) {
+      setValidationError('Пожалуйста, ответьте на все вопросы.');
+      return;
+    } else {
+      setValidationError(null); // Сброс ошибки валидации
+    }
+
     const user_id = decryptedUserId;
     const date = new Date().toISOString();
-  
+
     const total_score = Object.keys(groupedData).reduce((acc, questionId) => {
       const correctAnswers = groupedData[Number(questionId)].filter((item) => item.iscorrect)
         .length;
       return acc + correctAnswers;
     }, 0);
-  
+
     const payload = {
       test_id: id,
       score: score,
@@ -222,17 +236,17 @@ const QuestionPage: FC = () => {
       data: date,
       user_id: user_id,
     };
-  
+
     // Вывод данных в консоль
     console.log("Отправляемые данные:", payload);
-  
+
     try {
       const response = await axios.post('http://localhost:8000/result/create', payload, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       localStorage.removeItem('answers');
       localStorage.removeItem('score');
       setAnswers({});
@@ -303,9 +317,11 @@ const QuestionPage: FC = () => {
          <p>No data available</p>
         )}
 
+        {validationError && <div className={styles.error}>{validationError}</div>} {/* Отображение ошибки валидации */}
+
         <div className={styles.PrevNext}>
           {currentQuestionIndex > 0 && (
-            <input type="button" value="Преведущий вопрос" onClick={handlePreviosQuestion} />
+            <input type="button" value="Преведший вопрос" onClick={handlePreviosQuestion} />
           )}
 
           {currentQuestionIndex < shuffledQuestionKeys.length - 1 && (

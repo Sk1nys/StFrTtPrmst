@@ -50,7 +50,7 @@ const CreatePage: React.FC = () => {
   const [wordFile, setWordFile] = useState<File | null>(null);
   const [wordMessage, setWordMessage] = useState<string>('');
   const [wordData, setWordData] = useState<any>(null);
-
+  const [validationError, setValidationError] = useState<string | null>(null); // Состояние для ошибок валидации
 
   useEffect(() => {
     localStorage.setItem('formData', JSON.stringify(formData));
@@ -67,10 +67,10 @@ const CreatePage: React.FC = () => {
         title: loadedTest.title || '',
         description: loadedTest.description || '',
         subject: loadedTest.subject || '',
-        disposable: loadedTest.disposable ? 1 : 0, // Добавляем обработку disposable
+        disposable: loadedTest.disposable ? 1 : 0,
         user_id: Number(decryptedUserId)
       });
-  
+
       const loadedQuestions = excelData.questions.map((question: any) => ({
         text: question.text || '',
         type: question.type || '',
@@ -82,11 +82,11 @@ const CreatePage: React.FC = () => {
       setQuestionForms(loadedQuestions);
     }
   }, [excelData, decryptedUserId]);
-  
+
   useEffect(() => {
     if (wordData && wordData.tests && wordData.tests.length > 0) {
       const loadedTest = wordData.tests[0];
-  
+
       setFormData({
         title: loadedTest.title || '',
         description: loadedTest.description || '',
@@ -94,7 +94,7 @@ const CreatePage: React.FC = () => {
         disposable: loadedTest.disposable ? 1 : 0,
         user_id: Number(decryptedUserId)
       });
-  
+
       const loadedQuestions = wordData.questions.map((question: any) => ({
         text: question.text || '',
         type: question.type || '',
@@ -103,13 +103,10 @@ const CreatePage: React.FC = () => {
           iscorrect: answer.is_correct ? 1 : 0
         }))
       }));
-  
+
       setQuestionForms(loadedQuestions);
     }
   }, [wordData, decryptedUserId]);
-  
-  
-  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -118,7 +115,7 @@ const CreatePage: React.FC = () => {
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
-    setFormData({ ...formData, disposable: checked ? 1 : 0 }); // Устанавливаем 1 или 0
+    setFormData({ ...formData, disposable: checked ? 1 : 0 });
   };
 
   const handleQuestionChange = (index: number, e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => {
@@ -162,30 +159,29 @@ const CreatePage: React.FC = () => {
     setQuestionForms(newQuestionForms);
   };
 
-
   const handleExcelFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setExcelFile(e.target.files[0]);
     }
   };
+
   const handleWordFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setWordFile(e.target.files[0]);
     }
   };
-  
+
   const handleWordUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     if (!wordFile) {
       setWordMessage('Пожалуйста, выберите файл.');
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('file', wordFile);
     formData.append('user_id', decryptedUserId);
-
 
     try {
       const response = await axios.post('http://localhost:8000/upload/word', formData, {
@@ -195,13 +191,11 @@ const CreatePage: React.FC = () => {
       });
 
       setWordMessage('Файл успешно загружен.');
-      setWordData(response.data);  // Обновляем excelData полученными данными
+      setWordData(response.data);
     } catch (error) {
       setWordMessage('Ошибка при загрузке файла.');
     }
   };
-  
-  
 
   const handleExcelUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -214,7 +208,6 @@ const CreatePage: React.FC = () => {
     const formData = new FormData();
     formData.append('file', excelFile);
     formData.append('user_id', decryptedUserId);
-
 
     try {
       const response = await axios.post('http://localhost:8000/upload/exel', formData, {
@@ -232,6 +225,20 @@ const CreatePage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Проверка на заполненность всех полей
+    if (!formData.title || !formData.description || !formData.subject) {
+      setValidationError('Пожалуйста, заполните все обязательные поля: Название, Описание и Предмет.');
+      return;
+    }
+
+    const hasEmptyQuestions = questionForms.some(question => !question.text || !question.type || question.answers.some(answer => !answer.answer_text));
+    if (hasEmptyQuestions) {
+      setValidationError('Пожалуйста, заполните все поля вопросов и ответов.');
+      return;
+    } else {
+      setValidationError(null); // Сброс ошибки валидации
+    }
 
     const today = new Date().toISOString().split('T')[0];
     const formDataWithDateAndUserId = { ...formData, data: today, user_id: Number(decryptedUserId) };
@@ -271,12 +278,10 @@ const CreatePage: React.FC = () => {
       localStorage.removeItem('formData');
       localStorage.removeItem('questionForms');
     } catch (error) {
+      console.error('Ошибка при отправке данных:', error);
     }
   };
 
-
-  
-  
   return (
     <div className={styles.conMain}>
       <form onSubmit={handleSubmit}>
@@ -296,14 +301,14 @@ const CreatePage: React.FC = () => {
             <input type='text' name='subject' value={formData.subject} onChange={handleChange} placeholder='Предмет' />
           </div>
           <div className={styles.disposable}>
-            <input type="checkbox" checked={formData.disposable === 1} onChange={handleCheckboxChange} className={styles.answC}/>
-            <label className={styles.CLab}>Одноразовый тест</label>
+            <input type="checkbox" checked={formData.disposable === 1} onChange={handleCheckboxChange} />
+            <label>Одноразовый тест</label>
           </div>
         </div>
         {questionForms.map((questionFormData, qIndex) => (
           <div key={qIndex} className={styles.quepro}>
             <input
-            className={styles.quename}
+              className={styles.quename}
               type='text'
               name='text'
               value={questionFormData.text}
@@ -312,7 +317,7 @@ const CreatePage: React.FC = () => {
             />
             <div>
               <select
-              className={styles.queSel}
+                className={styles.queSel}
                 name='type'
                 value={questionFormData.type}
                 onChange={(e) => handleQuestionChange(qIndex, e)}
@@ -326,7 +331,7 @@ const CreatePage: React.FC = () => {
             {questionFormData.answers.map((answerFormData, aIndex) => (
               <div key={aIndex} className={styles.answGr}>
                 <input
-                className={styles.answ}
+                  className={styles.answ}
                   type='text'
                   name='answer_text'
                   value={answerFormData.answer_text}
@@ -336,7 +341,7 @@ const CreatePage: React.FC = () => {
                 {questionFormData.type === 'Множественный выбор' ? (
                   <>
                     <input
-                    className={styles.answC}
+                      className={styles.answC}
                       type='checkbox'
                       name='iscorrect'
                       checked={answerFormData.iscorrect === 1}
@@ -347,7 +352,7 @@ const CreatePage: React.FC = () => {
                 ) : questionFormData.type !== 'Вписать ответ' && (
                   <>
                     <input
-                    className={styles.answR}
+                      className={styles.answR}
                       type='radio'
                       name={`iscorrect-${qIndex}`}
                       checked={answerFormData.iscorrect === 1}
@@ -359,39 +364,37 @@ const CreatePage: React.FC = () => {
                 <button className={styles.delAnsw} type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}></button>
               </div>
             ))}
-            
-              <button className={styles.plusAnsw} type='button' onClick={() => addAnswerForm(qIndex)}></button>
-            
+
+            <button className={styles.plusAnsw} type='button' onClick={() => addAnswerForm(qIndex)}></button>
+
             <button className={styles.delQue} type='button' onClick={() => removeQuestionForm(qIndex)}></button>
           </div>
         ))}
         <div>
           <button className={styles.plusQue} type='button' onClick={addQuestionForm}></button>
         </div>
-       <ButtonSquish>
+        {validationError && <div className={styles.error}>{validationError}</div>} {/* Отображение ошибки валидации */}
+        <ButtonSquish>
           <button className={styles.subchik} type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
         </ButtonSquish>
       </form>
-      <div  className={styles.doc} >
-      <form className={styles.wordDoc} onSubmit={handleWordUpload}>
-  <h2>Загрузка Word файлов</h2>
-  <div className={styles.iconDoc}><i title="doc"></i><input className={styles.i} type="file" accept=".docx" onChange={handleWordFileChange}/></div>
-  <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
-</form>
-{wordMessage && <p>{wordMessage}</p>}
+      <div className={styles.doc}>
+        <form className={styles.wordDoc} onSubmit={handleWordUpload}>
+          <h2>Загрузка Word файлов</h2>
+          <div className={styles.iconDoc}><i title="doc"></i><input className={styles.i} type="file" accept=".docx" onChange={handleWordFileChange} /></div>
+          <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
+        </form>
+        {wordMessage && <p>{wordMessage}</p>}
 
-    
-      <form className={styles.exelDoc} onSubmit={handleExcelUpload}>
-        <h2>Загрузка Excel файлов</h2>
-        <div className={styles.iconSheet}><i title="xlsx"></i><input className={styles.i} type="file" accept=".xlsx" onChange={handleExcelFileChange} /></div>
-        <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
-      </form>
+        <form className={styles.exelDoc} onSubmit={handleExcelUpload}>
+          <h2>Загрузка Excel файлов</h2>
+          <div className={styles.iconSheet}><i title="xlsx"></i><input className={styles.i} type="file" accept=".xlsx" onChange={handleExcelFileChange} /></div>
+          <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
+        </form>
       </div>
       {excelMessage && <p>{excelMessage}</p>}
     </div>
   );
-  
 };
-
 
 export default CreatePage;
