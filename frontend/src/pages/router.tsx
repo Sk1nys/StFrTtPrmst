@@ -12,6 +12,9 @@ import TestPage from './TestPage.tsx';
 import QuestionPage from './QuestionPage.tsx';
 import ProfilePage from './ProfilePage.tsx';
 import PrivateRoute from './PrivateRoute'; // Убедитесь, что путь правильный
+import FirstEpisode from './FirstEpisode.tsx';
+import SecondEpisode from './SecondEpisode.tsx';
+import ThirdEpisode from './ThirdEpisode.tsx';
 
 const Router: FC = () => {
   const routeConfig: RouteType[] = [
@@ -39,6 +42,21 @@ const Router: FC = () => {
       title: 'ProfTestPage',
       path: '/proftest',
       element: <PrivateRoute element={<ProfTestPage/>} />,
+    },
+    {
+      title: 'FirstEdisode',
+      path: '/firstepisode',
+      element: <PrivateRoute element={<FirstEpisode/>} />,
+    },
+    {
+      title: 'SecondEdisode',
+      path: '/secondepisode',
+      element: <PrivateRoute element={<SecondEpisode/>} />,
+    },
+    {
+      title: 'ThirdEdisode',
+      path: '/thirdepisode',
+      element: <PrivateRoute element={<ThirdEpisode />} />,
     },
     {
       title: 'RegPage',
