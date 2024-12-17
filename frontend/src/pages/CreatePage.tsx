@@ -225,13 +225,13 @@ const CreatePage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     // Проверка на заполненность всех полей
     if (!formData.title || !formData.description || !formData.subject) {
       setValidationError('Пожалуйста, заполните все обязательные поля: Название, Описание и Предмет.');
       return;
     }
-
+  
     const hasEmptyQuestions = questionForms.some(question => !question.text || !question.type || question.answers.some(answer => !answer.answer_text));
     if (hasEmptyQuestions) {
       setValidationError('Пожалуйста, заполните все поля вопросов и ответов.');
@@ -239,49 +239,54 @@ const CreatePage: React.FC = () => {
     } else {
       setValidationError(null); // Сброс ошибки валидации
     }
-
+  
     const today = new Date().toISOString().split('T')[0];
     const formDataWithDateAndUserId = { ...formData, data: today, user_id: Number(decryptedUserId) };
-
+  
     console.log('Отправляемые данные теста:', formDataWithDateAndUserId);
     console.log('Отправляемые вопросы:', questionForms);
+  
     try {
       const testResponse = await axios.post('http://localhost:8000/test/create', formDataWithDateAndUserId, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+  
       const testId = testResponse.data.id;
-
-      questionForms.forEach(async (questionFormData, qIndex) => {
+  
+      await Promise.all(questionForms.map(async (questionFormData, qIndex) => {
         const questionFormDataWithTestId = { ...questionFormData, test_id: testId };
-
+  
         const questionResponse = await axios.post('http://localhost:8000/question/create', questionFormDataWithTestId, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-
+  
         const questionId = questionResponse.data.id;
-        questionFormData.answers.forEach(async (answerFormData, aIndex) => {
+        await Promise.all(questionFormData.answers.map(async (answerFormData, aIndex) => {
           const answerFormDataWithQuestionId = { ...answerFormData, question_id: questionId };
-
+  
           await axios.post('http://localhost:8000/answers/create', answerFormDataWithQuestionId, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-        });
-      });
-
+        }));
+      }));
+  
       localStorage.removeItem('formData');
       localStorage.removeItem('questionForms');
-      window.location.href = `/test/${testId}`; 
+  
+      // Редирект на страницу теста
+      window.location.href = `/test/${testId}`;
+      
     } catch (error) {
       console.error('Ошибка при отправке данных:', error);
     }
   };
+  
 
   return (
     <div className={styles.conMain}>
@@ -302,7 +307,7 @@ const CreatePage: React.FC = () => {
             <input type='text' name='subject' value={formData.subject} onChange={handleChange} placeholder='Предмет' />
           </div>
           <div className={styles.disposable}>
-            <input type="checkbox" checked={formData.disposable === 1} onChange={handleCheckboxChange} />
+            <input type="radio" checked={formData.disposable === 1} onChange={handleCheckboxChange} />
             <label>Одноразовый тест</label>
           </div>
         </div>
