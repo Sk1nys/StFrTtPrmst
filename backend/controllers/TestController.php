@@ -99,6 +99,35 @@ class TestController extends ActiveController
         }
         return $test;
     }
+
+
+
+    public function actionUsersTests($user_id){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    
+        // Получаем тесты для указанного пользователя
+        $tests = Tests::find()
+            ->joinWith('user') 
+            ->where(['users.id' => $user_id]) 
+            ->all();
+    
+        // Если тесты не найдены, выбрасываем исключение
+        if (empty($tests)) {
+            throw new \yii\web\NotFoundHttpException('Запись не найдена');
+        }
+    
+        // Инициализируем массив для хранения тестов
+        $result = [];
+        foreach ($tests as $testItem) {
+            $result[] = [
+                'id' => $testItem->id,
+                'title' => $testItem->title,
+                'data' => $testItem->data,
+            ];
+        }
+    
+        return $result;
+    }
     
 
     /**

@@ -20,6 +20,14 @@ interface User {
 interface Test {
   id: number;
   title: string;
+  data: string;
+}
+
+// Новый интерфейс для дополнительных тестов
+interface AdditionalTest {
+  id: number;
+  title: string;
+  data: string;
 }
 
 const decrypt = (text: string) => {
@@ -28,18 +36,18 @@ const decrypt = (text: string) => {
 };
 
 const ProfilePage: FC = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(['id','username']);
+  const [cookies, setCookie, removeCookie] = useCookies(['id', 'username']);
   const [decryptedUserId, setDecryptedUserId] = useState<string | null>(null);
+  const [data, setData] = useState<DataItem[]>([]);
+  const [additionalData, setAdditionalData] = useState<AdditionalTest[]>([]); // Для дополнительных данных
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (cookies.id) {
       setDecryptedUserId(decrypt(cookies.id));
     }
   }, [cookies]);
-
-  const [data, setData] = useState<DataItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,12 +65,29 @@ const ProfilePage: FC = () => {
       fetchData();
     }
   }, [decryptedUserId]);
+
+  // Новый useEffect для получения дополнительных данных
+  useEffect(() => {
+    const fetchAdditionalData = async () => {
+      try {
+        const response = await axios.get<AdditionalTest[]>(`http://localhost:8000/test/users-tests?user_id=${decryptedUserId}`);
+        setAdditionalData(response.data);
+      } catch (error: any) {
+        setError(error.message);
+      }
+    };
+
+    if (decryptedUserId) {
+      fetchAdditionalData();
+    }
+  }, [decryptedUserId]);
+
   const handleExit = () => {
     window.location.href = '/home'; 
     removeCookie('id');
     removeCookie('username');
-    
   };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -71,6 +96,7 @@ const ProfilePage: FC = () => {
       <button onClick={handleExit}>Выйти</button>
       {data.length > 0 ? (
         <div>
+          <h2>Результаты тестов</h2>
           {data.map((item) => (
             <div key={item.id} style={{ marginBottom: '1em' }}>
               <p>{item.test.title}</p>
@@ -81,7 +107,22 @@ const ProfilePage: FC = () => {
           ))}
         </div>
       ) : (
-        <div>No data available</div>
+        <div>Нет результатов тестов.</div>
+      )}
+
+      {additionalData.length > 0 ? (
+        <div>
+          <h2>Ваши тести</h2>
+          {additionalData.map((item) => (
+            <div key={item.id} style={{ marginBottom: '1em' }}>
+              <p>{item.title}</p> {/* Отображаем только заголовок теста */}
+              <p>Дата: {item.data}</p> {/* Отображаем дату теста */}
+              <hr />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div>Нет дополнительных результатов тестов.</div>
       )}
     </div>
   );
