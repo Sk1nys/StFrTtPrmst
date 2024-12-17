@@ -307,8 +307,8 @@ const CreatePage: React.FC = () => {
             <input type='text' name='subject' value={formData.subject} onChange={handleChange} placeholder='Предмет' />
           </div>
           <div className={styles.disposable}>
-            <input type="radio" checked={formData.disposable === 1} onChange={handleCheckboxChange} />
-            <label>Одноразовый тест</label>
+            <input type="radio" checked={formData.disposable === 1} onChange={handleCheckboxChange} className={styles.answR}/>
+            <label className={styles.RLab}>Одноразовый тест</label>
           </div>
         </div>
         {questionForms.map((questionFormData, qIndex) => (
@@ -345,7 +345,7 @@ const CreatePage: React.FC = () => {
                   placeholder='Ответ'
                 />
                 {questionFormData.type === 'Множественный выбор' ? (
-                  <>
+                  <div className={styles.answOp}>
                     <input
                       className={styles.answC}
                       type='checkbox'
@@ -354,9 +354,9 @@ const CreatePage: React.FC = () => {
                       onChange={() => handleCorrectChange(qIndex, aIndex)}
                     />
                     <label className={styles.CLab} htmlFor='iscorrect'>Правильный</label>
-                  </>
+                  </div>
                 ) : questionFormData.type !== 'Вписать ответ' && (
-                  <>
+                  <div className={styles.answOp}>
                     <input
                       className={styles.answR}
                       type='radio'
@@ -365,7 +365,7 @@ const CreatePage: React.FC = () => {
                       onChange={() => handleCorrectChange(qIndex, aIndex)}
                     />
                     <label className={styles.RLab} htmlFor='iscorrect'>Правильный</label>
-                  </>
+                  </div>
                 )}
                 <button className={styles.delAnsw} type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}></button>
               </div>
