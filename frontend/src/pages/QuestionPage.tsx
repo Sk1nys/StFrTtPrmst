@@ -251,6 +251,7 @@ const QuestionPage: FC = () => {
       localStorage.removeItem('score');
       setAnswers({});
       setScore(0);
+      window.location.href = `/home`; 
     } catch (error: any) {
       console.error("Ошибка при отправке данных:", error);
     }

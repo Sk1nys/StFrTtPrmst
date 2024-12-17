@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './styles/AuthPage.module.scss';
 import { Link } from "react-router-dom";
+import { useCookies } from 'react-cookie';
+import CryptoJS from 'crypto-js';
 
 interface FormData {
   name: string;
@@ -30,6 +32,8 @@ const RegPage: React.FC = () => {
     password: '',
     role_id: '',
   });
+
+const [cookies, setCookie, removeCookie] = useCookies(['username', 'id']);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -74,6 +78,10 @@ const RegPage: React.FC = () => {
     setErrors({ ...errors, [fieldName]: errorMessage });
   };
 
+  const encrypt = (text: string) => {
+    return CryptoJS.AES.encrypt(text, 'secret-key').toString();
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (Object.values(errors).some(error => error)) {
@@ -86,7 +94,9 @@ const RegPage: React.FC = () => {
         headers: {
           'Content-Type': 'multipart/form-data', 
         },
-      });
+      });window.location.href = 'home'; 
+      setCookie('username', encrypt(response.data.username), { path: '/' });
+      setCookie('id', encrypt(response.data.id.toString()), { path: '/' });
       // Обработка успешного ответа
     } catch (error) {
       alert('Ошибка регистрации');

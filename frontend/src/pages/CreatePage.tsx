@@ -277,6 +277,7 @@ const CreatePage: React.FC = () => {
 
       localStorage.removeItem('formData');
       localStorage.removeItem('questionForms');
+      window.location.href = `/test/${testId}`; 
     } catch (error) {
       console.error('Ошибка при отправке данных:', error);
     }
