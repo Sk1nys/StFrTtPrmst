@@ -112,6 +112,10 @@ margin: 20px;
 .desc>label{
     padding: 5px;
 }
+label{
+  font-size: 25px;
+  font-family: 'Montserrat', sans-serif;
+}
 .desc>input{
     font-family: 'Montserrat', sans-serif;
     padding: 5px;
@@ -181,6 +185,20 @@ margin: 20px;
     background: none;
     border: 2px solid black;
 }
+.tip{
+  position: absolute;
+  left: 60px;
+  top: 10px;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+}
+.plusAnsw:hover>.tip{
+  opacity: 1;
+}
+.plusQue:hover>.tip{
+  opacity: 1;
+}
 .answGr{
     display: flex;
     align-items: center;
@@ -221,6 +239,7 @@ margin: 20px;
     background-repeat: no-repeat;
     background-size: contain;
     cursor: pointer;
+    position: relative;
     width: 5vh;
     height: 5vh;
     border:none;
@@ -228,6 +247,7 @@ margin: 20px;
 }
 .plusQue{
     background: none;
+    position: relative;
     background-image: url(../../assets/plusQue.svg);
     background-position: center;
     background-repeat: no-repeat;
@@ -237,6 +257,13 @@ margin: 20px;
     height: 5vh;
     border:none;
     outline:none;
+}
+h3{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+.doc>p{
+  display: none;
 }
 .delQue{
     position: absolute;
@@ -496,7 +523,7 @@ margin: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 9%;
+  margin-left: 10%;
   font-family: 'Montserrat', sans-serif;
   padding: 15px;
   width:221px ;
@@ -605,7 +632,7 @@ margin: 20px;
         justify-content: center;
       }
       .disposable{
-        margin-left: 7%;
+        margin-left: 10%;
       }
       .in{
         display: flex;

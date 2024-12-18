@@ -301,26 +301,30 @@ const CreatePage: React.FC = () => {
         </div>
         <div className={styles.op}>
           <div className={styles.desc}>
-            <input type='text' name='description' value={formData.description} onChange={handleChange} placeholder='Описание' />
+            <label htmlFor="description">Описание</label>
+            <input type='text' name='description' value={formData.description} onChange={handleChange} placeholder='Опишете про что будет тест' />
           </div>
           <div className={styles.subj}>
-            <input type='text' name='subject' value={formData.subject} onChange={handleChange} placeholder='Предмет' />
+            <label htmlFor="subject">Предмет</label>
+            <input type='text' name='subject' value={formData.subject} onChange={handleChange} placeholder='Напишите сферу знаний на которую будет тест' />
           </div>
           <div className={styles.disposable}>
-            <input type="radio" checked={formData.disposable === 1} onChange={handleCheckboxChange} className={styles.answR}/>
-            <label className={styles.RLab}>Одноразовый тест</label>
+            <input type="checkbox" checked={formData.disposable === 1} onChange={handleCheckboxChange} className={styles.answC}/>
+            <label className={styles.CLab}>Одноразовый тест</label>
           </div>
         </div>
         {questionForms.map((questionFormData, qIndex) => (
           <div key={qIndex} className={styles.quepro}>
+            <label htmlFor="text">Вопрос</label>
             <input
               className={styles.quename}
               type='text'
               name='text'
               value={questionFormData.text}
               onChange={(e) => handleQuestionChange(qIndex, e)}
-              placeholder='Вопрос'
+              placeholder='Задайте вопрос'
             />
+            <label>Введите ответы</label>
             <div>
               <select
                 className={styles.queSel}
@@ -370,23 +374,25 @@ const CreatePage: React.FC = () => {
                 <button className={styles.delAnsw} type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}></button>
               </div>
             ))}
-
-            <button className={styles.plusAnsw} type='button' onClick={() => addAnswerForm(qIndex)}></button>
+            <button className={styles.plusAnsw} type='button' onClick={() => addAnswerForm(qIndex)}><span className={styles.tip}>Добавить ответ</span></button>
 
             <button className={styles.delQue} type='button' onClick={() => removeQuestionForm(qIndex)}></button>
           </div>
         ))}
         <div>
-          <button className={styles.plusQue} type='button' onClick={addQuestionForm}></button>
+          <button className={styles.plusQue} type='button' onClick={addQuestionForm}><span className={styles.tip}>Добавить вопрос</span></button>
         </div>
         {validationError && <div className={styles.error}>{validationError}</div>} {/* Отображение ошибки валидации */}
+        <button className={styles.subchik} type='submit'>
         <ButtonSquish>
-          <button className={styles.subchik} type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
+          СОЗДАТЬ ТЕСТ И ВОПРОС
         </ButtonSquish>
+        </button>
       </form>
       <div className={styles.doc}>
         <form className={styles.wordDoc} onSubmit={handleWordUpload}>
           <h2>Загрузка Word файлов</h2>
+          <h3>Нажите на документ чтобы выбрать файл</h3>
           <div className={styles.iconDoc}><i title="doc"></i><input className={styles.i} type="file" accept=".docx" onChange={handleWordFileChange} /></div>
           <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
         </form>
@@ -394,6 +400,7 @@ const CreatePage: React.FC = () => {
 
         <form className={styles.exelDoc} onSubmit={handleExcelUpload}>
           <h2>Загрузка Excel файлов</h2>
+          <h3>Нажите на документ чтобы выбрать файл</h3>
           <div className={styles.iconSheet}><i title="xlsx"></i><input className={styles.i} type="file" accept=".xlsx" onChange={handleExcelFileChange} /></div>
           <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
         </form>
