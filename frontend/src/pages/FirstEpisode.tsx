@@ -80,7 +80,6 @@ const decrypt = (text: string) => {
                     </Link>
                 </div>
             )}
-            <p>{decrypteAnswer}</p>
         </div>
     
   
