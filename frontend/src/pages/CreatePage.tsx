@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import CryptoJS from 'crypto-js';
 import styles from './styles/CreatePage.module.scss';
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
+import Modal from "../Components/Modal/Modal"
 
 interface FormData {
   title: string;
@@ -287,6 +288,7 @@ const CreatePage: React.FC = () => {
     }
   };
   
+ const [modalActive, setModalActive] = useState(false);
 
   return (
     <div className={styles.conMain}>
@@ -406,6 +408,64 @@ const CreatePage: React.FC = () => {
         </form>
       </div>
       {excelMessage && <p>{excelMessage}</p>}
+      <div className={styles.help}>
+        <button  className={styles.helpBtn} onClick={()=>setModalActive(true)}>Как должен выглядить файл для загрузки</button>
+      </div>
+     <Modal active={modalActive} setActive={setModalActive}>
+      <div className={styles.helps}>
+        <div className={styles.helpDoc}>
+          <h2>Пример для Ворд файлов</h2>
+          <p> Название: Тест по математике<br />
+              Описание: Этот тест оценивает базовые математические знания.<br />
+              Предмет: Математика<br />
+              Одноразовый тест: да<br />
+              Вопрос: Что такое 2 + 2?<br />
+              Тип: Один правильный ответ<br />
+              Ответ 3(не правильный)<br />
+              Ответ 4(правильный)<br />
+              Ответ 5(не правильный)<br />
+              Вопрос: Выберите правильные цвета флага России.<br />
+              Тип: Множественный выбор<br />
+              Ответ Красный(правильный)<br />
+              Ответ Синий(правильный)<br />
+              Ответ Зеленый(не правильный)<br />
+              Ответ Белый(правильный)<br />
+</p>
+        </div>
+        <div className={styles.helpExel}>
+          <h2>Пример для Ексель файлов</h2>
+          <table border = "1">
+            <tr>
+              <td>Название</td><td>Тест по математике</td>
+            </tr>
+            <tr>
+              <td>Описание</td><td>Этот тест оценивает базовые математические знания.</td>
+            </tr>
+            <tr>
+              <td>Предмет</td><td>Математика</td>
+            </tr>
+            <tr>
+              <td>Одноразовый тест</td><td>да</td>
+            </tr>
+            <tr>
+              <td>Вопрос</td><td> Что такое 2 + 2?</td>
+            </tr>
+            <tr>
+              <td>Тип</td><td>Один правильный ответ</td>
+            </tr>
+            <tr>
+              <td>Ответ 1</td><td>4(правильный)</td>
+            </tr>
+            <tr>
+              <td>Ответ 2</td><td>3(не правильный)</td>
+            </tr>
+            <tr>
+              <td>Ответ 3</td><td>5(не правильный)</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      </Modal>
     </div>
   );
 };
