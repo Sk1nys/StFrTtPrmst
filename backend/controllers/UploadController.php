@@ -128,92 +128,102 @@ class UploadController extends ActiveController
     }
     
 
-public function actionWord()
-{
-    try {
-        $file = UploadedFile::getInstanceByName('file');
-        $userId = Yii::$app->request->post('user_id');
-
-        if ($file && $userId) {
-            $phpWord = \PhpOffice\PhpWord\IOFactory::load($file->tempName);
-            $sections = $phpWord->getSections();
-
-            $uploadedData = [
-                'tests' => [],
-                'questions' => [],
-                'answers' => [],
-            ];
-
-            $currentTest = null;
-            $currentQuestion = null;
-
-            foreach ($sections as $section) {
-                $elements = $section->getElements();
-
-                foreach ($elements as $element) {
-                    if ($element instanceof \PhpOffice\PhpWord\Element\TextRun) {
-                        $text = $element->getText();
-                        if (strpos($text, 'Название:') === 0) {
-                            $currentTest = [
-                                'title' => trim(substr($text, strlen('Название:'))),
-                                'description' => '',
-                                'subject' => '',
-                                'date' => date('Y-m-d'),
-                                'user_id' => $userId,
-                                'disposable' => 0 // По умолчанию одноразовый тест не активен
-                            ];
-                            $uploadedData['tests'][] = $currentTest;
-                        } elseif (strpos($text, 'Одноразовый тест:') === 0) {
-                            if ($currentTest) {
-                                $currentTest['disposable'] = (stripos(trim(substr($text, strlen('Одноразовый тест:'))), 'да') === 0 || stripos(trim(substr($text, strlen('Одноразовый тест:'))), 'Да') === 0) ? 1 : 0; // Проверка на "Да" и "да"
-                                $uploadedData['tests'][array_key_last($uploadedData['tests'])] = $currentTest;
-                            }
-                        } elseif (strpos($text, 'Вопрос:') === 0) {
-                            if ($currentQuestion !== null) {
-                                $uploadedData['questions'][] = $currentQuestion;
-                            }
-                            $currentQuestion = [
-                                'test_title' => $currentTest['title'],
-                                'text' => trim(substr($text, strlen('Вопрос:'))),
-                                'type' => '',
-                                'answers' => [],
-                            ];
-                        } elseif (strpos($text, 'Тип:') === 0) {
-                            if ($currentQuestion) {
-                                $currentQuestion['type'] = trim(substr($text, strlen('Тип:')));
-                            }
-                        } elseif (strpos($text, 'Ответ') === 0) {
-                            if ($currentQuestion) {
-                                $answerText = trim(substr($text, strlen('Ответ ')));
-                                $isCorrect = strpos($answerText, '(правильный)') !== false;
-                                $answer = [
-                                    'question_text' => $currentQuestion['text'],
-                                    'answer_text' => str_replace(['(правильный)', '(неправильный)'], '', $answerText),
-                                    'is_correct' => $isCorrect,
+    public function actionWord()
+    {
+        try {
+            $file = UploadedFile::getInstanceByName('file');
+            $userId = Yii::$app->request->post('user_id');
+    
+            if ($file && $userId) {
+                $phpWord = \PhpOffice\PhpWord\IOFactory::load($file->tempName);
+                $sections = $phpWord->getSections();
+    
+                $uploadedData = [
+                    'tests' => [],
+                    'questions' => [],
+                    'answers' => [],
+                ];
+    
+                $currentTest = null;
+                $currentQuestion = null;
+    
+                foreach ($sections as $section) {
+                    $elements = $section->getElements();
+    
+                    foreach ($elements as $element) {
+                        if ($element instanceof \PhpOffice\PhpWord\Element\TextRun) {
+                            $text = $element->getText();
+                            if (strpos($text, 'Название:') === 0) {
+                                $currentTest = [
+                                    'title' => trim(substr($text, strlen('Название:'))),
+                                    'description' => '',
+                                    'subject' => '',
+                                    'date' => date('Y-m-d'),
+                                    'user_id' => $userId,
+                                    'disposable' => 0 // По умолчанию одноразовый тест не активен
                                 ];
-                                $uploadedData['answers'][] = $answer;
-                                $currentQuestion['answers'][] = $answer; // Добавляем ответ к текущему вопросу
+                                $uploadedData['tests'][] = $currentTest;
+                            } elseif (strpos($text, 'Описание:') === 0) {
+                                if ($currentTest) {
+                                    $currentTest['description'] = trim(substr($text, strlen('Описание:')));
+                                    $uploadedData['tests'][array_key_last($uploadedData['tests'])] = $currentTest;
+                                }
+                            } elseif (strpos($text, 'Предмет:') === 0) {
+                                if ($currentTest) {
+                                    $currentTest['subject'] = trim(substr($text, strlen('Предмет:')));
+                                    $uploadedData['tests'][array_key_last($uploadedData['tests'])] = $currentTest;
+                                }
+                            } elseif (strpos($text, 'Одноразовый тест:') === 0) {
+                                if ($currentTest) {
+                                    $currentTest['disposable'] = (stripos(trim(substr($text, strlen('Одноразовый тест:'))), 'да') === 0) ? 1 : 0; // Проверка на "Да" и "да"
+                                    $uploadedData['tests'][array_key_last($uploadedData['tests'])] = $currentTest;
+                                }
+                            } elseif (strpos($text, 'Вопрос:') === 0) {
+                                if ($currentQuestion !== null) {
+                                    $uploadedData['questions'][] = $currentQuestion;
+                                }
+                                $currentQuestion = [
+                                    'test_title' => $currentTest['title'],
+                                    'text' => trim(substr($text, strlen('Вопрос:'))),
+                                    'type' => '',
+                                    'answers' => [],
+                                ];
+                            } elseif (strpos($text, 'Тип:') === 0) {
+                                if ($currentQuestion) {
+                                    $currentQuestion['type'] = trim(substr($text, strlen('Тип:')));
+                                }
+                            } elseif (strpos($text, 'Ответ') === 0) {
+                                if ($currentQuestion) {
+                                    $answerText = trim(substr($text, strlen('Ответ ')));
+                                    $isCorrect = strpos($answerText, '(правильный)') !== false;
+                                    $answer = [
+                                        'question_text' => $currentQuestion['text'],
+                                        'answer_text' => str_replace(['(правильный)', '(неправильный)'], '', $answerText),
+                                        'is_correct' => $isCorrect,
+                                    ];
+                                    $uploadedData['answers'][] = $answer;
+                                    $currentQuestion['answers'][] = $answer; // Добавляем ответ к текущему вопросу
+                                }
                             }
                         }
                     }
+    
+                    // Добавляем последний вопрос, если он существует
+                    if ($currentQuestion !== null) {
+                        $uploadedData['questions'][] = $currentQuestion;
+                    }
                 }
-
-                // Добавляем последний вопрос, если он существует
-                if ($currentQuestion !== null) {
-                    $uploadedData['questions'][] = $currentQuestion;
-                }
+    
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                return $uploadedData;
             }
-
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return $uploadedData;
+    
+            return 'File or user ID not found';
+        } catch (\Exception $e) {
+            return 'Error: ' . $e->getMessage();
         }
-
-        return 'File or user ID not found';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
     }
-}
-
+    
     
     
     
