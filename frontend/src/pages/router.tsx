@@ -56,7 +56,7 @@ const Router: FC = () => {
     {
       title: 'ThirdEdisode',
       path: '/thirdepisode',
-      element: <PrivateRoute element={<ThirdEpisode/>} />,
+      element: <ThirdEpisode/>,
     },
     {
       title: 'RegPage',

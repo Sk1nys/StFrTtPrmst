@@ -53,7 +53,6 @@ const FirstEpisode: React.FC = () => {
             <form onSubmit={handleSubmit} className={styles.centered}>
                 <input
                     type="text"
-                    value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
                     placeholder="Ваш ответ"
                     style={{width: '300px' }}
