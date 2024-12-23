@@ -122,9 +122,10 @@ const [cookies, setCookie, removeCookie] = useCookies(['username', 'id']);
             placeholder="Имя"
           />
           <label htmlFor="name" className={styles.labelForm}>ИМЯ</label>
-          {errors.name && <div className={styles.error}>{errors.name}</div>}
+          
           <div className={styles.FormShadows}></div>
         </div>
+        {errors.name && <div className={styles.error}>{errors.name}</div>}
         <div className={styles.formBox}>
           <input
             className={styles.inputFild}
@@ -135,9 +136,10 @@ const [cookies, setCookie, removeCookie] = useCookies(['username', 'id']);
             placeholder="Фамилия"
           />
           <label htmlFor="surname" className={styles.labelForm}>ФАМИЛИЯ</label>
-          {errors.surname && <div className={styles.error}>{errors.surname}</div>}
+         
           <div className={styles.FormShadows}></div>
         </div>
+        {errors.surname && <div className={styles.error}>{errors.surname}</div>}
         <div className={styles.formBox}>
           <input
             className={styles.inputFild}
@@ -148,9 +150,10 @@ const [cookies, setCookie, removeCookie] = useCookies(['username', 'id']);
             placeholder="Имя пользователя"
           />
           <label htmlFor="username" className={styles.labelForm}>ИМЯ ПОЛЬЗОВАТЕЛЯ</label>
-          {errors.username && <div className={styles.error}>{errors.username}</div>}
+        
           <div className={styles.FormShadows}></div>
         </div>
+        {errors.username && <div className={styles.error}>{errors.username}</div>}
         <div className={styles.formBox}>
           <input
             className={styles.inputFild}
@@ -161,9 +164,10 @@ const [cookies, setCookie, removeCookie] = useCookies(['username', 'id']);
             placeholder="Email"
           />
           <label htmlFor="email" className={styles.labelForm}>EMAIL</label>
-          {errors.email && <div className={styles.error}>{errors.email}</div>}
+       
           <div className={styles.FormShadows}></div>
         </div>
+        {errors.email && <div className={styles.error}>{errors.email}</div>}
         <div className={styles.formBox}>
           <input
             className={styles.inputFild}
@@ -174,9 +178,10 @@ const [cookies, setCookie, removeCookie] = useCookies(['username', 'id']);
             placeholder="Пароль"
           />
           <label htmlFor="password" className={styles.labelForm}>ПАРОЛЬ</label>
-          {errors.password && <div className={styles.error}>{errors.password}</div>}
+          
           <div className={styles.FormShadows}></div>
         </div>
+        {errors.password && <div className={styles.error}>{errors.password}</div>}
         <div className={styles.rad}>
           <input
             className={styles.rad1}

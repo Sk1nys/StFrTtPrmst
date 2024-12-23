@@ -91,9 +91,10 @@ const AuthPage: React.FC = () => {
             placeholder="Имя пользователя"
           />
           <label htmlFor="username" className={styles.labelForm}>ИМЯ ПОЛЬЗОВАТЕЛЯ</label>
-          {errors.username && <p className={styles.error}>{errors.username}</p>}
+          
           <div className={styles.FormShadows}></div>
         </div>
+        {errors.username && <p className={styles.error}>{errors.username}</p>}
         <div className={styles.formBox}>
           <input
             className={styles.inputFild}
@@ -104,9 +105,9 @@ const AuthPage: React.FC = () => {
             placeholder="Пароль"
           />
           <label htmlFor="password" className={styles.labelForm}>ПАРОЛЬ</label>
-          {errors.password && <div className={styles.error}>{errors.password}</div>}
           <div className={styles.FormShadows}></div>
         </div>
+        {errors.password && <div className={styles.error}>{errors.password}</div>}
         <div className={styles.butnSub}>
           <button type="submit" className={styles.sub}>Войти</button>
         </div>
