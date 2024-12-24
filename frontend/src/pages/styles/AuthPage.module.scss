@@ -231,6 +231,19 @@
   scale: 1.1;
   font-weight: 1000;
 }
+.error{
+  position: absolute ;
+  top: -105%;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #dadada;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 5px;
+  margin-left: -7px;
+  padding-left: 10px;
+width: 100%;
+  z-index: 100;
+}
 @keyframes flipRadioCir{
   from{
     transform: rotateY(0deg);
@@ -278,10 +291,16 @@
 }
 @media (max-width:600px) {
   .formContainer{
-    height: 120vh;
+    height: 130vh;
  }
  .formContainerAuth{
   height: 100vh;
+}
+.error{
+  top: -150%;
+}
+.rad{
+  flex-direction: column;
 }
  .backBtnlink{
   position: relative;
