@@ -434,7 +434,7 @@ const CreatePage: React.FC = () => {
         </div>
         <div className={styles.helpExel}>
           <h2>Пример для Ексель файлов</h2>
-          <table border = "1">
+          <table>
             <tr>
               <td>Название</td><td>Тест по математике</td>
             </tr>
