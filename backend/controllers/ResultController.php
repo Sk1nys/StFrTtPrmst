@@ -85,7 +85,7 @@ class ResultController extends ActiveController
         ->all();
 
         if (empty($results)) {
-            throw new \yii\web\NotFoundHttpException('Запись не найдена');
+            return ['message' => 'Вы не проходили тест'];
         }
 
 

@@ -113,7 +113,7 @@ class TestController extends ActiveController
     
         // Если тесты не найдены, выбрасываем исключение
         if (empty($tests)) {
-            throw new \yii\web\NotFoundHttpException('Запись не найдена');
+            return ['message' => 'Вы не создавали тест'];
         }
     
         // Инициализируем массив для хранения тестов

@@ -107,7 +107,7 @@ const ProfilePage: FC = () => {
           ))}
         </div>
       ) : (
-        <div>Нет результатов тестов.</div>
+        <div>Вы не проходили тест</div>
       )}
 
       {additionalData.length > 0 ? (
@@ -122,7 +122,7 @@ const ProfilePage: FC = () => {
           ))}
         </div>
       ) : (
-        <div>Нет дополнительных результатов тестов.</div>
+        <div>Вы не создавали тест</div>
       )}
     </div>
   );
