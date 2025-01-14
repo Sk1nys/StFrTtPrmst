@@ -1,0 +1,57 @@
+.header{
+    width: 95%;
+    height: 10vh;
+    background-color: #90b1f8a2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "Moderustic", sans-serif;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    border-bottom: 2px dashed black;
+}
+h1{
+    font-size: 3vh;
+}
+.btn{
+    outline: none;
+    border: none;
+    background: none;
+    font-family: "Moderustic", sans-serif;
+    font-size: 2vh;
+}
+.container{
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+}
+.result{
+    width: 50%;
+    font-family: "Moderustic", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.mytest{
+    width: 50%;
+    font-family: "Moderustic", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.sell{
+    font-family: 'Montserrat', sans-serif;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+h2{
+    margin: 10px;
+}
