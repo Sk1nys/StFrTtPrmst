@@ -25,26 +25,32 @@ h1{
     flex-direction: row;
     align-items: start;
     justify-content: center;
+    background-color: #E7DFFE;
 }
 .result{
     width: 50%;
+    min-height: 89.5vh;
     font-family: "Moderustic", sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+    border-right: 2px dashed black;
 }
 .mytest{
+    min-height: 89.5vh;
     width: 50%;
     font-family: "Moderustic", sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
 }
 .sell{
     font-family: 'Montserrat', sans-serif;
     border: 2px solid black;
+    width: 80%;
+    height: 6vh;
     padding: 10px;
     border-radius: 10px;
     display: flex;

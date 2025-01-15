@@ -4,6 +4,7 @@ import axios from 'axios';
 import styles from './styles/ProfilePage.module.scss';
 import CryptoJS from 'crypto-js';
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
+import { Link } from 'react-router-dom';
 
 interface DataItem {
   id: number;
@@ -95,7 +96,7 @@ const ProfilePage: FC = () => {
 
   return (
     <div>
-      <div className={styles.header}><ButtonSquish>НАЗАД</ButtonSquish><h1>ЛИЧНЫЙ КАБИНЕТ</h1><button className={styles.btn} onClick={handleExit}><ButtonSquish>Выйти</ButtonSquish></button></div>
+      <div className={styles.header}><Link to='/home' className={styles.backBtn}><ButtonSquish>НАЗАД</ButtonSquish></Link><h1>ЛИЧНЫЙ КАБИНЕТ</h1><button className={styles.btn} onClick={handleExit}><ButtonSquish>Выйти</ButtonSquish></button></div>
       <div className={styles.container}>
       {data.length > 0 ? (
         <div className={styles.result}>
