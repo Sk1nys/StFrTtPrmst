@@ -1,0 +1,63 @@
+.header{
+    width: 95%;
+    height: 10vh;
+    background-color: #90b1f8a2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "Moderustic", sans-serif;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    border-bottom: 2px dashed black;
+}
+h1{
+    font-size: 3vh;
+}
+.btn{
+    outline: none;
+    border: none;
+    background: none;
+    font-family: "Moderustic", sans-serif;
+    font-size: 2vh;
+}
+.container{
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    background-color: #E7DFFE;
+}
+.result{
+    width: 50%;
+    min-height: 89.5vh;
+    font-family: "Moderustic", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    border-right: 2px dashed black;
+}
+.mytest{
+    min-height: 89.5vh;
+    width: 50%;
+    font-family: "Moderustic", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+.sell{
+    font-family: 'Montserrat', sans-serif;
+    border: 2px solid black;
+    width: 80%;
+    height: 6vh;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+h2{
+    margin: 10px;
+}

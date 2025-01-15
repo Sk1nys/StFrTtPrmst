@@ -1,7 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import styles from './styles/ProfilePage.module.scss';
 import CryptoJS from 'crypto-js';
+import ButtonSquish from '../Components/Buttons/ButtonSquish';
+import { Link } from 'react-router-dom';
 
 interface DataItem {
   id: number;
@@ -93,16 +96,17 @@ const ProfilePage: FC = () => {
 
   return (
     <div>
-      <button onClick={handleExit}>Выйти</button>
+      <div className={styles.header}><Link to='/home' className={styles.backBtn}><ButtonSquish>НАЗАД</ButtonSquish></Link><h1>ЛИЧНЫЙ КАБИНЕТ</h1><button className={styles.btn} onClick={handleExit}><ButtonSquish>Выйти</ButtonSquish></button></div>
+      <div className={styles.container}>
       {data.length > 0 ? (
-        <div>
+        <div className={styles.result}>
           <h2>Результаты тестов</h2>
           {data.map((item) => (
-            <div key={item.id} style={{ marginBottom: '1em' }}>
+            <div className={styles.sell} key={item.id} style={{ marginBottom: '1em' }}>
               <p>{item.test.title}</p>
               <p>баллы: {item.score}</p>
               <p>максимум баллов: {item.total_score}</p>
-              <hr />
+              
             </div>
           ))}
         </div>
@@ -111,19 +115,20 @@ const ProfilePage: FC = () => {
       )}
 
       {additionalData.length > 0 ? (
-        <div>
-          <h2>Ваши тести</h2>
+        <div className={styles.mytest}>
+          <h2>Ваши тесты</h2>
           {additionalData.map((item) => (
-            <div key={item.id} style={{ marginBottom: '1em' }}>
+            <div className={styles.sell} key={item.id} style={{ marginBottom: '1em' }}>
               <p>{item.title}</p> {/* Отображаем только заголовок теста */}
               <p>Дата: {item.data}</p> {/* Отображаем дату теста */}
-              <hr />
+              
             </div>
           ))}
         </div>
       ) : (
         <div>Вы не создавали тест</div>
       )}
+    </div>
     </div>
   );
 };
