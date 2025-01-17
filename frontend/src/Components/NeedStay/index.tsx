@@ -133,10 +133,10 @@ SetWidthScreen(window.screen.width);
                     </div>
                  <div className={styles.advantages}>
                   <ul>
-                    <li className={styles.advantage}>Особенность теста</li>
-                    <li className={styles.advantage}>Особенность теста</li>
-                    <li className={styles.advantage}>Особенность теста</li>
-                    <li className={styles.advantage}>Особенность теста</li>
+                    <li className={styles.advantage}>Криптография</li>
+                    <li className={styles.advantage}>Разделение на уровни</li>
+                    <li className={styles.advantage}>Разбор куки</li>
+                    <li className={styles.advantage}>Интересные загадки</li>
                   </ul>
                  </div>
                  
