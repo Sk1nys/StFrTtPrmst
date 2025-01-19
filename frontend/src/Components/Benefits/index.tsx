@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./Benefits.module.css";
-import image1 from "../../assets/Benefit1.jpg";
+import image1 from "../../assets/Benefit1.png";
 import image2 from "../../assets/Benefit2.jpg";
-import image3 from "../../assets/benefit3.jpg";
+import image3 from "../../assets/benefit3.png";
 import { useHeight } from '../HeightContext';
 import scissors from '../../assets/scissors.svg';
 

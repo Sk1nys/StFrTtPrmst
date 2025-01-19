@@ -542,7 +542,11 @@ h3{
   border: 2px solid black;
   border-radius: 15px;
   background: none;
-  transition: all 0.1s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.helpBtn:hover{
+  background-color: #000000;
+  color: white;
 }
 .helpBtn:active{
   padding: 10px;
