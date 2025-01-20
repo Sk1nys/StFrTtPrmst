@@ -1,5 +1,6 @@
 import styles from './styles/ThirdEpisode.module.scss';
 import img from '../assets/signR.jpg';
+import imgCicada from '../assets/cicada.jpg';
 import React, { useEffect } from 'react';
 const ThirdEpisode: React.FC = () => {
   useEffect(() => {
@@ -23,6 +24,7 @@ const ThirdEpisode: React.FC = () => {
 Каждое испытание, которое вам предстоит пройти, <span style={{color:'#421919'}}>c</span>танет не только вызовом, но и возможностью продемонстрировать свои знания и оп<span style={{color:'#421919'}}>ы</span>т. Мы уверены, что вы справитесь с любыми трудностями и покажете на что способны.
 Готовьтесь к захватывающим задачам, которые проверят вашу смекалку и мастерство. Удачи вам на этом заключительном пути — вы почти у цели!
 </p>
+  <img src={imgCicada} alt="" className={styles.lastImg} style={{width:'300px', height:'300px'}}/>
     </div>
   )
 }
