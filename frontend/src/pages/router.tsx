@@ -41,7 +41,7 @@ const Router: FC = () => {
     {
       title: 'ProfTestPage',
       path: '/proftest',
-      element: <PrivateRoute element={<ProfTestPage/>} />,
+      element: <ProfTestPage/>,
     },
     {
       title: 'FirstEdisode',
