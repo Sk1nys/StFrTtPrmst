@@ -125,18 +125,25 @@ class UsersController extends ActiveController
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdated($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+    
+        // Проверяем, является ли запрос POST, PUT или PATCH
+        if ($this->request->isPost || $this->request->isPut || $this->request->isPatch) {
+            // Загружаем данные в модель
+            if ($model->load($this->request->post()) && $model->save()) {
+                // Перенаправляем на просмотр обновленной модели
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
-
+    
+        // Если запрос не POST, PUT или PATCH, или сохранение не удалось, показываем форму обновления
         return $this->render('update', [
             'model' => $model,
         ]);
     }
+    
 
     /**
      * Deletes an existing Users model.
