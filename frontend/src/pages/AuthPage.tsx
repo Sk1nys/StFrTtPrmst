@@ -94,6 +94,7 @@ const AuthPage: React.FC = () => {
           {errors.username && <p className={styles.error}>{errors.username}</p>}
           <div className={styles.FormShadows}></div>
         </div>
+      
         <div className={styles.formBox}>
           <input
             className={styles.inputFild}
@@ -107,6 +108,7 @@ const AuthPage: React.FC = () => {
           {errors.password && <div className={styles.error}>{errors.password}</div>}
           <div className={styles.FormShadows}></div>
         </div>
+       
         <div className={styles.butnSub}>
           <button type="submit" className={styles.sub}>Войти</button>
         </div>

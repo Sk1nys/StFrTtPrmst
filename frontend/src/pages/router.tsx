@@ -13,6 +13,9 @@ import QuestionPage from './QuestionPage.tsx';
 import ProfilePage from './ProfilePage.tsx';
 import AdminPage from './AdminPage.tsx';
 import PrivateRoute from './PrivateRoute'; 
+import FirstEpisode from './FirstEpisode.tsx';
+import SecondEpisode from './SecondEpisode.tsx';
+import ThirdEpisode from './ThirdEpisode.tsx';
 
 const Router: FC = () => {
   const routeConfig: RouteType[] = [
@@ -39,7 +42,22 @@ const Router: FC = () => {
     {
       title: 'ProfTestPage',
       path: '/proftest',
-      element: <PrivateRoute element={<ProfTestPage/>} />,
+      element: <ProfTestPage/>,
+    },
+    {
+      title: 'FirstEdisode',
+      path: '/firstepisode',
+      element: <PrivateRoute element={ <FirstEpisode/>} />,
+    },
+    {
+      title: 'SecondEdisode',
+      path: '/secondepisode',
+      element: <PrivateRoute element={<SecondEpisode/>} />,
+    },
+    {
+      title: 'ThirdEdisode',
+      path: '/thirdepisode',
+      element: <ThirdEpisode/>,
     },
     {
       title: 'RegPage',

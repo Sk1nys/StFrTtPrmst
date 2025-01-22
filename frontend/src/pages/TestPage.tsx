@@ -100,7 +100,7 @@ const TestPage: FC = () => {
                 </div>
             )}
             {data?.disposable === true && hasTakenTest ? (
-                <p>Вы уже прошли этот тест.</p>
+                <p className={styles.Ag}>Вы уже прошли этот тест.</p>
             ) : (
                 <a href={`/question/${id}`}>
                     <ButtonSquish className={styles.header_button}>НАЧАТЬ ТЕСТ</ButtonSquish>

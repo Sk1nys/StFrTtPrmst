@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import CryptoJS from 'crypto-js';
 import styles from './styles/CreatePage.module.scss';
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
+import Modal from "../Components/Modal/Modal"
 
 interface FormData {
   title: string;
@@ -287,6 +288,7 @@ const CreatePage: React.FC = () => {
     }
   };
   
+ const [modalActive, setModalActive] = useState(false);
 
   return (
     <div className={styles.conMain}>
@@ -301,26 +303,30 @@ const CreatePage: React.FC = () => {
         </div>
         <div className={styles.op}>
           <div className={styles.desc}>
-            <input type='text' name='description' value={formData.description} onChange={handleChange} placeholder='Описание' />
+            <label htmlFor="description">Описание</label>
+            <input type='text' name='description' value={formData.description} onChange={handleChange} placeholder='Опишете про что будет тест' />
           </div>
           <div className={styles.subj}>
-            <input type='text' name='subject' value={formData.subject} onChange={handleChange} placeholder='Предмет' />
+            <label htmlFor="subject">Предмет</label>
+            <input type='text' name='subject' value={formData.subject} onChange={handleChange} placeholder='Напишите сферу знаний на которую будет тест' />
           </div>
           <div className={styles.disposable}>
-            <input type="radio" checked={formData.disposable === 1} onChange={handleCheckboxChange} />
-            <label>Одноразовый тест</label>
+            <input type="checkbox" checked={formData.disposable === 1} onChange={handleCheckboxChange} className={styles.answC}/>
+            <label className={styles.CLab}>Одноразовый тест</label>
           </div>
         </div>
         {questionForms.map((questionFormData, qIndex) => (
           <div key={qIndex} className={styles.quepro}>
+            <label htmlFor="text">Вопрос</label>
             <input
               className={styles.quename}
               type='text'
               name='text'
               value={questionFormData.text}
               onChange={(e) => handleQuestionChange(qIndex, e)}
-              placeholder='Вопрос'
+              placeholder='Задайте вопрос'
             />
+            <label>Введите ответы</label>
             <div>
               <select
                 className={styles.queSel}
@@ -345,7 +351,7 @@ const CreatePage: React.FC = () => {
                   placeholder='Ответ'
                 />
                 {questionFormData.type === 'Множественный выбор' ? (
-                  <>
+                  <div className={styles.answOp}>
                     <input
                       className={styles.answC}
                       type='checkbox'
@@ -354,9 +360,9 @@ const CreatePage: React.FC = () => {
                       onChange={() => handleCorrectChange(qIndex, aIndex)}
                     />
                     <label className={styles.CLab} htmlFor='iscorrect'>Правильный</label>
-                  </>
+                  </div>
                 ) : questionFormData.type !== 'Вписать ответ' && (
-                  <>
+                  <div className={styles.answOp}>
                     <input
                       className={styles.answR}
                       type='radio'
@@ -365,28 +371,30 @@ const CreatePage: React.FC = () => {
                       onChange={() => handleCorrectChange(qIndex, aIndex)}
                     />
                     <label className={styles.RLab} htmlFor='iscorrect'>Правильный</label>
-                  </>
+                  </div>
                 )}
                 <button className={styles.delAnsw} type='button' onClick={() => removeAnswerForm(qIndex, aIndex)}></button>
               </div>
             ))}
-
-            <button className={styles.plusAnsw} type='button' onClick={() => addAnswerForm(qIndex)}></button>
+            <button className={styles.plusAnsw} type='button' onClick={() => addAnswerForm(qIndex)}><span className={styles.tip}>Добавить ответ</span></button>
 
             <button className={styles.delQue} type='button' onClick={() => removeQuestionForm(qIndex)}></button>
           </div>
         ))}
         <div>
-          <button className={styles.plusQue} type='button' onClick={addQuestionForm}></button>
+          <button className={styles.plusQue} type='button' onClick={addQuestionForm}><span className={styles.tip}>Добавить вопрос</span></button>
         </div>
         {validationError && <div className={styles.error}>{validationError}</div>} {/* Отображение ошибки валидации */}
+        <button className={styles.subchik} type='submit'>
         <ButtonSquish>
-          <button className={styles.subchik} type='submit'>СОЗДАТЬ ТЕСТ И ВОПРОС</button>
+          СОЗДАТЬ ТЕСТ И ВОПРОС
         </ButtonSquish>
+        </button>
       </form>
       <div className={styles.doc}>
         <form className={styles.wordDoc} onSubmit={handleWordUpload}>
           <h2>Загрузка Word файлов</h2>
+          <h3>Нажите на документ чтобы выбрать файл</h3>
           <div className={styles.iconDoc}><i title="doc"></i><input className={styles.i} type="file" accept=".docx" onChange={handleWordFileChange} /></div>
           <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
         </form>
@@ -394,11 +402,70 @@ const CreatePage: React.FC = () => {
 
         <form className={styles.exelDoc} onSubmit={handleExcelUpload}>
           <h2>Загрузка Excel файлов</h2>
+          <h3>Нажите на документ чтобы выбрать файл</h3>
           <div className={styles.iconSheet}><i title="xlsx"></i><input className={styles.i} type="file" accept=".xlsx" onChange={handleExcelFileChange} /></div>
           <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
         </form>
       </div>
       {excelMessage && <p>{excelMessage}</p>}
+      <div className={styles.help}>
+        <button  className={styles.helpBtn} onClick={()=>setModalActive(true)}>Как должен выглядить файл для загрузки</button>
+      </div>
+     <Modal active={modalActive} setActive={setModalActive}>
+      <div className={styles.helps}>
+        <div className={styles.helpDoc}>
+          <h2>Пример для Ворд файлов</h2>
+          <p> Название: Тест по математике<br />
+              Описание: Этот тест оценивает базовые математические знания.<br />
+              Предмет: Математика<br />
+              Одноразовый тест: да<br />
+              Вопрос: Что такое 2 + 2?<br />
+              Тип: Один правильный ответ<br />
+              Ответ 3(не правильный)<br />
+              Ответ 4(правильный)<br />
+              Ответ 5(не правильный)<br />
+              Вопрос: Выберите правильные цвета флага России.<br />
+              Тип: Множественный выбор<br />
+              Ответ Красный(правильный)<br />
+              Ответ Синий(правильный)<br />
+              Ответ Зеленый(не правильный)<br />
+              Ответ Белый(правильный)<br />
+</p>
+        </div>
+        <div className={styles.helpExel}>
+          <h2>Пример для Ексель файлов</h2>
+          <table>
+            <tr>
+              <td>Название</td><td>Тест по математике</td>
+            </tr>
+            <tr>
+              <td>Описание</td><td>Этот тест оценивает базовые математические знания.</td>
+            </tr>
+            <tr>
+              <td>Предмет</td><td>Математика</td>
+            </tr>
+            <tr>
+              <td>Одноразовый тест</td><td>да</td>
+            </tr>
+            <tr>
+              <td>Вопрос</td><td> Что такое 2 + 2?</td>
+            </tr>
+            <tr>
+              <td>Тип</td><td>Один правильный ответ</td>
+            </tr>
+            <tr>
+              <td>Ответ 1</td><td>4(правильный)</td>
+            </tr>
+            <tr>
+              <td>Ответ 2</td><td>3(не правильный)</td>
+            </tr>
+            <tr>
+              <td>Ответ 3</td><td>5(не правильный)</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      </Modal>
     </div>
   );
 };

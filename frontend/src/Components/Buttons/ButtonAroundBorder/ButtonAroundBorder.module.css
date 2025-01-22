@@ -21,4 +21,8 @@
     .btnAround:before {
     transform: translate(-3px, -3px); }
     .btnAround:active, .btnAround:active:before {
-    transform: translate(0); }
+    transform: translate(0); 
+  }
+  .btnAround:hover, .btnAround:hover:before {
+    transform: translate(0); 
+  }
