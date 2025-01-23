@@ -112,3 +112,14 @@ CREATE TABLE public.users_answers (
 		ON DELETE NO ACTION
 		NOT VALID
 );
+
+
+
+INSERT INTO public.roles ("role")
+	VALUES ('Администратор');
+INSERT INTO public.roles ("role")
+	VALUES ('Ученик');
+INSERT INTO public.roles ("role")
+	VALUES ('Преподаватель');
+INSERT INTO public.users ("name",surname,username,email,"password",role_id)
+	VALUES ('Админ','Админ','admin','admin@admin.zov','$2y$13$JMnJBHhjIdfoR/jfE2nn8OeZJlPqqjiy/Ej8bfZF9EGXabaXLIqF2',1);
