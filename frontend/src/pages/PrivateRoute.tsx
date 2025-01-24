@@ -6,15 +6,14 @@ interface PrivateRouteProps {
   element: JSX.Element;
 }
 
-const PrivateRoute: FC<PrivateRouteProps> = ({ element }) => {
-
-  const [cookies] = useCookies(['id']);
-  
+const PrivateRoute: FC<PrivateRouteProps> = ({ element,}) => {
+  const [cookies] = useCookies(['id', 'username',]); 
 
   const isAuthenticated = !!cookies.id;
+
+
 
   return isAuthenticated ? element : <Navigate to="/auth" />;
 };
 
 export default PrivateRoute;
-
