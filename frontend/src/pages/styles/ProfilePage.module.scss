@@ -22,10 +22,18 @@ h1{
 }
 .container{
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #E7DFFE;
+}
+.infos{
+    width: 100%;
+    display: flex;
     flex-direction: row;
     align-items: start;
     justify-content: center;
-    background-color: #E7DFFE;
+    border-top: 2px dashed black;
 }
 .result{
     width: 50%;
@@ -60,4 +68,50 @@ h1{
 }
 h2{
     margin: 10px;
+}
+.userInfo>h2{
+    font-family: 'Montserrat', sans-serif;
+}
+.userData{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: "Moderustic", sans-serif;
+}
+.userData>button{
+    border:2px solid black;
+    border-radius:10px;
+    outline: none;
+    height: 4vh;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+}
+.editForm{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 28vh;
+    font-family: "Moderustic", sans-serif;
+}
+.editForm>input{
+    font-family: "Moderustic", sans-serif;
+    font-size: 15px;
+    border:2px solid black;
+    padding: 5px;
+    border-radius: 10px;
+    height: 3vh;
+    margin: 3px;
+}
+.editForm>button{
+    border:2px solid black;
+    border-radius:10px;
+    outline: none;
+    height: 4vh;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 5px;
 }

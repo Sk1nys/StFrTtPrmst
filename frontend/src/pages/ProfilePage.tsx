@@ -158,7 +158,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           <div className={styles.userInfo}>
             <h2>Информация о пользователе</h2>
             {isEditing ? (
-  <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit} className={styles.editForm}>
     <input type="text" name="name" value={formData?.name || ''} onChange={handleChange} placeholder="Имя" />
     <input type="text" name="surname" value={formData?.surname || ''} onChange={handleChange} placeholder="Фамилия" />
     <input type="text" name="username" value={formData?.username || ''} onChange={handleChange} placeholder="Имя пользователя" />
@@ -167,18 +167,18 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     <button type="button" onClick={handleEditToggle}>Отмена</button>
   </form>
 ) : (
-  <>
+  <div className={styles.userData}>
     <p>Имя: {userData.name}</p>
     <p>Фамилия: {userData.surname}</p>
     <p>Имя пользователя: {userData.username}</p>
     <p>Email: {userData.email}</p>
     <button onClick={handleEditToggle}>Редактировать</button>
-  </>
+  </div>
 )}
 
           </div>
         )}
-
+          <div className={styles.infos}>
         {data.length > 0 ? (
           <div className={styles.result}>
             <h2>Результаты тестов</h2>
@@ -208,7 +208,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           <div>Вы не создавали тест</div>
         )}
       </div>
-    </div>
+    </div></div>
   );
 };
 
