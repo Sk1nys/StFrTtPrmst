@@ -13,8 +13,8 @@ const changeIn = ()=>{
 const SecondEpisode = () => {
   return (
     <div className={styles.main}>
-        <h2>Тут темно надо включть свет</h2>
-        <h3>Вот так то лучше а теперь надо починить Input мне нужен текст</h3>
+        <h2 className={styles.h2}>Тут темно надо включть свет</h2>
+        <h3 className={styles.h3}>Вот так то лучше а теперь надо починить Input мне нужен текст</h3>
         <label>.-.. . ..-. - ---... ..... ----- .--. -..- -.-.-.</label>
         <input className={styles.secret} type="date" onChange={changeIn.bind(this)}/>
         
