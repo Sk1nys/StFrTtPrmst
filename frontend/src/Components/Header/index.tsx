@@ -57,21 +57,28 @@ const Header: React.FC<HeaderProps> = ({ isBurgerOpen }) => {
             {isBurger? <ButtonAroundBorder children='Наш тест'/> :     <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish> }
             </Link>
 
-        <Link to={decryptedUsername ? `/profile/${decryptedUserId}` : '/auth'} className={styles.link}>
-          {decryptedUsername ? (
-            isBurger ? (
-              <ButtonAroundBorder>{decryptedUsername}</ButtonAroundBorder>
-            ) : (
-              <ButtonSquish className={styles.header_button}>{decryptedUsername}</ButtonSquish>
-            )
-          ) : (
-            isBurger ? (
-              <ButtonAroundBorder>Войти</ButtonAroundBorder>
-            ) : (
-              <ButtonSquish className={styles.header_button}>ВОЙТИ</ButtonSquish>
-            )
-          )}
-        </Link>
+            <Link to={decryptedUsername === 'admin' ? '/admin' : decryptedUsername ? `/profile/${decryptedUserId}` : '/auth'} className={styles.link}>
+    {decryptedUsername === 'admin' ? (
+        isBurger ? (
+            <ButtonAroundBorder>admin</ButtonAroundBorder>
+        ) : (
+            <ButtonSquish className={styles.header_button}>АДМИНИСТРАЦИЯ</ButtonSquish>
+        )
+    ) : decryptedUsername ? (
+        isBurger ? (
+            <ButtonAroundBorder>{decryptedUsername}</ButtonAroundBorder>
+        ) : (
+            <ButtonSquish className={styles.header_button}>{decryptedUsername}</ButtonSquish>
+        )
+    ) : (
+        isBurger ? (
+            <ButtonAroundBorder>Войти</ButtonAroundBorder>
+        ) : (
+            <ButtonSquish className={styles.header_button}>ВОЙТИ</ButtonSquish>
+        )
+    )}
+</Link>
+
       </div>
     </header>
   );

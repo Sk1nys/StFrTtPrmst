@@ -12,6 +12,7 @@ import TestPage from './TestPage.tsx';
 import QuestionPage from './QuestionPage.tsx';
 import ProfilePage from './ProfilePage.tsx';
 import AdminPage from './AdminPage.tsx';
+import AdminRoute from './AdminRoute.tsx';
 import PrivateRoute from './PrivateRoute'; 
 import FirstEpisode from './FirstEpisode.tsx';
 import SecondEpisode from './SecondEpisode.tsx';
@@ -82,7 +83,7 @@ const Router: FC = () => {
     {
       title: 'AdminPage',
       path: '/admin',
-      element: <PrivateRoute element={<AdminPage />}/>,
+      element: <AdminRoute element={<AdminPage />}/>,
     }
     
   ];
