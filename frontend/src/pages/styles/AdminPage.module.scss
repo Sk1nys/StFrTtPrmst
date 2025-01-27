@@ -1,0 +1,71 @@
+.AdCont{
+    min-height: 100vh;
+
+}
+.header{
+    width: 100%;
+    height: 10vh;
+    background-color: #90b1f8a2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-bottom: 2px dashed black;
+    font-family: 'Montserrat', sans-serif;
+}
+.header>a{
+    left: 10%;
+    position: absolute;
+}
+.UserCells{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+ 
+}
+.Cells{
+border: 2px solid black;
+border-radius: 10px;
+padding: 15px;
+width: 50%;
+display: flex;
+flex-direction: column;
+align-items: start;
+justify-content: space-evenly;
+font-family: 'Montserrat', sans-serif;
+margin: 10px;
+}
+.Cells>*{
+ padding: 5px;
+}
+.edit{
+    width: 50%;
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Montserrat', sans-serif;
+    align-items: center;
+}
+.edit>*{
+    margin: 5px;
+}
+.edit>input{
+    outline: none;
+    padding: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    border-radius: 5px;
+    border: 1px solid rgb(32, 35, 46);
+}
+.edit>button{
+    width: 20%;
+    background-color: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    padding: 5px;
+    border: 1px solid black;
+    outline: none;
+    border-radius: 5px;
+}
