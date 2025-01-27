@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
 import axios from 'axios';
+import styles from "./styles/AdminPage.module.scss";
 
 interface DataItem {
     id: number;
@@ -72,20 +73,20 @@ const AdminPage: React.FC = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div>
-      <div>
+    <div className={styles.AdCont}>
+      <div className={styles.header}>
         <Link to="/home"><ButtonSquish>НАЗАД</ButtonSquish></Link>
         <h1>СПИСОК ПОЛЬЗОВАТЕЛЕЙ</h1>
       </div>
-      <div>
+      <div className={styles.UserCells}>
         {data.length > 0 ? (
           data.map((item) => (
-            <div key={item.id}>
-              <h2>{item.name}</h2>
-              <p>{item.surname}</p>
-              <p>{item.username}</p> 
-              <p>{item.email}</p> 
-              <p>{item.password}</p> 
+            <div className={styles.Cells} key={item.id}>
+              <h2>Имя: {item.name}</h2>
+              <p>Фамилия: <b>{item.surname}</b></p>
+              <p>Логин: <b>{item.username}</b></p> 
+              <p>Почта: <b>{item.email}</b></p> 
+              <p>Пароль: <b>{item.password}</b></p> 
               <ButtonSquish onClick={() => handleEdit(item)}>Редактировать</ButtonSquish>
             </div>
           ))
@@ -94,7 +95,7 @@ const AdminPage: React.FC = () => {
         )}
         
         {editingItem && formData && (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className={styles.edit}>
             <h2>Редактировать пользователя</h2>
             <input name="name" value={formData.name} onChange={handleChange} placeholder="Имя" />
             <input name="surname" value={formData.surname} onChange={handleChange} placeholder="Фамилия" />
