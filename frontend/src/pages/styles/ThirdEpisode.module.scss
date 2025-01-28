@@ -23,3 +23,30 @@
     color: rgb(39, 33, 33);
     font-size: 20px;
 }
+.answer_input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.answer_input:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+.answer_submit {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+
+.answer_submit:hover {
+    background-color: #E7DFFE;
+}
