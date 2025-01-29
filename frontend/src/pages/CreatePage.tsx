@@ -384,7 +384,7 @@ const CreatePage: React.FC = () => {
         <div>
           <button className={styles.plusQue} type='button' onClick={addQuestionForm}><span className={styles.tip}>Добавить вопрос</span></button>
         </div>
-        {validationError && <div className={styles.error}>{validationError}</div>} {/* Отображение ошибки валидации */}
+        {validationError && <div className={styles.error}>{validationError}</div>} 
         <button className={styles.subchik} type='submit'>
         <ButtonSquish>
           СОЗДАТЬ ТЕСТ И ВОПРОС

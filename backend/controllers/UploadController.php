@@ -107,7 +107,7 @@ class UploadController extends ActiveController
                                 if (strpos($row['A'], 'Ответ') !== false && $currentQuestion) {
                                     $answer = [
                                         'question_text' => $currentQuestion['text'],
-                                        'answer_text' => str_replace(['(правильный)', '(неправильный)'], '', $row['B']),
+                                        'answer_text' => str_replace(['(правильный)', '(не правильный)', '(неправильный)','( неправильный)','( правильный)'], '', $row['B']),
                                         'is_correct' => (strpos($row['B'], '(правильный)') !== false),
                                     ];
                                     $uploadedData['answers'][] = $answer;
@@ -198,7 +198,7 @@ class UploadController extends ActiveController
                                     $isCorrect = strpos($answerText, '(правильный)') !== false;
                                     $answer = [
                                         'question_text' => $currentQuestion['text'],
-                                        'answer_text' => str_replace(['(правильный)', '(неправильный)'], '', $answerText),
+                                        'answer_text' => str_replace(['(правильный)', '(не правильный)', '(неправильный)','( неправильный)','( правильный)'], '', $answerText),
                                         'is_correct' => $isCorrect,
                                     ];
                                     $uploadedData['answers'][] = $answer;

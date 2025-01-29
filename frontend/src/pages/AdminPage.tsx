@@ -86,7 +86,6 @@ const AdminPage: React.FC = () => {
               <p>Фамилия: <b>{item.surname}</b></p>
               <p>Логин: <b>{item.username}</b></p> 
               <p>Почта: <b>{item.email}</b></p> 
-              <p>Пароль: <b>{item.password}</b></p> 
               <ButtonSquish onClick={() => handleEdit(item)}>Редактировать</ButtonSquish>
             </div>
           ))
@@ -101,7 +100,6 @@ const AdminPage: React.FC = () => {
             <input name="surname" value={formData.surname} onChange={handleChange} placeholder="Фамилия" />
             <input name="username" value={formData.username} onChange={handleChange} placeholder="Имя пользователя" />
             <input name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
-            <input name="password" value={formData.password} onChange={handleChange} placeholder="Пароль" type="password" />
             <button type="submit">Сохранить</button>
             <button type="button" onClick={() => setEditingItem(null)}>Отмена</button>
           </form>
