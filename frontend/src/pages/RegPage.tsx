@@ -94,7 +94,7 @@ const [cookies, setCookie, removeCookie] = useCookies(['username', 'id']);
         headers: {
           'Content-Type': 'multipart/form-data', 
         },
-      });window.location.href = 'home'; 
+      });window.location.href = 'create'; 
       setCookie('username', encrypt(response.data.username), { path: '/' });
       setCookie('id', encrypt(response.data.id.toString()), { path: '/' });
       // Обработка успешного ответа

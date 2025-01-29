@@ -83,9 +83,9 @@ const Router: FC = () => {
     {
       title: 'AdminPage',
       path: '/admin',
-      element: <AdminRoute element={<AdminPage />}/>,
+      element: <AdminRoute element={<AdminPage/>} />,
     }
-    
+
   ];
 
   return (

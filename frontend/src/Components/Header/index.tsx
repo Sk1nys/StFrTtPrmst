@@ -27,14 +27,14 @@ const Header: React.FC<HeaderProps> = ({ isBurgerOpen }) => {
       setDecryptedUserId(decrypt(cookies.id));
     }
   }, [cookies]);
-
+  
+  
   const [isBurger, setIsBurger] = useState(false);
   useEffect(() => {
     if (document.body.clientWidth < 1149) {
       setIsBurger(true);
     }
   }, []);
-
   return (
     <header
       className={`${styles.container_header} ${
@@ -57,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ isBurgerOpen }) => {
             {isBurger? <ButtonAroundBorder children='Наш тест'/> :     <ButtonSquish className={styles.header_button}>НАШ ТЕСТ</ButtonSquish> }
             </Link>
 
-            <Link to={decryptedUsername === 'admin' ? '/admin' : decryptedUsername ? `/profile/${decryptedUserId}` : '/auth'} className={styles.link}>
+            <Link to={decryptedUsername === 'admin' ? '/admin' : decryptedUsername ? `/profile` : '/auth'} className={styles.link}>
     {decryptedUsername === 'admin' ? (
         isBurger ? (
             <ButtonAroundBorder>admin</ButtonAroundBorder>

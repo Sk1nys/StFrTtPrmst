@@ -60,7 +60,7 @@ const AuthPage: React.FC = () => {
         },
       });
       if (response.data && response.data.username && response.data.id) {
-        window.location.href = 'home'; 
+        window.location.href = 'create'; 
         setCookie('username', encrypt(response.data.username), { path: '/' });
         setCookie('id', encrypt(response.data.id.toString()), { path: '/' });
       }
