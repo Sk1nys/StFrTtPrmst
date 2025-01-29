@@ -109,6 +109,8 @@
     display: flex;
     margin: 10px;
     padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     border-radius: 10px;
     flex-direction: row;
     align-items: center;
@@ -121,7 +123,7 @@
   &:before{
     content:'';
     position: absolute;
-    top: -5px;
+    
     left: -40px;
     @include radio-wh();
     border:2px solid black;
@@ -170,7 +172,7 @@
   &:before{
     content:'';
     position: absolute;
-    top: -5px;
+    
     left: -40px;
     @include radio-wh();
     border-radius:50%;
@@ -204,7 +206,7 @@
     height:0px
   } 
   100%{
-    top: -5px;
+    
     left: -40px;
     height:25px;
     transform: rotate(0deg);
