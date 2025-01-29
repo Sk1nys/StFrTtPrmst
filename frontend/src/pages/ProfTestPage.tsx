@@ -2,6 +2,7 @@
 import styles from './styles/ProfTestPage.module.scss'
 import ButtonShine from '../Components/Buttons/ButtonShine';
 import { Link } from 'react-router-dom';
+import ButtonSquish from '../Components/Buttons/ButtonSquish';
 
 const ProfTestPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -952,15 +953,20 @@ function getTextureScale (texture: Texture, width: number, height: number) {
   return (
     <>
     <div className={styles.prof_container}>
+      
     <div className={styles.centered_info}>
-     
+    <Link to="/home" className={styles.backBtnlink}>
+        <div className={styles.butnSub}>
+          <ButtonSquish className={styles.sub}>НА ГЛАВНУЮ</ButtonSquish>
+        </div>
+      </Link>
        <h1 className={styles.profDesc}>
         приглашаем вас на проверку знаний о профессии веб-разработчика
        </h1>
        <p className={styles.profText}>
       Советуем проходить тест на компьютере
        </p>
-       <Link to="/">
+       <Link to="/firstepisode">
        <ButtonShine className={styles.startButton}>
         начать тест
        </ButtonShine>

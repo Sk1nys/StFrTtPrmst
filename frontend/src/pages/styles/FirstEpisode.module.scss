@@ -39,3 +39,13 @@ padding-top: 20px;
 .answer_submit:hover {
     background-color: #E7DFFE;
 }
+.backBtnlink{
+    position: absolute;
+    top:0;
+    left: 0;
+    margin: 30px;
+  }
+  .backBtnlink>.butnSub>.sub{
+    background-color: #FFFFFF;
+    color: #000;
+  }

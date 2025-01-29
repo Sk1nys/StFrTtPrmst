@@ -3,6 +3,7 @@ import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import styles from './styles/FirstEpisode.module.scss';
 import ButtonAroundBorder from '../Components/Buttons/ButtonAroundBorder';
+import ButtonSquish from '../Components/Buttons/ButtonSquish';
 const FirstEpisode: React.FC = () => {
   const [userAnswer, setUserAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -47,6 +48,11 @@ const FirstEpisode: React.FC = () => {
   return (
 
 <div className={styles.main_container}>
+<Link to="/home" className={styles.backBtnlink}>
+        <div className={styles.butnSub}>
+          <ButtonSquish className={styles.sub}>НА ГЛАВНУЮ</ButtonSquish>
+        </div>
+      </Link>
     <h2 className={styles.centered}>Ты на пороге увлекательного путешествия, наполненного загадками и интересными задачами, созданными специально для программистов и любителей логики. </h2>
           <h3 className={styles.centered}>  Приготовься к захватывающим испытаниям, где каждое решение приближает тебя к разгадке шифров и новым горизонтам. Внимательно следи за подсказками и помни: ключ к успеху — это твое желание учиться и исследовать!</h3>
             <pre className={styles.verse}>{riddleText}</pre>

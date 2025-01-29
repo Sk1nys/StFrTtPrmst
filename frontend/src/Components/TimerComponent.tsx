@@ -1,41 +1,35 @@
 import React, { useState, useEffect } from 'react';
+
 interface TimerComponentProps {
-  seconds?: number;
-  correct: boolean | null;
+    number: string;
+    correct: boolean | null;
 }
-const TimerComponent: React.FC<TimerComponentProps> = ({correct}) => {
+
+const TimerComponent: React.FC<TimerComponentProps> = ({ correct, number }) => {
     const [seconds, setSeconds] = useState<number>(0);
-    const [isRunning, setIsRunning] = useState<boolean>(true); // Состояние для управления таймером
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
 
-        if (isRunning) {
+        // Запускаем таймер, если correct не true
+        if (correct === null || !correct) {
             interval = setInterval(() => {
                 setSeconds(prevSeconds => prevSeconds + 1);
             }, 1000); // Увеличиваем счетчик каждую секунду
         }
-        console.log(correct);
-        if(correct){
-            
-            stopTimer();
-        }
 
+        // Очищаем интервал при размонтировании или изменении correct
         return () => {
-            clearInterval(interval); // Очищаем интервал при размонтировании или изменении isRunning
+            clearInterval(interval);
         };
-    }, [isRunning]);
-
-    // Функция для остановки таймера
-    const stopTimer = () => {
-        setIsRunning(false); // Устанавливаем isRunning в false для остановки таймера
-    };
-
-    return (
-        <div>
-            <h1>{seconds} </h1>
-        </div>
-    );
+    }, [correct]); // Добавляем correct в зависимости
+    useEffect(() => {
+        // Если correct становится true, сохраняем значение seconds в localStorage
+        if (correct === true) {
+            localStorage.setItem(number, seconds.toString());
+        }
+    }, [correct, seconds, number]);
+    return null;
 };
 
 export default TimerComponent;

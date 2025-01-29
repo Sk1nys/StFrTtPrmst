@@ -54,3 +54,13 @@ text-align: center;
     align-items: center;
     justify-content: center;
 }
+.backBtnlink{
+    position: absolute;
+    top:0;
+    left: 0;
+    margin: 30px;
+  }
+  .backBtnlink>.butnSub>.sub{
+    background-color: #FFFFFF;
+    color: #000;
+  }
