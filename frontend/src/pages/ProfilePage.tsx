@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import axios, { AxiosError } from 'axios';
 import styles from './styles/ProfilePage.module.scss';
 import CryptoJS from 'crypto-js';
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
@@ -20,7 +21,6 @@ interface User {
   surname: string;
   username: string;
   email: string;
-  password: string;
 }
 
 interface Test {
@@ -35,11 +35,11 @@ interface AdditionalTest {
   data: string;
 }
 
-interface UserData {
-  name: string;
-  surname: string;
-  username: string;
-  email: string;
+interface Result {
+  id: number;
+  score: number;
+  total_score: number;
+  user: User;
 }
 
 const decrypt = (text: string) => {
@@ -50,10 +50,12 @@ const decrypt = (text: string) => {
 const ProfilePage: FC = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['id', 'username']);
   const [decryptedUserId, setDecryptedUserId] = useState<string | null>(null);
+  const { id } = useParams<{ id: string }>(); 
   const [data, setData] = useState<DataItem[]>([]);
   const [additionalData, setAdditionalData] = useState<AdditionalTest[]>([]);
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [formData, setFormData] = useState<UserData | null>(null); // Для редактируемых данных пользователя
+  const [results, setResults] = useState<{ [key: number]: Result[] }>({});
+  const [userData, setUserData] = useState<User | null>(null);
+  const [formData, setFormData] = useState<User | null>(null); // Для редактируемых данных пользователя
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false); // Состояние редактирования
@@ -63,7 +65,34 @@ const ProfilePage: FC = () => {
       setDecryptedUserId(decrypt(cookies.id));
     }
   }, [cookies]);
+  useEffect(() => {
+    const fetchAdditionalData = async () => {
+      try {
+        const response = await axios.get<AdditionalTest[]>(`http://localhost:8000/test/users-tests?user_id=${decryptedUserId}`);
+        setAdditionalData(response.data);
 
+        // Fetch results for each additional test
+        const resultsPromises = response.data.map(async (item) => {
+          const resultResponse = await axios.get<Result[]>(`http://localhost:8000/result/test-users?test_id=${item.id}`);
+          return { id: item.id, results: resultResponse.data };
+        });
+
+        // Wait for all results to be fetched
+        const resultsArray = await Promise.all(resultsPromises);
+        const resultsMap: { [key: number]: Result[] } = {};
+        resultsArray.forEach(({ id, results }) => {
+          resultsMap[id] = results;
+        });
+        setResults(resultsMap);
+      } catch (error: any) {
+        setError(error.message);
+      }
+    };
+
+    if (decryptedUserId) {
+      fetchAdditionalData();
+    }
+  }, [decryptedUserId]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -81,27 +110,14 @@ const ProfilePage: FC = () => {
     }
   }, [decryptedUserId]);
 
-  useEffect(() => {
-    const fetchAdditionalData = async () => {
-      try {
-        const response = await axios.get<AdditionalTest[]>(`http://localhost:8000/test/users-tests?user_id=${decryptedUserId}`);
-        setAdditionalData(response.data);
-      } catch (error: any) {
-        setError(error.message);
-      }
-    };
-
-    if (decryptedUserId) {
-      fetchAdditionalData();
-    }
-  }, [decryptedUserId]);
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get<UserData>(`http://localhost:8000/users/view?id=${decryptedUserId}`);
+        const response = await axios.get<User>(`http://localhost:8000/users/view?id=${decryptedUserId}`);
         setUserData(response.data);
-        setFormData(response.data); // Инициализируем данные формы
+        setFormData(response.data);
       } catch (error: any) {
         setError(error.message);
       }
@@ -112,6 +128,7 @@ const ProfilePage: FC = () => {
     }
   }, [decryptedUserId]);
 
+  
   const handleExit = () => {
     window.location.href = '/home'; 
     removeCookie('id');
@@ -184,7 +201,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             <h2>Результаты тестов</h2>
             {data.map((item) => (
               <div className={styles.sell} key={item.id} style={{ marginBottom: '1em' }}>
-                <p>{item.test.title}</p>
+                <a href={`/test/${item.id}`}>{item.test.title}</a>
                 <p>баллы: {item.score}</p>
                 <p>максимум баллов: {item.total_score}</p>
               </div>
@@ -194,17 +211,26 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           <div>Вы не проходили тест</div>
         )}
 
-        {additionalData.length > 0 ? (
+{additionalData.length > 0 ? (
           <div className={styles.mytest}>
             <h2>Ваши тесты</h2>
             {additionalData.map((item) => (
               <div className={styles.sell} key={item.id} style={{ marginBottom: '1em' }}>
-                <p>{item.title}</p>
+                <a href={`/test/${item.id}`}>{item.title}</a>
                 <p>Дата: {item.data}</p>
+                <div className={styles.resultsContainer}>
+                  <h3>Результаты пользователей:</h3>
+                  {results[item.id]?.map(result => (
+                    <div key={result.id} className={styles.resultItem}>
+                      <p>Пользователь: {result.user.username}</p>
+                      <p>Счет: {result.score} / {result.total_score}</p>
+                    </div>
+                  )) || <p>Нет результатов для этого теста.</p>}
+                </div>
               </div>
             ))}
           </div>
-        ) : (
+        )  : (
           <div>Вы не создавали тест</div>
         )}
       </div>
