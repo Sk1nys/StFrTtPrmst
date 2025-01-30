@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styles from './styles/FirstEpisode.module.scss';
 import ButtonAroundBorder from '../Components/Buttons/ButtonAroundBorder';
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
+import TimerComponent from '../Components/TimerComponent';
 const FirstEpisode: React.FC = () => {
   const [userAnswer, setUserAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -82,6 +83,7 @@ const FirstEpisode: React.FC = () => {
                     </Link>
                 </div>
             )}
+             <TimerComponent  correct={isCorrect} number='first'/>
         </div>
     
   
