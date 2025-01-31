@@ -212,27 +212,34 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         )}
 
 {additionalData.length > 0 ? (
-          <div className={styles.mytest}>
-            <h2>Ваши тесты</h2>
-            {additionalData.map((item) => (
-              <div className={styles.sell} key={item.id} style={{ marginBottom: '1em' }}>
-                <a href={`/test/${item.id}`}>{item.title}</a>
-                <p>Дата: {item.data}</p>
-                <div className={styles.resultsContainer}>
-                  <h3>Результаты пользователей:</h3>
-                  {results[item.id]?.map(result => (
-                    <div key={result.id} className={styles.resultItem}>
-                      <p>Пользователь: {result.user.username}</p>
-                      <p>Счет: {result.score} / {result.total_score}</p>
-                    </div>
-                  )) || <p>Нет результатов для этого теста.</p>}
-                </div>
+  <div className={styles.mytest}>
+    <h2>Ваши тесты</h2>
+    {additionalData.map((item) => (
+      <div className={styles.sell} key={item.id} style={{ marginBottom: '1em' }}>
+        <a href={`/test/${item.id}`}>{item.title}</a>
+        <p>Дата: {item.data}</p>
+        <div className={styles.resultsContainer}>
+          <h3>Результаты пользователей:</h3>
+          {Array.isArray(results[item.id]) && results[item.id].length > 0 ? (
+            results[item.id].map(result => (
+              <div key={result.id} className={styles.resultItem}>
+                <p>Пользователь: {result.user.username}</p>
+                <p>Счет: {result.score} / {result.total_score}</p>
+                <p>Оценка: {result.score/result.score<0.5? 2:result.score/result.score>0.75? 5:result.score/result.score>0.5? 4:3}</p>
+                
               </div>
-            ))}
-          </div>
-        )  : (
-          <div>Вы не создавали тест</div>
-        )}
+            ))
+          ) : (
+            <p>Нет результатов для этого теста.</p>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  <div>Вы не создавали тесты.</div>
+)}
+
       </div>
     </div>
   );

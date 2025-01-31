@@ -116,9 +116,6 @@ class ResultController extends ActiveController
             ->all();
     
 
-        if (empty($results)) {
-            throw new \yii\web\NotFoundHttpException('Записи не найдены');
-        }
     
 
         $result = [];
