@@ -113,6 +113,7 @@ const TestPage: FC = () => {
                     <div key={result.id} className={styles.resultItem}>
                         <p>Пользователь: {result.user.username}</p>
                         <p>Счет: {result.score} / {result.total_score}</p>
+                        <p>Оценка: {result.score/result.score<0.5? 2:result.score/result.score>0.75? 5:result.score/result.score>0.5? 4:3}</p>
                     </div>
                 ))}
             </div>
