@@ -6,6 +6,7 @@ import ButtonSquish from '../Components/Buttons/ButtonSquish';
 import styles from "./styles/TestPage.module.scss";
 import { useCookies } from 'react-cookie';
 import CryptoJS from 'crypto-js';
+import Loader from '../Components/Loader';
 
 interface Data {
     id: number;
@@ -73,7 +74,7 @@ const TestPage: FC = () => {
             });
     }, [id, decryptedUserId]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Loader />;
 
     return (
         <div className={styles.DescContainer}>

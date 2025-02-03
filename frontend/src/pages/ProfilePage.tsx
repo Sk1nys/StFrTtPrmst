@@ -6,6 +6,7 @@ import styles from './styles/ProfilePage.module.scss';
 import CryptoJS from 'crypto-js';
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
 import { Link } from 'react-router-dom';
+import Loader from '../Components/Loader';
 
 interface DataItem {
   id: number;
@@ -160,7 +161,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 };
 
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>;
 
   return (
