@@ -3,6 +3,7 @@ import styles from './styles/ListPage.module.scss';
 import { Link } from "react-router-dom";
 import ButtonSquish from '../Components/Buttons/ButtonSquish'
 import axios from 'axios';
+import Loader from '../Components/Loader';
 
 interface DataItem {
   id: number;
@@ -32,7 +33,7 @@ const ListPage: React.FC = () => {
     fetchData(); 
   }, []); 
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loader />;
 
   return (
     <div className={styles.listMain}>
