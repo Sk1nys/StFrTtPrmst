@@ -1,11 +1,11 @@
 .container_header{
-  background-color: #7b81d2;
+  background-color: #90b1f8a2;;
     width: 100%;
     height: 125px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 2px dashed black;
+    
     margin-bottom: 3%;
 }
 .header{
@@ -18,33 +18,91 @@ justify-content: space-between;
 .header_button{
     max-width: 200px;
     width: 100%;
-    height: 50px;
-    background-color: #90B1F8;
+    height: auto;
+    background: none;
     border: none;
-    border-radius: 12px;
+    font-size: 2vh;
+    font-weight: 600;
+    position: relative;
     display: flex;
+    border-bottom: 2px solid black;
     align-items: center;
     justify-content: center;
 text-decoration: none;
 color: black;
 font-family: "Moderustic", sans-serif;
 }
+.altLinkis{
+  display: flex;
+  height: 70%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.header_button>span{
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+.header_button>span::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      90deg,
+      transparent,
+      #7b81d2,
+      transparent
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+
+.header_button>span:hover::after{
+  animation: shine 1.5s ease-in-out;
+}
+@keyframes shine {
+  0% {
+      left: -100%;
+      opacity: 0;
+  }
+  50% {
+      opacity: 1;
+  }
+  100% {
+      left: 100%;
+      opacity: 0;
+  }
+}
+.linkisHead{
+   display: flex;
+   width: 40%;
+   justify-content: space-between;
+   align-items: end;
+}
 .link{
     max-width: 200px;
     width: 30%;
     height: 50px;
     text-decoration: none;
+    display: flex;
+    
 }
 .logo{
     width: 100px !important;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    align-items: end;
+    justify-content: space-between;
+    flex-direction: row;
 }
 .logo>h3{
-    text-align: center;
-    font-family: "Rubik Glitch", system-ui; 
+    text-align: end;
+    font-family: "K2D", sans-serif;
+    font-size: 3vh;
 }
 
 @media only screen and (max-width: 1150px) {
@@ -84,7 +142,7 @@ font-family: "Moderustic", sans-serif;
 }
 .logoMb>h3{
     text-align: center;
-    font-family: "Rubik Glitch", system-ui; 
+    font-family: "K2D"; 
 }
 .header{
     flex-direction: column;
