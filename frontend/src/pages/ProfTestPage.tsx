@@ -961,7 +961,7 @@ function getTextureScale (texture: Texture, width: number, height: number) {
         </div>
       </Link>
        <h1 className={styles.profDesc}>
-        приглашаем вас на проверку знаний о профессии веб-разработчика
+        приглашаем вас <br />на проверку знаний <br />о профессии веб-разработчика
        </h1>
        <p className={styles.profText}>
       Советуем проходить тест на компьютере
