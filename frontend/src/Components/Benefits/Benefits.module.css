@@ -3,7 +3,7 @@
   padding: 3% 0;
   width: 100%;
 font-size: 30px;
-background-color: #96A3E8;
+background-color: #90b1f8;
 font-family: 'Montserrat', sans-serif;
 font-size: 20px;
 margin-bottom: -1px;
@@ -52,7 +52,7 @@ margin-bottom: -1px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    background-color: #96A3E8;
+    background-color: #90b1f8;
   }
   
   .grid_item_left,.grid_item_right{
@@ -82,14 +82,14 @@ margin-bottom: -1px;
     opacity: 0;
     transition: opacity 1s ease-in-out, transform 1s ease-in-out;
     transform: translateY(20px);
-    color: #E7Dffe;
+    color: #202020;
     font-family: "Varela Round", sans-serif;
   }
   
   .txt_four_page {
     opacity: 0;
     color: #FEF2F2;
-    text-shadow: 0 1px 6px #fef2f29f;
+    text-shadow: 0 1px 6px #00000033;
     transition: opacity 1s ease-in-out;
     font-family: 'Montserrat', sans-serif;
   }

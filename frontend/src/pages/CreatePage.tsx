@@ -6,6 +6,7 @@ import CryptoJS from 'crypto-js';
 import styles from './styles/CreatePage.module.scss';
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
 import Modal from "../Components/Modal/Modal"
+import ButtonDef from '../Components/Buttons/ButtonDef';
 
 interface FormData {
   title: string;
@@ -386,9 +387,9 @@ const CreatePage: React.FC = () => {
         </div>
         {validationError && <div className={styles.error}>{validationError}</div>} 
         <button className={styles.subchik} type='submit'>
-        <ButtonSquish>
+        <ButtonDef>
           СОЗДАТЬ ТЕСТ И ВОПРОС
-        </ButtonSquish>
+        </ButtonDef>
         </button>
       </form>
       <div className={styles.doc}>
@@ -396,7 +397,7 @@ const CreatePage: React.FC = () => {
           <h2>Загрузка Word файлов</h2>
           <h3>Нажите на документ чтобы выбрать файл</h3>
           <div className={styles.iconDoc}><i title="doc"></i><input className={styles.i} type="file" accept=".docx" onChange={handleWordFileChange} /></div>
-          <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
+          <ButtonDef><button className={styles.o} type="submit">Загрузить</button></ButtonDef>
         </form>
         {wordMessage && <p>{wordMessage}</p>}
 
@@ -404,7 +405,7 @@ const CreatePage: React.FC = () => {
           <h2>Загрузка Excel файлов</h2>
           <h3>Нажите на документ чтобы выбрать файл</h3>
           <div className={styles.iconSheet}><i title="xlsx"></i><input className={styles.i} type="file" accept=".xlsx" onChange={handleExcelFileChange} /></div>
-          <ButtonSquish><button className={styles.o} type="submit">Загрузить</button></ButtonSquish>
+          <ButtonDef><button className={styles.o} type="submit">Загрузить</button></ButtonDef>
         </form>
       </div>
       {excelMessage && <p>{excelMessage}</p>}
