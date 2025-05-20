@@ -19,6 +19,7 @@
     letter-spacing: -.01em;
   }
   .description {
+    font-family: "Montserrat", sans-serif;
     margin-top: 1.5rem;
     color: #6B7280;
     font-weight: 400;
@@ -85,7 +86,8 @@
   min-height: 500px;
 gap: 8%;
   height: 100%;
-  
+  font-family: "Montserrat", sans-serif;
+  font-size: 2vh;
  }
  .headNS{
   text-transform:uppercase;

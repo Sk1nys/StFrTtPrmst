@@ -3,11 +3,11 @@ import styles from './MainPageSlider.module.css'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import  './swiper.css';
-import Path1 from '../../assets/Zslider.jpg';
-import Path2 from '../../assets/Zslider2.jpg';
-import Path3 from '../../assets/Slider3.jpg';
-import Path4 from '../../assets/Slider4.jpg';
-import Path5 from '../../assets/Slider5.jpg';
+import Path1 from '../../assets/sliderOne.png';
+import Path2 from '../../assets/slidetTwo.png';
+import Path3 from '../../assets/sliderThree.png';
+import Path4 from '../../assets/sliderFour.png';
+import Path5 from '../../assets/sliderFive.png';
 interface mainPageSliderProps{
   ClassName?:string;
 }
