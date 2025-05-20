@@ -1,0 +1,42 @@
+.btnDef{
+    position: relative;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    background: #fff;
+    color: #333;
+    border:none;
+    font-size: 1.8vh;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 100ms ease-in;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: color 0.3s;
+    z-index: 0;
+    border-radius: 10px;
+}
+.btnDef::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: #333;
+            border-radius: 50%;
+            transition: width 0.3s ease-out, height 0.3s ease-out;
+            z-index: -1;
+        }
+.btnDef:hover{
+     color: #fff;
+}
+ .btnDef:hover::before {
+            width: 300px;
+            height: 300px;
+        }

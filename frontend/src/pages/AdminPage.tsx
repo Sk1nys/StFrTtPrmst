@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import ButtonDef from '../Components/Buttons/ButtonDef';
 import ButtonSquish from '../Components/Buttons/ButtonSquish';
 import axios from 'axios';
 import styles from "./styles/AdminPage.module.scss";
@@ -86,7 +87,7 @@ const AdminPage: React.FC = () => {
               <p>Фамилия: <b>{item.surname}</b></p>
               <p>Логин: <b>{item.username}</b></p> 
               <p>Почта: <b>{item.email}</b></p> 
-              <ButtonSquish onClick={() => handleEdit(item)}>Редактировать</ButtonSquish>
+              <ButtonDef onClick={() => handleEdit(item)}>Редактировать</ButtonDef>
             </div>
           ))
         ) : (

@@ -11,12 +11,12 @@ const Footer = () => {
 	}
   return (
     <div className={styles.footer}>
-        <div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX🎀</h3></div>
+        <div className={styles.logo}><img src={Logo} alt="" /> <h3>TESTIX</h3></div>
         <ul>
           <h3>НАВИГАЦИЯ</h3>
           <ul>
           <li><Link to="/create" className={styles.link}>СОЗДАТЬ ТЕСТ</Link></li>
-          <li><Link to="/list" className={styles.link}>СЕПИСОК ТЕСТОВ</Link></li>
+          <li><Link to="/list" className={styles.link}>СПИСОК ТЕСТОВ</Link></li>
           <li><Link to="/auth" className={styles.link}>ВОЙТИ</Link></li>
           <li><Link to="/proftest" className={styles.link}>НАШ ТЕСТ</Link></li></ul>
         </ul>
