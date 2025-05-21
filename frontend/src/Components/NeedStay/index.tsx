@@ -4,7 +4,7 @@ import Path1 from '../../assets/BlackSlideNS1.png';
 import Path2 from '../../assets/WhiteSlideNS1.png';
 import Path3 from '../../assets/BlackSlideNS2.png';
 import Path4 from '../../assets/WhiteSlideNS2.png';
-import Path5 from '../../assets/NS5.jpg';
+import Path5 from '../../assets/CenterNS.png';
 import Path6 from '../../assets/WhiteSlideNS3.png';
 import Path7 from '../../assets/BlackSlideNS3.png';
 import Path8 from '../../assets/WhiteSlideNS4.png';
