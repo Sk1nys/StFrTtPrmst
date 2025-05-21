@@ -88,7 +88,7 @@ margin-bottom: -1px;
   
   .txt_four_page {
     opacity: 0;
-    color: #FEF2F2;
+    color: #753d3d;
     text-shadow: 0 1px 6px #00000033;
     transition: opacity 1s ease-in-out;
     font-family: 'Montserrat', sans-serif;
@@ -101,9 +101,9 @@ margin-bottom: -1px;
   }
   .fadeIn.kartinka1{
     transition:  outline-offset 1s cubic-bezier(0.8, 0, 1, 1), outline-color 1s cubic-bezier(0.8, 0, 1, 1), border-width 1s cubic-bezier(0.8, 0, 1, 1);
-    border: 3px solid black;
+    
     border-radius: 5px;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    
   }
   .big_text_four_page2 {
     font-size: 96px;

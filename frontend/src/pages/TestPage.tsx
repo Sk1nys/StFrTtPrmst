@@ -7,6 +7,7 @@ import styles from "./styles/TestPage.module.scss";
 import { useCookies } from 'react-cookie';
 import CryptoJS from 'crypto-js';
 import Loader from '../Components/Loader';
+import ButtonDef from '../Components/Buttons/ButtonDef';
 
 interface Data {
     id: number;
@@ -104,7 +105,7 @@ const TestPage: FC = () => {
                 <p className={styles.Ag}>Вы уже прошли этот тест.</p>
             ) : (
                 <a href={`/question/${id}`}>
-                    <ButtonSquish className={styles.header_button}>НАЧАТЬ ТЕСТ</ButtonSquish>
+                    <ButtonDef className={styles.header_button}>НАЧАТЬ ТЕСТ</ButtonDef>
                 </a>
             )}
 

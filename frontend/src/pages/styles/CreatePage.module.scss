@@ -83,7 +83,7 @@ margin: 20px;
     padding: 5px;
     border-radius: 5px;
     text-align: center;
-    outline: 1px solid rgb(112, 112, 112);
+    outline: 1px dashed rgb(112, 112, 112);
     transition: all 0.1s;
 }
 .titles>input::placeholder{
