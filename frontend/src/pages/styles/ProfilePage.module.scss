@@ -10,8 +10,11 @@
     padding-right: 2.5%;
     border-bottom: 2px dashed black;
 }
-h1{
+.header>h1{
     font-size: 3vh;
+    border: 1px dashed black;
+    border-radius: 10px;
+    padding: 5px;
 }
 .btn{
     outline: none;
