@@ -173,6 +173,9 @@ word-wrap: break-word;
   .center_item{
     z-index: 999;
   }
+  .center_item >img{
+    object-fit: cover;
+  }
   @media screen and (max-height:600px){
     .text_block{
       gap: unset;
