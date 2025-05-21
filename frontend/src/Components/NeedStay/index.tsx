@@ -1,14 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styles from './NeedStay.module.css';
-import Path1 from '../../assets/NS1.jpg';
-import Path2 from '../../assets/NS2.jpg';
-import Path3 from '../../assets/NS3.jpg';
-import Path4 from '../../assets/NS4.jpg';
+import Path1 from '../../assets/BlackSlideNS1.png';
+import Path2 from '../../assets/WhiteSlideNS1.png';
+import Path3 from '../../assets/BlackSlideNS2.png';
+import Path4 from '../../assets/WhiteSlideNS2.png';
 import Path5 from '../../assets/NS5.jpg';
-import Path6 from '../../assets/NS6.jpg';
-import Path7 from '../../assets/NS7.jpg';
-import Path8 from '../../assets/NS8.jpg';
-import Path9 from '../../assets/NS9.jpg';
+import Path6 from '../../assets/WhiteSlideNS3.png';
+import Path7 from '../../assets/BlackSlideNS3.png';
+import Path8 from '../../assets/WhiteSlideNS4.png';
+import Path9 from '../../assets/BlackSlideNS4.png';
 import { useHeight } from '../HeightContext';
 import useIntersectionObserver from './useIntersectionObserver';
 const NeedStay: React.FC = () => {
@@ -125,6 +125,7 @@ SetWidthScreen(window.screen.width);
                     
                     maxWidth: index ===7? (showTextBlock? `${WidthScreen}px`:'100%') : '100%',
                     transform: index === 7 ?(showTextBlock?`scale(${1.1 / scaleValue}) scaleY(1)`: 'none')  : 'none',
+                    
                   }}
                   className={styles.text_block}>
                     <div>

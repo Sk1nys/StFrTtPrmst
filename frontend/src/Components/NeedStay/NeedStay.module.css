@@ -65,17 +65,25 @@
     clip-path: inset(0px round 5px);
     transition: transform 0.3s ease;
     text-align: -webkit-center;
+    border: 1px solid black;
   }
   .grid_item > img{
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     min-width: 100%;
     min-height: 100%;
       position: absolute;
       top: 0;
       left: 0;
   }
+  .grid_item:nth-child(odd){
+    background-color: black;
+  }
+.grid_item:has(.text_block) {
+    border: none;
+}
+
  .text_block{
   display: flex;
   align-items: center;
